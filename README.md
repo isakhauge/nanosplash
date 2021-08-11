@@ -1,4 +1,4 @@
-# Tiny Loader
+# Nano Splash
 
 ---
 
