@@ -1,0 +1,84 @@
+@keyframes fade {
+    from {
+        display: none;
+        opacity: 0;
+    }
+    to {
+        display: flex;
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#tiny-loader[hidden="true"] {
+    animation-name: fade;
+    animation-duration: 300ms;
+    animation-direction: reverse;
+    transition: 300ms linear all;
+}
+
+#tiny-loader:not([hidden="true"]) {
+    display: flex;
+    animation-name: fade;
+    animation-duration: 300ms;
+    animation-direction: alternate;
+    transition: 300ms linear all;
+}
+
+#tiny-loader {
+    position: absolute;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+#tiny-loader[data-blur="true"]:not([hidden="true"]) ~ * {
+    filter: blur(2px);
+}
+
+#tiny-loader > .tl-text {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.5rem;
+    color: #333;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
+    text-shadow:  0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+#tiny-loader > img.tl-splash {
+    margin-bottom: 2rem;
+}
+
+#tiny-loader[data-splash-animation="pulse"] > img {
+    animation-name: pulse;
+    animation-duration: 300ms;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+}
+
+#tiny-loader[data-splash-animation="spin"] > img {
+    animation-name: spin;
+    animation-duration: 700ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}

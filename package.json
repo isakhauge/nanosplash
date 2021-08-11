@@ -1,0 +1,16 @@
+{
+  "name": "tiny-loader",
+  "version": "2.0.0",
+  "author": "Isak K. Hauge",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.3.1",
+    "sass": "^1.35.1",
+    "typescript": "^4.3.2",
+    "vite": "^2.4.0"
+  }
+}
