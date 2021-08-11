@@ -1,4 +1,4 @@
-import './style.css'
-import {TinyLoader} from "./TinyLoader";
+import { NanoSplash } from "./NanoSplash";
+import "./style.css";
 
-TinyLoader.injectInstanceIntoGlobalScope(new TinyLoader())
+NanoSplash.injectInstanceIntoGlobalScope(new NanoSplash());

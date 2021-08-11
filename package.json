@@ -1,6 +1,6 @@
 {
-  "name": "tiny-loader",
-  "version": "2.0.0",
+  "name": "nanosplash",
+  "version": "1.0.0",
   "author": "Isak K. Hauge",
   "scripts": {
     "dev": "vite",
