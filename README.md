@@ -1,6 +1,7 @@
-# nanosplash
+# nanosplash 🍩
 
-<strong>The tiny splash screen</strong>
+<strong>The simple, 2KB splash screen</strong>
+> <em>No dependencies, pure JS</em>
 
 ## Getting started
 ### Install nanosplash
@@ -14,7 +15,7 @@ npm install nanosplash
 ### Import modules
 ```js
 // Import ESM module
-import {NanoSplash} from 'nanosplash'
+import { NanoSplash } from 'nanosplash'
 
 // Import CJS module
 const nanosplash = require('nanosplash')
@@ -49,10 +50,64 @@ The `inside` function takes three types of arguments:
 2. `Element`.
 3. A function that returns `Element`.
 
-### Vue + nanosplash = 💖
-
-You can display `nanosplash` inside a vue component eg.
-
+### Config
+Example config object
 ```js
-window.splash.show('Loading component ...').inside(this.$refs.myComponent)
+const config = {
+    default: {
+        destination: document.body // Default,
+        text: 'Loading ...' // Default
+    };
+    text: {
+        family: '"Arial", sans-serif',
+        color: '#333',
+        size: '1.5rem'
+    };
+    splash: {
+        src: 'yourURL',
+        width: '100px',
+        animation: 'pulse' // 'none' | 'pulse' (default) | 'spin'
+    };
+    background: {
+        color: 'rgba(255, 255, 255, 0.75)', // Default
+        blur: true // Default
+    };
+}
+```
+### Types
+```ts
+type Config = {
+    default?: DefaultOptions;
+    text?: TextOptions;
+    splash?: SplashOptions;
+    background?: BackgroundOptions;
+};
+
+type DefaultOptions = {
+    destination?: Destination;
+    text?: string;
+};
+
+type Destination = Node | Element | DestinationCallback | string;
+
+type DestinationCallback = () => Element;
+
+type TextOptions = {
+    family?: string;
+    color?: string;
+    size?: string;
+};
+
+type SplashOptions = {
+    src?: string;
+    width?: string;
+    animation?: SplashAnimation;
+};
+
+type SplashAnimation = "none" | "pulse" | "spin";
+
+type BackgroundOptions = {
+    color?: string;
+    blur?: boolean;
+};
 ```
