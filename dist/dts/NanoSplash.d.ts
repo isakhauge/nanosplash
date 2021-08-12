@@ -1,4 +1,4 @@
-import "./style.scss";
+import "./style.sass";
 declare global {
     interface Window {
         attachEvent: Function;
@@ -32,7 +32,7 @@ export declare class NanoSplash {
      *
      * @param {Config} config
      */
-    configure(config: Config): NanoSplash;
+    config(config: Config): NanoSplash;
     /**
      * Set Default Styles
      * @private

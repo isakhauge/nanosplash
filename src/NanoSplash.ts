@@ -8,7 +8,7 @@ import {
   move,
   setAttribute,
 } from "./util/dom";
-import "./style.scss";
+import "./style.sass";
 
 declare global {
   interface Window {
@@ -73,7 +73,7 @@ export class NanoSplash {
    *
    * @param {Config} config
    */
-  public configure(config: Config): NanoSplash {
+  public config(config: Config): NanoSplash {
     if (config?.default?.destination) {
       this.defaultDestination = NanoSplash.getDestinationElement(
         config.default.destination
@@ -146,7 +146,7 @@ export class NanoSplash {
     if (parent && parent !== document.body) {
       fitParentDimensions(this.mainElement)
     }
-    
+
     return {
       inside: (destination: Destination) => this.moveTo(destination),
     };
@@ -185,7 +185,7 @@ export class NanoSplash {
    */
   private static makeMainElement(): HTMLDivElement {
     const mainElement = mk("div", {
-      id: "tiny-loader",
+      className: "nanosplash-container",
       attributes: [
         { key: "data-blur", value: String(NanoSplash.DEFAULT_BACKGROUND_BLUR) },
         {
@@ -205,7 +205,7 @@ export class NanoSplash {
    */
   private static makeSplashElement(): HTMLImageElement {
     const splashElement = mk("img", {
-      className: "tl-splash",
+      className: "nanosplash-img",
       attributes: [
         { key: "src", value: NanoSplash.DEFAULT_SPLASH_SOURCE },
         { key: "alt", value: "NanoSplash indicator" },
@@ -222,7 +222,7 @@ export class NanoSplash {
    */
   private static makeTextElement(): HTMLDivElement {
     return mk("div", {
-      className: "tl-text",
+      className: "nanosplash-text",
       content: NanoSplash.DEFAULT_TEXT,
     }) as HTMLDivElement;
   }
