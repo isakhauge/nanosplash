@@ -1,11 +1,19 @@
 {
   "name": "nanosplash",
   "description": "The simple, 2KB splash screen",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "author": {
     "name": "Isak K. Hauge",
-    "email": "isakhauge@gmail.com"
+    "email": "isakhauge@gmail.com",
+    "url": "https://no.linkedin.com/in/isakhauge"
   },
+  "keywords": [
+    "loading",
+    "loader",
+    "screen",
+    "splash",
+    "nano"
+  ],
   "homepage": "https://github.com/isakhauge/nanosplash",
   "repository": {
     "type": "git",
@@ -15,6 +23,7 @@
   "main": "./dist/module/nanosplash.es.js",
   "module": "./dist/module/nanosplash.es.js",
   "source": "./src/NanoSplash.ts",
+  "unpkg": "./dist/iife/nanosplash.iife.js",
   "exports": {
     ".": {
       "default": "./dist/module/nanosplash.es.js",
