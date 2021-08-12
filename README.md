@@ -1,4 +1,14 @@
 # nanosplash 🍩
+![npm](https://img.shields.io/npm/v/nanosplash)
+![Minified+gzip size](https://badgen.net/bundlephobia/minzip/nanosplash)
+![Minified size](https://badgen.net/bundlephobia/dependency-count/nanosplash)
+![Minified size](https://badgen.net/bundlephobia/tree-shaking/nanosplash)
+<br>
+
+![npm maintenance score](https://img.shields.io/npms-io/maintenance-score/nanosplash)
+![npm quality score](https://img.shields.io/npms-io/quality-score/nanosplash)
+![npm final score](https://img.shields.io/npms-io/final-score/nanosplash)
+![npm popularity score](https://img.shields.io/npms-io/popularity-score/nanosplash)
 
 <strong>The simple, 2KB splash screen</strong>
 > <em>No dependencies, pure JS</em>

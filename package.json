@@ -12,7 +12,17 @@
     "loader",
     "screen",
     "splash",
-    "nano"
+    "nano",
+    "nanosplash",
+    "small",
+    "tiny",
+    "es",
+    "esm",
+    "ts",
+    "typescript",
+    "iife",
+    "cdn",
+    "vite"
   ],
   "homepage": "https://github.com/isakhauge/nanosplash",
   "repository": {
