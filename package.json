@@ -13,6 +13,7 @@
   },
   "license": "MIT",
   "main": "./dist/module/nanosplash.es.js",
+  "module": "./dist/module/nanosplash.es.js",
   "source": "./src/NanoSplash.ts",
   "exports": {
     ".": {
