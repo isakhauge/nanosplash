@@ -1,13 +1,7 @@
+import { MakeOptions } from "nanosplash"
+
 export function get(domString: string): Element | null {
     return document.querySelector(domString)
-}
-
-export type MakeOptions = {
-    id?: string
-    className?: string
-    attributes?: {key: string, value: string | null}[]
-    eventListeners?: {event: keyof HTMLElementEventMap, handler: EventListener}[],
-    content?: Node | Element | HTMLElement | string
 }
 
 export function mk(tag: keyof HTMLElementTagNameMap, options?: MakeOptions): HTMLElement {

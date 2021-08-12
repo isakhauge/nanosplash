@@ -11,9 +11,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "declarationDir": "dist/dts"
+    "noEmit": true
   },
   "include": ["./src"]
 }

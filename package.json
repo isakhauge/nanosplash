@@ -1,7 +1,7 @@
 {
   "name": "nanosplash",
   "description": "The tiny splash screen",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": {
     "name": "Isak K. Hauge",
     "email": "isakhauge@gmail.com"
@@ -22,7 +22,7 @@
       "require": "./dist/module/nanosplash.cjs.js"
     }
   },
-  "types": "./dist/dts",
+  "types": "./src/types.d.ts",
   "scripts": {
     "dev": "vite",
     "build.iife": "vite build -c vite.iife.config.js",

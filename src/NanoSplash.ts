@@ -9,6 +9,7 @@ import {
   setAttribute,
 } from "./util/dom";
 import "./style.sass";
+import { SplashAnimation, Config, DestinationController, Destination } from "nanosplash";
 
 declare global {
   interface Window {
@@ -43,7 +44,7 @@ export class NanoSplash {
     "rgba(255, 255, 255, 0.75)";
   private static readonly DEFAULT_BACKGROUND_BLUR: boolean = true;
 
-  public constructor() {
+  public constructor(config?: Config) {
     this.defaultText = NanoSplash.DEFAULT_TEXT;
     this.defaultDestination = NanoSplash.DEFAULT_DESTINATION;
 
@@ -66,6 +67,10 @@ export class NanoSplash {
 
     // Set default configuration
     this.setDefaultStyles();
+
+    if (config) {
+      this.configure(config)
+    }
   }
 
   /**
@@ -73,7 +78,7 @@ export class NanoSplash {
    *
    * @param {Config} config
    */
-  public config(config: Config): NanoSplash {
+  public configure(config: Config): NanoSplash {
     if (config?.default?.destination) {
       this.defaultDestination = NanoSplash.getDestinationElement(
         config.default.destination
@@ -425,45 +430,3 @@ export class NanoSplash {
     }
   }
 }
-
-/**
- * Types and interfaces
- */
-export type SplashAnimation = "none" | "pulse" | "spin";
-
-export type DefaultOptions = {
-  destination?: Destination;
-  text?: string;
-};
-
-export type TextOptions = {
-  family?: string;
-  color?: string;
-  size?: string;
-};
-
-export type SplashOptions = {
-  src?: string;
-  width?: string;
-  animation?: SplashAnimation;
-};
-
-export type BackgroundOptions = {
-  color?: string;
-  blur?: boolean;
-};
-
-export type Destination = Node | Element | DestinationCallback | string;
-
-export type DestinationCallback = () => Element;
-
-export type Config = {
-  default?: DefaultOptions;
-  text?: TextOptions;
-  splash?: SplashOptions;
-  background?: BackgroundOptions;
-};
-
-export type DestinationController = {
-  inside: (destination: Destination) => void;
-};
