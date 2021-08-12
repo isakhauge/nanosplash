@@ -1,24 +1,39 @@
 {
   "name": "nanosplash",
+  "description": "The tiny splash screen",
   "version": "1.0.0",
-  "author": "Isak K. Hauge",
+  "author": {
+    "name": "Isak K. Hauge",
+    "email": "isakhauge@gmail.com"
+  },
   "homepage": "https://github.com/isakhauge/nanosplash",
   "repository": {
     "type": "git",
     "url": "https://github.com/isakhauge/nanosplash.git"
   },
-  "main": "dist/tiny-loader.iife.js",
+  "license": "MIT",
+  "main": "./dist/module/nanosplash.es.js",
+  "source": "./src/NanoSplash.ts",
+  "exports": {
+    ".": {
+      "default": "./dist/module/nanosplash.es.js",
+      "import": "./dist/module/nanosplash.es.js",
+      "require": "./dist/module/nanosplash.cjs.js"
+    }
+  },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build.iife": "vite build -c vite.iife.config.js",
+    "build.mod": "vite build -c vite.mod.config.js",
+    "build": "tsc && yarn build.iife && yarn build.mod",
     "serve": "vite preview"
   },
   "devDependencies": {
     "autoprefixer": "^10.3.1",
+    "cssnano": "^5.0.7",
     "postcss": "^8.3.6",
     "sass": "^1.35.1",
     "typescript": "^4.3.2",
-    "vite": "^2.4.0",
-    "vite-plugin-singlefile": "^0.5.1"
+    "vite": "^2.4.0"
   }
 }

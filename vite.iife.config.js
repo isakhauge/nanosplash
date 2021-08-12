@@ -1,20 +1,20 @@
 import {defineConfig} from "vite";
-import {viteSingleFile} from "vite-plugin-singlefile";
 
 export default defineConfig({
-    plugins: [viteSingleFile()],
+    mode: 'production',
     build: {
         lib: {
             entry: 'src/main.ts',
-            name: 'TinyLoader',
-            fileName: 'tiny-loader',
+            name: 'NanoSplash',
+            fileName: 'nanosplash',
             formats: ['iife'],
         },
+        outDir: 'dist/iife',
         cssCodeSplit: true,
-        assetsInlineLimit: Infinity,
+        assetsInlineLimit: Number.MAX_SAFE_INTEGER,
         rollupOptions: {
             output: {
-                inlineDynamicImports: true,
+                inlineDynamicImports: false,
             },
         },
         minify: 'terser'

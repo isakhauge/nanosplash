@@ -1,4 +1,7 @@
 import { NanoSplash } from "./NanoSplash";
-import "./style.css";
 
-NanoSplash.injectInstanceIntoGlobalScope(new NanoSplash());
+const windowExists = window && window instanceof Window
+if (windowExists) {
+    NanoSplash.injectInstanceIntoGlobalScope(new NanoSplash());
+}
+

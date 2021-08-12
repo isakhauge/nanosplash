@@ -8,6 +8,7 @@ import {
   move,
   setAttribute,
 } from "./util/dom";
+import "./style.scss";
 
 declare global {
   interface Window {
