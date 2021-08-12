@@ -409,21 +409,15 @@ export class NanoSplash {
   }
 
   private static adaptSizeOnResize(node: HTMLElement): void {
-    const parentNode = node.parentNode
-    const parentNotBody = parentNode && parentNode !== document.body
     if (window.attachEvent) {
       window.attachEvent("onresize", function () {
-        if (parentNotBody) {
-          fitParentDimensions(node);
-        }
+        fitParentDimensions(node);
       });
     } else if (window.addEventListener) {
       window.addEventListener(
         "resize",
         function () {
-          if (parentNotBody) {
-            fitParentDimensions(node);
-          }
+          fitParentDimensions(node);
         },
         true
       );

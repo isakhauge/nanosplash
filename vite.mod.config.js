@@ -10,14 +10,27 @@ export default defineConfig({
             formats: ['es', 'cjs'],
         },
         outDir: 'dist/module',
-        // cssCodeSplit: true,
-        // assetsInlineLimit: Number.MAX_SAFE_INTEGER,
-        // rollupOptions: {
-        //    output: {
-        //        inlineDynamicImports: false,
-        //    },
-        // },
         minify: 'terser',
+        terserOptions: {
+            toplevel: true,
+            ecma: '2015',
+            mangle: {
+                properties: {
+                    reserved: [
+                        'NanoSplash',
+                        'configure',
+                        'show',
+                        'hide',
+                        'inside',
+                        'injectInstanceIntoGlobalScope',
+                        'Window',
+                        'window',
+                        'splash'
+                    ]
+                }
+            }
+        },
+        keep_classnames: true,
         manifest: true,
     }
 })

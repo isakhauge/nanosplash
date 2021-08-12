@@ -18,6 +18,26 @@ export default defineConfig({
             },
         },
         minify: 'terser',
+        terserOptions: {
+            toplevel: true,
+            ecma: '2015',
+            mangle: {
+                properties: {
+                    reserved: [
+                        'NanoSplash',
+                        'configure',
+                        'show',
+                        'hide',
+                        'inside',
+                        'injectInstanceIntoGlobalScope',
+                        'Window',
+                        'window',
+                        'splash'
+                    ]
+                }
+            }
+        },
+        keep_classnames: true,
         manifest: true,
     }
 })

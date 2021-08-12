@@ -21,9 +21,9 @@ import { NanoSplash } from 'nanosplash'
 const nanosplash = require('nanosplash')
 ```
 
-### Import IIFE
+### Import via CDN
 ```html
-<script src="<path-or-url>/dist/iife/nanosplash.iife.js">
+<script src="https://unpkg.com/nanosplash/dist/iife/nanosplash.iife.js">
 ```
 ## Documentation
 ### Basic example
