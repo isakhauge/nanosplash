@@ -2,8 +2,7 @@
 ![npm](https://img.shields.io/npm/v/nanosplash)
 ![Minified+gzip size](https://badgen.net/bundlephobia/minzip/nanosplash)
 ![Minified size](https://badgen.net/bundlephobia/dependency-count/nanosplash)
-![Minified size](https://badgen.net/bundlephobia/tree-shaking/nanosplash)
-<br>
+![Tree shaking](https://badgen.net/bundlephobia/tree-shaking/nanosplash)
 
 ![npm maintenance score](https://img.shields.io/npms-io/maintenance-score/nanosplash)
 ![npm quality score](https://img.shields.io/npms-io/quality-score/nanosplash)
