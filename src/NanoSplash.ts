@@ -141,6 +141,7 @@ export class NanoSplash {
   public show(text?: string): DestinationController {
     this.setText(text ?? NanoSplash.DEFAULT_TEXT);
     display(this.mainElement, true);
+    fitParentDimensions(this.mainElement)
     return {
       inside: (destination: Destination) => this.moveTo(destination),
     };
