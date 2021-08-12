@@ -22,7 +22,7 @@ const nanosplash = require('nanosplash')
 
 ### Import IIFE
 ```html
-<script src="<path-to-lib>/dist/iife.js">
+<script src="<path-or-url>/dist/iife/nanosplash.iife.js">
 ```
 ## Documentation
 ### Basic example
@@ -49,7 +49,9 @@ The `inside` function takes three types of arguments:
 2. `Element`.
 3. A function that returns `Element`.
 
-Number 3 implies that you can display `nanosplash` inside a vue component eg.
+### Vue + nanosplash = 💖
+
+You can display `nanosplash` inside a vue component eg.
 
 ```js
 window.splash.show('Loading component ...').inside(this.$refs.myComponent)

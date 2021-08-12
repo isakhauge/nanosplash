@@ -93,9 +93,9 @@ export function move(targetNode: Node, destinationNode: Node): void {
 
 export function fitParentDimensions(node: HTMLElement): void {
     const parent = parentOf(node) as HTMLElement
-    const {top, left} = parent.getBoundingClientRect()
-    node.style.width = parent.offsetWidth + 'px'
-    node.style.height = parent.offsetHeight + 'px'
+    const {top, left, width, height} = parent.getBoundingClientRect()
+    node.style.width = width + 'px'
+    node.style.height = height + 'px'
     node.style.top = top + 'px'
     node.style.left = left + 'px'
 }

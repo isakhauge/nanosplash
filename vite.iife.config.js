@@ -17,6 +17,7 @@ export default defineConfig({
                 inlineDynamicImports: false,
             },
         },
-        minify: 'terser'
+        minify: 'terser',
+        manifest: true,
     }
 })

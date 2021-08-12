@@ -10,13 +10,14 @@ export default defineConfig({
             formats: ['es', 'cjs'],
         },
         outDir: 'dist/module',
-        //cssCodeSplit: true,
-        //assetsInlineLimit: Number.MAX_SAFE_INTEGER,
-        //rollupOptions: {
+        // cssCodeSplit: true,
+        // assetsInlineLimit: Number.MAX_SAFE_INTEGER,
+        // rollupOptions: {
         //    output: {
         //        inlineDynamicImports: false,
         //    },
-        //},
-        minify: 'terser'
+        // },
+        minify: 'terser',
+        manifest: true,
     }
 })

@@ -8,11 +8,12 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "declaration": true
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "dist/dts"
   },
   "include": ["./src"]
 }

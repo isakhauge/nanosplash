@@ -19,22 +19,22 @@
       </section>
       <section id="section-2" class="">
         <div class="row">
-          <div class="col p-5 bg-light border">
-            <h3>Column 4</h3>
+          <div id="col-1" class="col p-5 bg-light border">
+            <h3>Column 1</h3>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
           </div>
-          <div class="col p-5">
-            <h3>Column 5</h3>
+          <div id="col-2" class="col p-5">
+            <h3>Column 2</h3>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
           </div>
-          <div class="col p-5 bg-light border">
-            <h3>Column 6</h3>
+          <div id="col-3" class="col p-5 bg-light border">
+            <h3>Column 3</h3>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -44,22 +44,22 @@
       </section>
       <section class="">
         <div class="row">
-          <div id="col-1" class="col p-5 bg-success">
-            <h3>Column 1</h3>
+          <div class="col p-5 bg-success">
+            <h3>Column 4</h3>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
           </div>
-          <div id="col-2" class="col p-5 bg-warning">
-            <h3>Column 2</h3>
+          <div class="col p-5 bg-warning">
+            <h3>Column 5</h3>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </p>
           </div>
-          <div id="col-3" class="col p-5 bg-danger">
-            <h3>Column 3</h3>
+          <div class="col p-5 bg-danger">
+            <h3>Column 6</h3>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -69,6 +69,32 @@
       </section>
     </main>
     <!-- <script type="module" src="/src/main.ts"></script> -->
-    <script type="module" src="/dist/tiny-loader.iife.js"></script>
+    <script src="/dist/iife/nanosplash.iife.js"></script>
+    <script>
+      console.log('HELLO')
+      const logo = '/favicon.svg'
+      const scenes = [
+        ['body', 'Loading application ...'],
+        ['#section-1', 'Loading section 1 ...'],
+        ['#col-1', 'Loading column 1 ...'],
+        ['#col-2', 'Loading column 2 ...'],
+        ['#col-3', 'Loading column 3 ...'],
+        ['#section-2', 'Loading section 2 ...'],
+      ]
+      const display = ([selector, text]) => new Promise(resolve => {
+        setTimeout(() => {
+          window.splash.show(text).inside(selector)
+          resolve()
+        }, 2000)
+      })
+      ;(async () => {
+        console.log('HELLO')
+        while (true) {
+          for (const scene of scenes) {
+            await display(scene)
+          }
+        }
+      })()
+    </script>
   </body>
 </html>

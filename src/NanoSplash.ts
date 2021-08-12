@@ -390,7 +390,7 @@ export class NanoSplash {
    * @static
    */
   public static injectInstanceIntoGlobalScope(instance: NanoSplash): void {
-    Object.defineProperty(window, "loader", {
+    Object.defineProperty(window, "splash", {
       value: instance,
       writable: false,
     });

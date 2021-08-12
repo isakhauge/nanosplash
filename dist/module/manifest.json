@@ -1,0 +1,7 @@
+{
+  "src/NanoSplash.ts": {
+    "file": "nanosplash.cjs.js",
+    "src": "src/NanoSplash.ts",
+    "isEntry": true
+  }
+}
