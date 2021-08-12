@@ -1,3 +1,5 @@
+import {NanoSplash} from './NanoSplash'
+
 declare module 'nanosplash' {
     type SplashAnimation = "none" | "pulse" | "spin";
    
@@ -46,3 +48,5 @@ declare module 'nanosplash' {
         content?: Node | Element | HTMLElement | string
     }
 }
+
+export default NanoSplash
