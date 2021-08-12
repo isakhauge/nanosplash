@@ -141,6 +141,10 @@ export class NanoSplash {
   public show(text?: string): DestinationController {
     this.setText(text ?? NanoSplash.DEFAULT_TEXT);
     display(this.mainElement, true);
+    const parent = this.mainElement.parentNode
+    if (parent && parent !== document.body) {
+      fitParentDimensions(this.mainElement)
+    }
     return {
       inside: (destination: Destination) => this.moveTo(destination),
     };
@@ -398,15 +402,21 @@ export class NanoSplash {
   }
 
   private static adaptSizeOnResize(node: HTMLElement): void {
+    const parentNode = node.parentNode
+    const parentNotBody = parentNode && parentNode !== document.body
     if (window.attachEvent) {
       window.attachEvent("onresize", function () {
-        fitParentDimensions(node);
+        if (parentNotBody) {
+          fitParentDimensions(node);
+        }
       });
     } else if (window.addEventListener) {
       window.addEventListener(
         "resize",
         function () {
-          fitParentDimensions(node);
+          if (parentNotBody) {
+            fitParentDimensions(node);
+          }
         },
         true
       );
