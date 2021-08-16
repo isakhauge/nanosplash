@@ -1,60 +1,60 @@
 {
-  "name": "nanosplash",
-  "description": "The simple, 2KB splash screen",
-  "version": "1.0.13",
-  "author": {
-    "name": "Isak K. Hauge",
-    "email": "isakhauge@gmail.com",
-    "url": "https://no.linkedin.com/in/isakhauge"
-  },
-  "keywords": [
-    "loading",
-    "loader",
-    "screen",
-    "splash",
-    "nano",
-    "nanosplash",
-    "small",
-    "tiny",
-    "es",
-    "esm",
-    "ts",
-    "typescript",
-    "iife",
-    "cdn",
-    "vite"
-  ],
-  "homepage": "https://github.com/isakhauge/nanosplash",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/isakhauge/nanosplash.git"
-  },
-  "license": "MIT",
-  "main": "./dist/module/nanosplash.es.js",
-  "module": "./dist/module/nanosplash.es.js",
-  "source": "./src/NanoSplash.ts",
-  "unpkg": "./dist/iife/nanosplash.iife.js",
-  "exports": {
-    ".": {
-      "default": "./dist/module/nanosplash.es.js",
-      "import": "./dist/module/nanosplash.es.js",
-      "require": "./dist/module/nanosplash.cjs.js"
-    }
-  },
-  "types": "./src/types.d.ts",
-  "scripts": {
-    "dev": "vite",
-    "build.iife": "vite build -c vite.iife.config.js",
-    "build.mod": "vite build -c vite.mod.config.js",
-    "build": "tsc && yarn build.iife && yarn build.mod",
-    "serve": "vite preview"
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.3.1",
-    "cssnano": "^5.0.7",
-    "postcss": "^8.3.6",
-    "sass": "^1.35.1",
-    "typescript": "^4.3.2",
-    "vite": "^2.4.0"
-  }
+	"name": "nanosplash",
+	"description": "The simple, 2KB loading screen",
+	"version": "2.0.0",
+	"author": {
+		"name": "Isak K. Hauge",
+		"email": "isakhauge@gmail.com",
+		"url": "https://no.linkedin.com/in/isakhauge"
+	},
+	"keywords": [
+		"loading",
+		"loader",
+		"screen",
+		"splash",
+		"nano",
+		"nanosplash",
+		"small",
+		"tiny",
+		"es",
+		"esm",
+		"ts",
+		"typescript",
+		"iife",
+		"cdn",
+		"vite"
+	],
+	"homepage": "https://github.com/isakhauge/nanosplash",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/isakhauge/nanosplash.git"
+	},
+	"license": "MIT",
+	"main": "./dist/module/nanosplash.es.js",
+	"module": "./dist/module/nanosplash.es.js",
+	"source": "./src/NanoSplash.ts",
+	"unpkg": "./dist/iife/nanosplash.iife.js",
+	"exports": {
+		".": {
+			"default": "./dist/module/nanosplash.es.js",
+			"import": "./dist/module/nanosplash.es.js",
+			"require": "./dist/module/nanosplash.cjs.js"
+		}
+	},
+	"types": "./src/types.d.ts",
+	"scripts": {
+		"dev": "vite",
+		"build.iife": "vite build -c vite.iife.config.js",
+		"build.mod": "vite build -c vite.mod.config.js",
+		"build": "tsc && yarn build.iife && yarn build.mod",
+		"serve": "vite preview"
+	},
+	"devDependencies": {
+		"autoprefixer": "^10.3.1",
+		"cssnano": "^5.0.7",
+		"postcss": "^8.3.6",
+		"sass": "^1.35.1",
+		"typescript": "^4.3.2",
+		"vite": "^2.4.0"
+	}
 }

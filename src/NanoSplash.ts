@@ -1,426 +1,336 @@
-import InvalidDestinationException from "./Exceptions/InvalidDestinationException";
 import {
-  appendFirst,
-  display,
-  fitParentDimensions,
-  get,
-  mk,
-  move,
-  setAttribute,
-} from "./util/dom";
-import "./style.sass";
-import { SplashAnimation, Config, DestinationController, Destination } from "nanosplash";
-
-declare global {
-  interface Window {
-    attachEvent: Function;
-  }
-}
+	BlurMode,
+	Config,
+	Destination,
+	DestinationController,
+	SplashAnimation,
+} from 'nanosplash'
+import InvalidDestinationException from './exceptions/InvalidDestinationException'
+import { NanoSplashRepository } from './repositories/NanoSplashRepository'
+import './style.sass'
+import {
+	appendFirst,
+	display,
+	fitParentDimensions,
+	fitParentDimensionsOnResize,
+	get,
+	isElementOrNode,
+	isFunction,
+	move,
+	setAttribute,
+	setStyle,
+} from './utilities/dom'
 
 /**
  * NanoSplash
  *
  * @author Isak K. Hauge
- * @version 2.0
  */
 export class NanoSplash {
-  // Instance members
-  private defaultDestination: Element;
-  private defaultText: string;
-  private readonly mainElement: HTMLDivElement;
-  private readonly splashElement: HTMLImageElement;
-  private readonly textElement: HTMLDivElement;
+	private defaultDestination: Element
+	private defaultText: string
+	private readonly mainElement: HTMLDivElement
+	private readonly splashElement: HTMLImageElement
+	private readonly textElement: HTMLDivElement
 
-  // Static class defaults
-  private static readonly DEFAULT_TEXT: string = "Loading ...";
-  private static readonly DEFAULT_TEXT_FONT: string = '"Arial", sans-serif';
-  private static readonly DEFAULT_TEXT_COLOR: string = "#555";
-  private static readonly DEFAULT_TEXT_SIZE: string = "1.5rem";
-  private static readonly DEFAULT_SPLASH_SOURCE = null;
-  private static readonly DEFAULT_SPLASH_WIDTH: string = "100px";
-  private static readonly DEFAULT_SPLASH_ANIMATION: SplashAnimation = "pulse";
-  private static readonly DEFAULT_DESTINATION: Element = document.body;
-  private static readonly DEFAULT_BACKGROUND_COLOR: string =
-    "rgba(255, 255, 255, 0.75)";
-  private static readonly DEFAULT_BACKGROUND_BLUR: boolean = true;
+	public constructor(config?: Config) {
+		this.defaultText = NanoSplashRepository.DEFAULT.TEXT
+		this.defaultDestination = NanoSplashRepository.DEFAULT.DESTINATION_NODE
 
-  public constructor(config?: Config) {
-    this.defaultText = NanoSplash.DEFAULT_TEXT;
-    this.defaultDestination = NanoSplash.DEFAULT_DESTINATION;
+		// Build UI elements
+		this.mainElement = NanoSplashRepository.makeMainElement()
+		this.splashElement = NanoSplashRepository.makeSplashElement()
+		this.textElement = NanoSplashRepository.makeTextElement()
 
-    // Build UI elements
-    this.mainElement = NanoSplash.makeMainElement();
-    this.splashElement = NanoSplash.makeSplashElement();
-    this.textElement = NanoSplash.makeTextElement();
+		// Assemble UI elements
+		this.mainElement.append(this.splashElement, this.textElement)
 
-    // Assemble UI elements
-    NanoSplash.assembleElements(
-      this.mainElement,
-      this.splashElement,
-      this.textElement
-    );
+		// Insert loader into destination element
+		appendFirst(this.defaultDestination, this.mainElement)
+		display(this.mainElement, false)
+		fitParentDimensions(this.mainElement)
 
-    // Insert loader into destination element
-    appendFirst(NanoSplash.DEFAULT_DESTINATION, this.mainElement);
-    display(this.mainElement, false);
-    fitParentDimensions(this.mainElement);
+		// Set default configuration
+		this.setDefaultStyles()
 
-    // Set default configuration
-    this.setDefaultStyles();
+		if (config) {
+			this.configure(config)
+		}
+	}
 
-    if (config) {
-      this.configure(config)
-    }
-  }
+	/**
+	 * Install
+	 *
+	 * @description Assigns itself to the Window object.
+	 * The instance is reachable through the property "loading".
+	 *
+	 * @example
+	 * // Access the instance globally
+	 * loading.show('Some text')
+	 */
+	public install(): void {
+		Object.defineProperty(window, 'loading', {
+			value: this,
+			writable: false,
+		})
+		fitParentDimensionsOnResize(this.mainElement)
+	}
 
-  /**
-   * Configure
-   *
-   * @param {Config} config
-   */
-  public configure(config: Config): NanoSplash {
-    if (config?.default?.destination) {
-      this.defaultDestination = NanoSplash.getDestinationElement(
-        config.default.destination
-      );
-    }
+	/**
+	 * Configure
+	 *
+	 * @param {Config} config
+	 */
+	public configure(config: Config): NanoSplash {
+		if (config?.default?.destination) {
+			this.defaultDestination = NanoSplash.getDestinationElement(
+				config.default.destination
+			)
+		}
 
-    this.defaultText ||= config.default?.text as string;
+		this.defaultText ||= config.default?.text as string
 
-    // Text:
-    if (config.text?.family) {
-      this.setTextFontFamily(config.text.family);
-    }
-    if (config.text?.color) {
-      this.setTextColor(config.text.color);
-    }
-    if (config.text?.size) {
-      this.setTextSize(config.text.size);
-    }
+		// Text:
+		if (config.text?.family) {
+			this.setTextFontFamily(config.text.family)
+		}
+		if (config.text?.weight) {
+			this.setTextWeight(config.text.weight)
+		}
+		if (config.text?.color) {
+			this.setTextColor(config.text.color)
+		}
+		if (config.text?.size) {
+			this.setTextSize(config.text.size)
+		}
 
-    // Background:
-    if (config.background?.color) {
-      this.setBackgroundColor(config.background.color);
-    }
-    if (config.background?.blur !== undefined) {
-      this.setBackgroundBlur(config.background.blur);
-    }
+		// Background:
+		if (config.background?.color) {
+			this.setBackgroundColor(config.background.color)
+		}
+		if (config.background?.blur) {
+			this.setBackgroundBlur(config.background.blur)
+		}
 
-    // Splash:
-    if (config.splash) {
-      if (config.splash?.src) {
-        this.setSplashSource(config.splash.src);
-      }
-      if (config.splash?.width) {
-        this.setSplashWidth(config.splash.width);
-      }
-      if (config.splash?.animation) {
-        this.setSplashAnimation(config.splash.animation);
-      }
-    } else {
-      display(this.splashElement, false);
-    }
+		// Splash:
+		if (config.splash) {
+			if (config.splash?.src) {
+				this.setSplashSource(config.splash.src)
+			}
+			if (config.splash?.width) {
+				this.setSplashWidth(config.splash.width)
+			}
+			if (config.splash?.height) {
+				this.setSplashHeight(config.splash.height)
+			}
+			if (config.splash?.animation) {
+				this.setSplashAnimation(config.splash.animation)
+			}
+		} else {
+			display(this.splashElement, false)
+		}
 
-    return this;
-  }
+		return this
+	}
 
-  /**
-   * Set Default Styles
-   * @private
-   */
-  private setDefaultStyles(): void {
-    this.setTextFontFamily(NanoSplash.DEFAULT_TEXT_FONT);
-    this.setTextColor(NanoSplash.DEFAULT_TEXT_COLOR);
-    this.setTextSize(NanoSplash.DEFAULT_TEXT_SIZE);
-    this.setSplashWidth(NanoSplash.DEFAULT_SPLASH_WIDTH);
-    this.setSplashAnimation(NanoSplash.DEFAULT_SPLASH_ANIMATION);
-    this.setBackgroundColor(NanoSplash.DEFAULT_BACKGROUND_COLOR);
-    this.setBackgroundBlur(NanoSplash.DEFAULT_BACKGROUND_BLUR);
-  }
+	/**
+	 * Show
+	 *
+	 * @param {string} text
+	 */
+	public show(text?: string): DestinationController {
+		this.setText(text ?? NanoSplashRepository.DEFAULT.TEXT)
+		display(this.mainElement, true)
 
-  /**
-   * Show
-   *
-   * @param {string} text
-   */
-  public show(text?: string): DestinationController {
-    this.setText(text ?? NanoSplash.DEFAULT_TEXT);
-    display(this.mainElement, true);
+		const parent = this.mainElement.parentNode
+		if (parent && parent !== document.body) {
+			fitParentDimensions(this.mainElement)
+		}
 
-    const parent = this.mainElement.parentNode
-    if (parent && parent !== document.body) {
-      fitParentDimensions(this.mainElement)
-    }
+		return {
+			inside: (destination: Destination) => this.moveTo(destination),
+		}
+	}
 
-    return {
-      inside: (destination: Destination) => this.moveTo(destination),
-    };
-  }
+	/**
+	 * Hide
+	 */
+	public hide(): void {
+		display(this.mainElement, false)
+		this.setText(this.defaultText)
+		this.moveTo(this.defaultDestination)
+	}
 
-  /**
-   * Hide
-   */
-  public hide(): void {
-    display(this.mainElement, false);
-    this.setText(this.defaultText);
-    this.moveTo(this.defaultDestination);
-  }
+	/**
+	 * Set Default Styles
+	 * @private
+	 */
+	private setDefaultStyles(): void {
+		this.setTextFontFamily(NanoSplashRepository.DEFAULT.TEXT_FONT)
+		this.setTextWeight(NanoSplashRepository.DEFAULT.TEXT_WEIGHT)
+		this.setTextColor(NanoSplashRepository.DEFAULT.TEXT_COLOR)
+		this.setTextSize(NanoSplashRepository.DEFAULT.TEXT_SIZE)
+		this.setSplashSource(NanoSplashRepository.DEFAULT.SPLASH_SOURCE)
+		this.setSplashWidth(NanoSplashRepository.DEFAULT.SPLASH_WIDTH)
+		this.setSplashHeight(NanoSplashRepository.DEFAULT.SPLASH_HEIGHT)
+		this.setSplashAnimation(NanoSplashRepository.DEFAULT.SPLASH_ANIMATION)
+		this.setBackgroundColor(NanoSplashRepository.DEFAULT.BACKGROUND_COLOR)
+		this.setBackgroundBlur(NanoSplashRepository.DEFAULT.BACKGROUND_BLUR)
+	}
 
-  /**
-   * Move To
-   *
-   * @param destination
-   * @private
-   */
-  private moveTo(destination: Destination): void {
-    const destinationNode = NanoSplash.getDestinationElement(destination);
-    const parentNode = this.mainElement.parentNode;
-    if (parentNode) {
-      move(this.mainElement, destinationNode);
-    } else {
-      appendFirst(destinationNode, this.mainElement);
-    }
-    fitParentDimensions(this.mainElement);
-  }
+	/**
+	 * Move To
+	 *
+	 * @param destination
+	 * @private
+	 */
+	private moveTo(destination: Destination): void {
+		const destinationNode = NanoSplash.getDestinationElement(destination)
+		const parentNode = this.mainElement.parentNode
+		if (parentNode) {
+			move(this.mainElement).to(destinationNode)
+		} else {
+			appendFirst(destinationNode, this.mainElement)
+		}
+		fitParentDimensions(this.mainElement)
+	}
 
-  /**
-   * Make Main Element
-   *
-   * @private
-   */
-  private static makeMainElement(): HTMLDivElement {
-    const mainElement = mk("div", {
-      className: "nanosplash-container",
-      attributes: [
-        { key: "data-blur", value: String(NanoSplash.DEFAULT_BACKGROUND_BLUR) },
-        {
-          key: "data-splash-animation",
-          value: NanoSplash.DEFAULT_SPLASH_ANIMATION,
-        },
-      ],
-    }) as HTMLDivElement;
-    mainElement.style.backgroundColor = NanoSplash.DEFAULT_BACKGROUND_COLOR;
-    return mainElement;
-  }
+	/**
+	 * Set Text
+	 *
+	 * @param {string} text
+	 * @private
+	 */
+	private setText(text: string) {
+		this.textElement.innerText = text
+	}
 
-  /**
-   * Make Splash Element
-   *
-   * @private
-   */
-  private static makeSplashElement(): HTMLImageElement {
-    const splashElement = mk("img", {
-      className: "nanosplash-img",
-      attributes: [
-        { key: "src", value: NanoSplash.DEFAULT_SPLASH_SOURCE },
-        { key: "alt", value: "NanoSplash indicator" },
-      ],
-    }) as HTMLImageElement;
-    display(splashElement, false);
-    return splashElement;
-  }
+	/**
+	 * Set Text Font Family
+	 *
+	 * @param {string} fontFamily
+	 * @private
+	 */
+	private setTextFontFamily(fontFamily: string): void {
+		setStyle(this.textElement, 'fontFamily', fontFamily)
+	}
 
-  /**
-   * Make Text Element
-   *
-   * @private
-   */
-  private static makeTextElement(): HTMLDivElement {
-    return mk("div", {
-      className: "nanosplash-text",
-      content: NanoSplash.DEFAULT_TEXT,
-    }) as HTMLDivElement;
-  }
+	/**
+	 * Set Text Font Weight
+	 *
+	 * @param {string} fontWeight
+	 * @private
+	 */
+	private setTextWeight(fontWeight: string): void {
+		setStyle(this.textElement, 'fontWeight', fontWeight)
+	}
 
-  /**
-   * Assemble Elements
-   *
-   * @param containerElement
-   * @param splashElement
-   * @param textElement
-   * @private
-   * @static
-   */
-  private static assembleElements(
-    containerElement: Node,
-    splashElement: Node | null,
-    textElement: Node
-  ): void {
-    if (splashElement) {
-      containerElement.appendChild(splashElement);
-    }
-    containerElement.appendChild(textElement);
-  }
+	/**
+	 * Set Text Color
+	 *
+	 * @param {string} color
+	 * @private
+	 */
+	private setTextColor(color: string): void {
+		setStyle(this.textElement, 'color', color)
+	}
 
-  /**
-   * Set Text
-   *
-   * @param {string} text
-   * @private
-   */
-  private setText(text: string) {
-    this.textElement.innerText = text;
-  }
+	/**
+	 * Set Text Size
+	 *
+	 * @param {string} fontSize
+	 * @private
+	 */
+	private setTextSize(fontSize: string): void {
+		setStyle(this.textElement, 'fontSize', fontSize)
+	}
 
-  /**
-   * Set Text Font Family
-   *
-   * @param {string} fontFamily
-   * @private
-   */
-  private setTextFontFamily(fontFamily: string): void {
-    this.textElement.style.fontFamily = fontFamily;
-  }
+	/**
+	 * Set Splash Source
+	 *
+	 * @param {string} src
+	 * @private
+	 */
+	private setSplashSource(src: string): void {
+		this.splashElement.src = src
+		display(this.splashElement, true)
+	}
 
-  /**
-   * Set Text Color
-   *
-   * @param {string} color
-   * @private
-   */
-  private setTextColor(color: string): void {
-    this.textElement.style.color = color;
-  }
+	/**
+	 * Set Splash Width
+	 *
+	 * @param {string} width
+	 * @private
+	 */
+	private setSplashWidth(width: string): void {
+		setStyle(this.splashElement, 'width', width)
+	}
 
-  /**
-   * Set Text Size
-   *
-   * @param {string} fontSize
-   * @private
-   */
-  private setTextSize(fontSize: string): void {
-    this.textElement.style.fontSize = fontSize;
-  }
+	/**
+	 * Set Splash Height
+	 *
+	 * @param {string} height
+	 * @private
+	 */
+	private setSplashHeight(height: string): void {
+		setStyle(this.splashElement, 'height', height)
+	}
 
-  /**
-   * Set Splash Source
-   *
-   * @param {string} src
-   * @private
-   */
-  private setSplashSource(src: string): void {
-    this.splashElement.src = src;
-    display(this.splashElement, true);
-  }
+	/**
+	 * Set Splash Animation
+	 *
+	 * @param {SplashAnimation} animation
+	 * @private
+	 */
+	private setSplashAnimation(animation: SplashAnimation): void {
+		setAttribute(this.mainElement, 'data-splash-animation', animation)
+	}
 
-  /**
-   * Set Splash Width
-   *
-   * @param {string} width
-   * @private
-   */
-  private setSplashWidth(width: string): void {
-    this.splashElement.style.width = width;
-  }
+	/**
+	 * Set Background Color
+	 *
+	 * @param color
+	 * @private
+	 */
+	private setBackgroundColor(color: string): void {
+		setStyle(this.mainElement, 'background-color', color)
+	}
 
-  /**
-   * Set Splash Animation
-   *
-   * @param {SplashAnimation} animation
-   * @private
-   */
-  private setSplashAnimation(animation: SplashAnimation): void {
-    setAttribute(this.mainElement, "data-splash-animation", animation);
-  }
+	/**
+	 * Set Background Blur
+	 *
+	 * @param {BlurMode} blurMode
+	 * @private
+	 */
+	private setBackgroundBlur(blurMode: BlurMode): void {
+		setAttribute(this.mainElement, 'data-blur', blurMode)
+	}
 
-  /**
-   * Set Background Color
-   *
-   * @param color
-   * @private
-   */
-  private setBackgroundColor(color: string): void {
-    this.mainElement.style.backgroundColor = color;
-  }
-
-  /**
-   * Set Background Blur
-   *
-   * @param {boolean} enable
-   * @private
-   */
-  private setBackgroundBlur(enable: boolean): void {
-    setAttribute(this.mainElement, "data-blur", String(enable));
-  }
-
-  /**
-   * @throws InvalidDestinationException
-   * @private
-   */
-  private static getDestinationElement(destination: Destination): Element {
-    const isString = typeof destination === "string";
-    if (isString) {
-      const destinationObject = get(destination as string);
-      if (NanoSplash.isElementOrNode(destinationObject)) {
-        return destinationObject as Element;
-      }
-      throw new InvalidDestinationException(
-        "The DOM selector does not point to an Element"
-      );
-    } else if (NanoSplash.isFunction(destination)) {
-      const destinationObject = (destination as Function)();
-      if (NanoSplash.isElementOrNode(destinationObject)) {
-        return destinationObject;
-      }
-      throw new InvalidDestinationException(
-        "The destination callback returned an invalid value"
-      );
-    } else if (NanoSplash.isElementOrNode(destination)) {
-      return destination as Element;
-    }
-    throw new InvalidDestinationException();
-  }
-
-  /**
-   * Is Element or Node
-   *
-   * @param {any} value
-   * @private
-   * @static
-   */
-  private static isElementOrNode(value: any): boolean {
-    return value instanceof Element || value instanceof Node;
-  }
-
-  /**
-   * Is Function
-   *
-   * @param value
-   * @private
-   * @static
-   */
-  private static isFunction(value: any): boolean {
-    return value && {}.toString.call(value) === "[object Function]";
-  }
-
-  /**
-   * Inject Instance Into Global Scope
-   *
-   * @param {NanoSplash} instance
-   * @private
-   * @static
-   */
-  public static injectInstanceIntoGlobalScope(instance: NanoSplash): void {
-    Object.defineProperty(window, "splash", {
-      value: instance,
-      writable: false,
-    });
-    NanoSplash.adaptSizeOnResize(instance.mainElement);
-  }
-
-  private static adaptSizeOnResize(node: HTMLElement): void {
-    if (window.attachEvent) {
-      window.attachEvent("onresize", function () {
-        fitParentDimensions(node);
-      });
-    } else if (window.addEventListener) {
-      window.addEventListener(
-        "resize",
-        function () {
-          fitParentDimensions(node);
-        },
-        true
-      );
-    }
-  }
+	/**
+	 * @throws InvalidDestinationException
+	 * @private
+	 */
+	private static getDestinationElement(destination: Destination): Element {
+		const isString = typeof destination === 'string'
+		if (isString) {
+			const destinationObject = get(destination as string)
+			if (isElementOrNode(destinationObject)) {
+				return destinationObject as Element
+			}
+			throw new InvalidDestinationException(
+				'The DOM selector does not point to an Element'
+			)
+		} else if (isFunction(destination)) {
+			const destinationObject = (destination as Function)()
+			if (isElementOrNode(destinationObject)) {
+				return destinationObject
+			}
+			throw new InvalidDestinationException(
+				'The destination callback returned an invalid value'
+			)
+		} else if (isElementOrNode(destination)) {
+			return destination as Element
+		}
+		throw new InvalidDestinationException()
+	}
 }
