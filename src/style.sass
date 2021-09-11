@@ -1,14 +1,4 @@
 // Keyframe animations:
-@keyframes fade
-    from
-        display: none
-        opacity: 0
-        filter: blur(10)
-    to
-        display: flex
-        opacity: 1
-        filter: blur(0)
-
 @keyframes pulse
     from
         transform: scale(1)
@@ -21,12 +11,6 @@
     to
         transform: rotate(360deg)
 
-%fade-animation-base
-    animation-name: fade
-    animation-duration: 300ms
-    animation-timing-function: ease-out
-    transition: 300ms linear all
-
 .nanosplash-container
     // Base of container
     position: absolute
@@ -34,16 +18,15 @@
     justify-content: center
     align-items: center
     z-index: 1
+    border-radius: inherit
+    overflow: inherit
 
     // When container is hidden
     &[hidden="true"]
-        animation-direction: reverse
-        @extend %fade-animation-base
+        display: none
     // When container is visible
     &:not([hidden="true"])
         display: flex
-        animation-direction: alternate
-        @extend %fade-animation-base
 
     // Standardized blur modes:
     &[data-blur="none"]:not([hidden="true"]) ~ *
@@ -81,5 +64,5 @@
 
     // Style exception when container is the direct child of body
     body > &:not([hidden="true"])
-        min-height: 100vh
-        min-width: 100%
+        height: 100vh
+        width: 100%

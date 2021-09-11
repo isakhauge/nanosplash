@@ -4,94 +4,395 @@
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/svg+xml" href="favicon.svg" />
 		<link
-			href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+			href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
 			rel="stylesheet"
-			integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
-			crossorigin="anonymous"
 		/>
+		<link href="https://cdn.lineicons.com/3.0/lineicons.css" rel="stylesheet" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Vite App</title>
+		<title>Nanosplash</title>
+		<meta name="description" content="The tiny loading screen" />
+		<meta name="keywords" content="splash, screen, loading" />
+		<meta name="author" content="Isak Hauge" />
 	</head>
-	<body style="height: 100vh" class="bg-dark">
-		<main>
-			<section id="section-1" class="py-5 bg-primary text-white">
-				<h1 class="py-5 text-center">Nanosplash</h1>
-			</section>
-			<section id="section-2" class="">
-				<div class="row">
-					<div id="col-1" class="col p-5 bg-light border">
-						<h3>Column 1</h3>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua.
-						</p>
+	<body class="flex flex-col justify-between">
+		<main class="bg-gray-100 flex-grow">
+			<div id="title">
+				<section class="bg-gray-800 pt-6 pb-2 md:py-12 text-white">
+					<div
+						class="
+							absolute
+							top-2
+							left-2
+							uppercase
+							bg-gray-600
+							text-white
+							pill
+							font-mono
+							tracking-wider
+							rounded
+						"
+					>
+						Title section
 					</div>
-					<div id="col-2" class="col p-5 bg-white">
-						<h3>Column 2</h3>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua.
-						</p>
+					<div class="px-10 flex flex-col justify-center items-center">
+						<span class="animate-spin mb-3 md:mb-6 text-6xl md:text-7xl"
+							>🍩</span
+						>
+						<h1 class="text-3xl md:text-4xl">Nanosplash</h1>
+						<h2 class="text-lg md:text-xl md:mt-1 font-thin">
+							The tiny loading screen
+						</h2>
 					</div>
-					<div id="col-3" class="col p-5 bg-light border">
-						<h3>Column 3</h3>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua.
-						</p>
+				</section>
+				<section class="py-3 bg-gray-800">
+					<div class="flex flex-col space-y-2">
+						<div class="flex space-x-2 justify-center">
+							<img src="https://badgen.net/npm/v/nanosplash" />
+							<img src="https://badgen.net/npm/types/nanosplash" />
+							<img src="https://badgen.net/npm/dw/nanosplash" />
+						</div>
+						<div class="flex space-x-2 justify-center">
+							<img src="https://badgen.net/bundlephobia/min/nanosplash" />
+							<img
+								src="https://badgen.net/bundlephobia/tree-shaking/nanosplash"
+							/>
+						</div>
+					</div>
+				</section>
+			</div>
+			<section class="flex flex-col items-center py-10 md:pt-16 md:pb-10">
+				<div class="container px-10">
+					<div
+						class="
+							text-center text-xl
+							md:text-2xl
+							font-light
+							text-gray-600
+							flex
+							justify-center
+							mb-2
+							md:mb-3
+						"
+					>
+						Demo
+					</div>
+					<div class="text-center text-gray-500 flex font-light justify-center">
+						Play around with the loading screen demo
 					</div>
 				</div>
 			</section>
-			<section class="">
-				<div class="row">
-					<div class="col p-5 bg-success">
-						<h3>Column 4</h3>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua.
-						</p>
+			<section class="flex flex-col items-center pt-0 pb-10 md:pt-0 md:pb-20">
+				<div class="container px-10 md:max-w-3xl">
+					<div class="flex flex-col mb-5">
+						<label for="splash-src" class="text-gray-600 mb-2"
+							>Splash image URL</label
+						>
+						<input
+							type="text"
+							name="splash-src"
+							id="splash-src"
+							value="favicon.svg"
+							class="
+								py-3
+								px-4
+								text-gray-400
+								bg-white
+								appearance-none
+								rounded-lg
+							"
+						/>
 					</div>
-					<div class="col p-5 bg-warning">
-						<h3>Column 5</h3>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua.
-						</p>
+					<div class="grid sm:grid-cols-1 md:grid-cols-2 gap-5">
+						<div class="flex flex-col">
+							<label class="text-gray-600 mb-2" for="anim">Animation</label>
+							<select
+								class="
+									py-3
+									px-4
+									text-gray-400
+									bg-white
+									cursor-pointer
+									appearance-none
+									rounded-lg
+								"
+								name="anim"
+								id="anim"
+							>
+								<option value="none" selected disabled>Choose animation</option>
+								<option value="none">None</option>
+								<option value="pulse">Pulse</option>
+								<option value="spin">Spin</option>
+							</select>
+						</div>
+						<div class="flex flex-col">
+							<label class="text-gray-600 mb-2" for="elem">Element</label>
+							<select
+								class="
+									py-3
+									px-4
+									text-gray-400
+									bg-white
+									cursor-pointer
+									appearance-none
+									rounded-lg
+								"
+								name="elem"
+								id="elem"
+							>
+								<option value="none" selected disabled>Choose location</option>
+								<option value="body">Fullscreen (3s)</option>
+								<option value="#title">Title section</option>
+								<option value="#col1">Column 1</option>
+								<option value="#col2">Column 2</option>
+								<option value="#col3">Column 3</option>
+							</select>
+						</div>
+						<div class="flex flex-col">
+							<label class="text-gray-600 mb-2" for="text">Loading text</label>
+							<input
+								class="
+									py-3
+									px-4
+									appearance-none
+									rounded-lg
+									bg-gray-800
+									text-purple-300
+								"
+								type="text"
+								name="text"
+								id="text"
+								value="Loading assets ..."
+							/>
+						</div>
+						<div class="flex flex-col">
+							<label class="text-gray-600 mb-2" for="show"
+								>Display loading screen</label
+							>
+							<div
+								id="show"
+								class="
+									bg-purple-900
+									text-gray-300
+									cursor-pointer
+									py-3
+									px-4
+									rounded-lg
+								"
+							>
+								Show loading screen
+							</div>
+						</div>
 					</div>
-					<div class="col p-5 bg-danger">
-						<h3>Column 6</h3>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua.
-						</p>
+				</div>
+			</section>
+			<section class="flex flex-col items-center pb-20">
+				<div class="container px-10">
+					<div class="grid sm:grid-cols-1 lg:grid-cols-3 gap-10">
+						<div id="col1" class="bg-white rounded-2xl shadow-lg">
+							<div class="relative p-8 rounded-2xl">
+								<div
+									class="
+										absolute
+										top-2
+										left-2
+										uppercase
+										bg-gray-300
+										text-white
+										pill
+										font-mono
+										tracking-wider
+										rounded
+									"
+								>
+									Column 1
+								</div>
+								<div class="text-4xl text-center">
+									<i class="lni lni-bolt-alt"></i>
+								</div>
+								<div class="text-xl font-medium my-6 text-center">
+									Tiny and lightning fast
+								</div>
+								<div>It is only 6kB in size, and it's lightning fast.</div>
+							</div>
+						</div>
+						<div id="col2" class="bg-white rounded-2xl shadow-lg">
+							<div class="relative p-8 rounded-2xl">
+								<div
+									class="
+										absolute
+										top-2
+										left-2
+										uppercase
+										bg-gray-300
+										text-white
+										pill
+										font-mono
+										tracking-wider
+										rounded
+									"
+								>
+									Column 2
+								</div>
+								<div class="text-4xl text-center">
+									<i class="lni lni-code"></i>
+								</div>
+								<div class="text-xl font-medium my-6 text-center">
+									Vanilla JS
+								</div>
+								<div>
+									Written from the ground up in vanilla JavaScript and comes
+									without any libraries.
+								</div>
+							</div>
+						</div>
+						<div id="col3" class="bg-white rounded-2xl shadow-lg">
+							<div class="relative p-8 rounded-2xl">
+								<div
+									class="
+										absolute
+										top-2
+										left-2
+										uppercase
+										bg-gray-300
+										text-white
+										pill
+										font-mono
+										tracking-wider
+										rounded
+									"
+								>
+									Column 3
+								</div>
+								<div class="text-4xl text-center">
+									<i class="lni lni-grid-alt"></i>
+								</div>
+								<div class="text-xl font-medium my-6 text-center">
+									ESM + CJS
+								</div>
+								<div>
+									Nanosplash comes in both ES and CJS modules, making it easy
+									for you to import it into your code.
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</section>
 		</main>
-		<script type="module" src="/src/main.ts"></script>
-		<script>
-			const scenes = [
-				['body', 'Loading application ...'],
-				['#section-1', 'Loading section 1 ...'],
-				['#col-1', 'Loading column 1 ...'],
-				['#col-2', 'Loading column 2 ...'],
-				['#col-3', 'Loading column 3 ...'],
-				['#section-2', 'Loading section 2 ...'],
-			]
-			const display = ([selector, text]) =>
-				new Promise(resolve => {
-					setTimeout(() => {
-						window.loading.show(text).inside(selector)
-						resolve()
-					}, 2000)
-				})
-			;(async () => {
-				while (true) {
-					for (const scene of scenes) {
-						await display(scene)
+		<footer>
+			<section class="py-6 flex justify-center flex-grow-0">
+				<div class="container mx-5">
+					<div class="flex space-x-3 justify-center items-center text-gray-600">
+						<div class="text-2xl">
+							<i class="lni lni-github-original"></i>
+						</div>
+						<div>
+							Developed by
+							<a
+								class="text-purple-400 hover:text-purple-500"
+								href="https://github.com/isakhauge"
+								>Isak Hauge</a
+							>
+						</div>
+					</div>
+				</div>
+			</section>
+			<script type="module" src="/src/main.ts"></script>
+
+			<!-- Demo -->
+			<script>
+				const ref = function (v) {
+					return document.querySelector(v)
+				}
+
+				// Elements
+				const textSplashElem = ref('#splash-src')
+				const selectAnimElem = ref('#anim')
+				const selectDestinationElem = ref('#elem')
+				const textElem = ref('#text')
+				const showBtn = ref('#show')
+
+				const cache = {
+					animation: 'none',
+					domSelector: 'body',
+					text: textElem.value,
+					showNextTime: true,
+				}
+
+				const text = (function (postfix) {
+					return {
+						show: 'Show ' + postfix,
+						hide: 'Hide ' + postfix,
+					}
+				})('loading screen')
+
+				const display = function () {
+					showBtn.innerText = 'Hide loading screen'
+					cache.showNextTime = false
+					const splashSrc = textSplashElem.value
+					const text = textElem.value
+					const anim = selectAnimElem.value
+					const elem = selectDestinationElem.value
+					loading
+						.configure({
+							splash: { animation: cache.animation, src: splashSrc },
+						})
+						.show(cache.text)
+						.inside(cache.domSelector)
+				}
+
+				const hide = function () {
+					showBtn.innerText = 'Show loading screen'
+					cache.showNextTime = true
+					loading.hide()
+				}
+
+				const onSelectAnim = function ({ target }) {
+					cache.animation = target.value
+				}
+				const onSelectDestination = function ({ target }) {
+					cache.domSelector = target.value
+				}
+				const onInputText = function ({ target }) {
+					cache.text = target.value
+				}
+				const onClickBtn = function () {
+					if (cache.showNextTime) {
+						display()
+						const isBody = cache.domSelector === 'body'
+						if (isBody) {
+							setTimeout(hide, 3000)
+						}
+					} else {
+						hide()
 					}
 				}
-			})()
-		</script>
+
+				selectAnimElem.addEventListener('input', onSelectAnim)
+				selectDestinationElem.addEventListener('input', onSelectDestination)
+				textElem.addEventListener('input', onInputText)
+				showBtn.addEventListener('click', onClickBtn)
+			</script>
+
+			<!-- Nanosplash -->
+			<script>
+				window.addEventListener('load', () => {
+					window.loading.configure({
+						splash: {
+							src: 'https://images-eu.ssl-images-amazon.com/images/I/71%2BmDoHG4mL.png',
+						},
+					})
+				})
+			</script>
+		</footer>
+		<style>
+			body {
+				min-height: 100vh;
+			}
+			.pill {
+				font-size: 10px;
+				padding: 0.2em 0.5em;
+			}
+		</style>
 	</body>
 </html>

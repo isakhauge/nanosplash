@@ -20,11 +20,6 @@ export const create = (
 			?.filter(v => v.value)
 			.forEach(({ key, value }) => element.setAttribute(key, value as string))
 
-		// Element event listeners
-		options.eventListeners?.forEach(({ event, handler }) =>
-			element.addEventListener(event, handler)
-		)
-
 		// Element content
 		if (options.content) {
 			if (typeof options.content === 'string') {
@@ -37,30 +32,14 @@ export const create = (
 	return element
 }
 
-export const setAttribute = (
-	node: HTMLElement,
-	key: string,
-	value: string
-): void => {
-	node.setAttribute(key, value)
-}
-
-export const removeAttribute = (node: Element, key: string): void => {
-	node.removeAttribute(key)
-}
-
-export const getAttribute = (node: Element, key: string): string | null => {
-	return node.getAttribute(key)
-}
-
 const showElement = (node: HTMLElement): void => {
 	node.hidden = false
-	removeAttribute(node, 'hidden')
+	node.removeAttribute('hidden')
 }
 
 const hideElement = (node: HTMLElement): void => {
 	node.hidden = true
-	setAttribute(node, 'hidden', 'true')
+	node.setAttribute('hidden', 'true')
 }
 
 export const display = (node: HTMLElement, show: boolean): void => {
@@ -70,8 +49,6 @@ export const display = (node: HTMLElement, show: boolean): void => {
 		hideElement(node)
 	}
 }
-
-export const parentOf = (node: Node): Node | null => node.parentNode
 
 export const appendFirst = (destinationNode: Node, node: Node): void => {
 	const children = Array.from(destinationNode.childNodes)
@@ -86,19 +63,29 @@ export const appendFirst = (destinationNode: Node, node: Node): void => {
 
 export const move = (targetNode: Node) => ({
 	to: (destinationNode: Node) => {
-		parentOf(targetNode)?.removeChild(targetNode)
+		targetNode.parentNode?.removeChild(targetNode)
 		appendFirst(destinationNode, targetNode)
 	},
 })
 
 export const fitParentDimensions = (node: HTMLElement): void => {
-	const parent = parentOf(node) as HTMLElement
+	const parent = node.parentNode as HTMLElement
 	if (parent) {
 		;((v: DOMRect) => {
+			const parentIsBody = parent === document.body
+			let top: string
+			let height: string
+			if (parentIsBody) {
+				top = window.pageYOffset + 'px'
+				height = '100vh'
+			} else {
+				top = v.y + window.pageYOffset + 'px'
+				height = v.height + 'px'
+			}
+			node.style.top = top
+			node.style.left = v.x + window.pageXOffset + 'px'
 			node.style.width = v.width + 'px'
-			node.style.height = v.height + 'px'
-			node.style.top = v.top + 'px'
-			node.style.left = v.left + 'px'
+			node.style.height = height
 		})(parent.getBoundingClientRect())
 	}
 }
@@ -114,6 +101,7 @@ export const fitParentDimensionsOnResize = (node: HTMLElement) => {
 	;(([a, b]) => {
 		if (a) a('onresize', handler)
 		else if (b) b('resize', handler, true)
+		b('scroll', handler, true)
 	})([window.attachEvent, window.addEventListener])
 }
 
@@ -127,4 +115,8 @@ export const isFunction = (value: any): boolean => {
 
 export const setStyle = (node: HTMLElement, prop: string, value: any) => {
 	node.style[prop as any] = value
+}
+
+export const setAttribute = (node: Element, key: string, value: string) => {
+	node.setAttribute(key, value)
 }

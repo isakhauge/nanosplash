@@ -113,6 +113,7 @@ export class NanoSplash {
 		}
 
 		// Splash:
+		// TODO: Fix logical error here.
 		if (config.splash) {
 			if (config.splash?.src) {
 				this.setSplashSource(config.splash.src)
@@ -186,8 +187,7 @@ export class NanoSplash {
 	 */
 	private moveTo(destination: Destination): void {
 		const destinationNode = NanoSplash.getDestinationElement(destination)
-		const parentNode = this.mainElement.parentNode
-		if (parentNode) {
+		if (this.mainElement.parentNode) {
 			move(this.mainElement).to(destinationNode)
 		} else {
 			appendFirst(destinationNode, this.mainElement)
@@ -312,25 +312,21 @@ export class NanoSplash {
 	 */
 	private static getDestinationElement(destination: Destination): Element {
 		const isString = typeof destination === 'string'
+		const isCallback = isFunction(destination)
+		const isElement = isElementOrNode(destination)
+
+		let destinationNode: HTMLElement | null = null
+
 		if (isString) {
-			const destinationObject = get(destination as string)
-			if (isElementOrNode(destinationObject)) {
-				return destinationObject as Element
-			}
-			throw new InvalidDestinationException(
-				'The DOM selector does not point to an Element'
-			)
-		} else if (isFunction(destination)) {
-			const destinationObject = (destination as Function)()
-			if (isElementOrNode(destinationObject)) {
-				return destinationObject
-			}
-			throw new InvalidDestinationException(
-				'The destination callback returned an invalid value'
-			)
-		} else if (isElementOrNode(destination)) {
-			return destination as Element
+			destinationNode = get(destination as string) as HTMLElement
+		} else if (isCallback) {
+			destinationNode = (destination as Function)()
+		} else if (isElement) {
+			destinationNode = destination as HTMLElement
+		} else {
+			throw new InvalidDestinationException()
 		}
-		throw new InvalidDestinationException()
+
+		return destinationNode as Element
 	}
 }

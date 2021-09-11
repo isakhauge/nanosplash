@@ -1,7 +1,7 @@
 {
 	"name": "nanosplash",
 	"description": "The simple, 2KB loading screen",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"author": {
 		"name": "Isak K. Hauge",
 		"email": "isakhauge@gmail.com",
@@ -43,7 +43,7 @@
 	},
 	"types": "./src/types.d.ts",
 	"scripts": {
-		"dev": "vite",
+		"dev": "vite --host",
 		"build.iife": "vite build -c vite.iife.config.js",
 		"build.mod": "vite build -c vite.mod.config.js",
 		"build": "tsc && yarn build.iife && yarn build.mod",

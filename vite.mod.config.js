@@ -24,6 +24,7 @@ export default defineConfig({
 						'inside',
 						'window',
 						'install',
+						'loading',
 					],
 				},
 			},
