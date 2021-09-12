@@ -1,7 +1,7 @@
 {
 	"name": "nanosplash",
 	"description": "The simple, 2KB loading screen",
-	"version": "2.0.1",
+	"version": "2.1.0",
 	"author": {
 		"name": "Isak K. Hauge",
 		"email": "isakhauge@gmail.com",
@@ -32,7 +32,7 @@
 	"license": "MIT",
 	"main": "./dist/module/nanosplash.es.js",
 	"module": "./dist/module/nanosplash.es.js",
-	"source": "./src/NanoSplash.ts",
+	"source": "./src/Nanosplash.ts",
 	"unpkg": "./dist/iife/nanosplash.iife.js",
 	"exports": {
 		".": {
@@ -46,15 +46,22 @@
 		"dev": "vite --host",
 		"build.iife": "vite build -c vite.iife.config.js",
 		"build.mod": "vite build -c vite.mod.config.js",
+		"build.site": "vite build -c vite.site.config.js",
 		"build": "tsc && yarn build.iife && yarn build.mod",
+		"doc": "typedoc --excludePrivate --excludeInternal --entryPoints src/Nanosplash.ts src/types.d.ts",
+		"doc.watch": "yarn doc --watch",
 		"serve": "vite preview"
 	},
 	"devDependencies": {
+		"@vitejs/plugin-vue": "^1.6.2",
+		"@vue/compiler-sfc": "^3.2.11",
 		"autoprefixer": "^10.3.1",
 		"cssnano": "^5.0.7",
 		"postcss": "^8.3.6",
 		"sass": "^1.35.1",
+		"typedoc": "^0.22.3",
 		"typescript": "^4.3.2",
-		"vite": "^2.4.0"
+		"vite": "^2.4.0",
+		"vite-plugin-singlefile": "^0.5.1"
 	}
 }

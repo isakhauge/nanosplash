@@ -10,36 +10,27 @@
 ![npm final score](https://img.shields.io/npms-io/final-score/nanosplash)
 ![npm popularity score](https://img.shields.io/npms-io/popularity-score/nanosplash)
 
-<strong>The simple, 2KB loading screen</strong>
+<strong>The simple, tiny loading screen</strong>
 
 > <em>No dependencies, pure JS</em>
 
-## Getting started
+# Installation
 
-### Install nanosplash
+## Yarn
 
 ```bash
-# Yarn
 yarn add nanosplash
+```
 
-# NPM
+## NPM
+
+```bash
 npm install nanosplash
 ```
 
-### Import modules
+# Import
 
-```js
-// Import ESM module
-import { NanoSplash } from 'nanosplash'
-
-// Import CJS module
-const NanoSplash = require('nanosplash')
-
-// Install (browser)
-new NanoSplash().install()
-```
-
-### Import via CDN
+## Import via CDN
 
 When you import the IIFE script there is no need to invoke the `install` function.
 
@@ -47,16 +38,55 @@ When you import the IIFE script there is no need to invoke the `install` functio
 <script src="https://unpkg.com/nanosplash/dist/iife/nanosplash.iife.js">
 ```
 
-## Basic usage
+## ESM (ES modules)
 
 ```js
-// Covers entire screen
-window.loading('Some text')
-
-// Displays inside specific element
-window.loading('Some text').inside('.some-class-or-id')
+import { Nanosplash } from 'nanosplash'
 ```
 
-## Documentation
+## CJS (CommonJS)
 
-[Documentation](https://boostnote.io/shared/c5ccbfe5-a127-49d8-910c-cd2769c2b4d8)
+```js
+const Nanosplash = require('nanosplash')
+```
+
+# Getting started
+
+## Basic usage (CDN)
+
+When imported through the CDN, the instance is already injected into the `Window` object and accessible through the global variable `loading`.
+
+### Display the loading screen
+
+```js
+loading.show('Loading the good stuff ...')
+```
+
+### Hide the loading screen
+
+```js
+loading.hide()
+```
+
+### Display the loading screen inside an element
+
+```js
+loading.show('Loading component ...').inside('#my-element')
+```
+
+## Advanced usage (modules)
+
+**⚠️ Always import the CSS file when importing modules manually**
+
+```js
+import { Nanosplash } from 'nanosplash'
+import 'nanosplash/dist/module/style.css'
+```
+
+# Demo site
+
+[Go to demo site]('https://unpkg.com/nanosplash/dist/site/index.html')
+
+# Documentation
+
+[Nanosplash API]('https://unpkg.com/nanosplash/docs/index.html')

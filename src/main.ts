@@ -1,6 +1,6 @@
-import { NanoSplash } from './NanoSplash'
+import { Nanosplash } from './Nanosplash'
 
 const windowExists = window && window instanceof Window
 if (windowExists) {
-	new NanoSplash().install()
+	new Nanosplash().install()
 }

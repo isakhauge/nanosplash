@@ -4,8 +4,8 @@ export default defineConfig({
 	mode: 'production',
 	build: {
 		lib: {
-			entry: 'src/NanoSplash.ts',
-			name: 'NanoSplash',
+			entry: 'src/Nanosplash.ts',
+			name: 'Nanosplash',
 			fileName: 'nanosplash',
 			formats: ['es', 'cjs'],
 		},

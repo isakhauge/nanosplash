@@ -2,53 +2,72 @@ import {
 	BlurMode,
 	Config,
 	Destination,
-	DestinationController,
+	DestinationObject,
 	SplashAnimation,
 } from 'nanosplash'
 import InvalidDestinationException from './exceptions/InvalidDestinationException'
-import { NanoSplashRepository } from './repositories/NanoSplashRepository'
+import { NanosplashRepository } from './repositories/NanosplashRepository'
 import './style.sass'
 import {
-	appendFirst,
 	display,
-	fitParentDimensions,
-	fitParentDimensionsOnResize,
-	get,
+	fitToParent,
+	invokeOn,
 	isElementOrNode,
 	isFunction,
 	move,
+	ref,
 	setAttribute,
 	setStyle,
 } from './utilities/dom'
 
 /**
- * NanoSplash
+ * Nanosplash
  *
  * @author Isak K. Hauge
  */
-export class NanoSplash {
+export class Nanosplash {
 	private defaultDestination: Element
 	private defaultText: string
 	private readonly mainElement: HTMLDivElement
 	private readonly splashElement: HTMLImageElement
 	private readonly textElement: HTMLDivElement
 
+	/**
+	 * Constructor
+	 *
+	 * @public
+	 * @constructor
+	 * @param {Config | undefined} config The configuration object.
+	 *
+	 * @example
+	 * ```js
+	 * // Instantiatie without config object.
+	 * new Nanosplash()
+	 * ```
+	 *
+	 * @example
+	 * ```js
+	 * // Instantiate with config object.
+	 * new Nanosplash(config)
+	 * ```
+	 */
 	public constructor(config?: Config) {
-		this.defaultText = NanoSplashRepository.DEFAULT.TEXT
-		this.defaultDestination = NanoSplashRepository.DEFAULT.DESTINATION_NODE
+		this.defaultText = NanosplashRepository.DEFAULT.TEXT
+		this.defaultDestination = NanosplashRepository.DEFAULT.DESTINATION_NODE
 
 		// Build UI elements
-		this.mainElement = NanoSplashRepository.makeMainElement()
-		this.splashElement = NanoSplashRepository.makeSplashElement()
-		this.textElement = NanoSplashRepository.makeTextElement()
+		this.mainElement = NanosplashRepository.makeMainElement()
+		this.splashElement = NanosplashRepository.makeSplashElement()
+		this.textElement = NanosplashRepository.makeTextElement()
 
 		// Assemble UI elements
-		this.mainElement.append(this.splashElement, this.textElement)
+		move(this.splashElement).to(this.mainElement)
+		move(this.textElement).to(this.mainElement)
 
 		// Insert loader into destination element
-		appendFirst(this.defaultDestination, this.mainElement)
-		display(this.mainElement, false)
-		fitParentDimensions(this.mainElement)
+		move(this.mainElement).to(this.defaultDestination, true)
+		display(this.mainElement, false) // Hide by default
+		fitToParent(this.mainElement)
 
 		// Set default configuration
 		this.setDefaultStyles()
@@ -61,29 +80,46 @@ export class NanoSplash {
 	/**
 	 * Install
 	 *
-	 * @description Assigns itself to the Window object.
-	 * The instance is reachable through the property "loading".
+	 * @description Assigns itself to the Window object and sets essential event
+	 * listeners that responds to changes in the browser. The instance is
+	 * globally accessible through the property "loading".
 	 *
 	 * @example
+	 * ```js
 	 * // Access the instance globally
 	 * loading.show('Some text')
+	 * ```
 	 */
 	public install(): void {
 		Object.defineProperty(window, 'loading', {
 			value: this,
 			writable: false,
 		})
-		fitParentDimensionsOnResize(this.mainElement)
+		invokeOn(window, () => fitToParent(this.mainElement), ['resize', 'scroll'])
 	}
 
 	/**
 	 * Configure
 	 *
-	 * @param {Config} config
+	 * @param {Config} config The config object.
+	 * @return {Nanosplash} The updated instance.
+	 *
+	 * @description Mutates the existing configuration and returns the updated
+	 * instance.
+	 *
+	 * @example
+	 * ```js
+	 * nanosplash.configure(config)
+	 * ```
+	 *
+	 * @example
+	 * ```js
+	 * window.loading.configure(config).show(text)
+	 * ```
 	 */
-	public configure(config: Config): NanoSplash {
+	public configure(config: Config): Nanosplash {
 		if (config?.default?.destination) {
-			this.defaultDestination = NanoSplash.getDestinationElement(
+			this.defaultDestination = Nanosplash.getDestinationElement(
 				config.default.destination
 			)
 		}
@@ -137,19 +173,77 @@ export class NanoSplash {
 	/**
 	 * Show
 	 *
-	 * @param {string} text
+	 * @param {string | undefined} text The text that will be shown in the
+	 * loading screen. If undefined, Nanosplash will use the default text.
+	 * @param {Promise<any> | undefined} task An asynchronous function that
+	 * contains any given workload that shall compute while the loading screen is
+	 * visible. If undefined, you will have to manually invoke the hide function
+	 * in order to hide the loading screen.
+	 * @return {DestinationObject} An object with a function that controls the
+	 * destination of the loading screen.
+	 *
+	 * @description Shows the loading screen. Invoking the inside function will
+	 * display the loading screen within the constraints of the defined
+	 * destination.
+	 *
+	 * @example
+	 * ```js
+	 * // Basic usage.
+	 * loading.show(text)
+	 * ```
+	 *
+	 * @example
+	 * ```js
+	 * // Show loading screen within another element using CSS selector.
+	 * loading.show(text).inside('#my-element')
+	 * ```
+	 *
+	 * @example
+	 * ```js
+	 * // Use DOM element reference.
+	 * loading.show(text).inside(document.getElementById(id))
+	 * ```
+	 *
+	 * @example
+	 * ```js
+	 * // Use function that returns a DOM element reference.
+	 * loading.show(text).inside(() => getDomReference())
+	 * ```
+	 *
+	 * @example
+	 * ```js
+	 * // Define an asynchronous task.
+	 * const task = async () => getDataFromApi()
+	 * // Show loading screen while the task is not yet resolved.
+	 * loading.show(text, task).inside(document.body)
+	 * ```
 	 */
-	public show(text?: string): DestinationController {
-		this.setText(text ?? NanoSplashRepository.DEFAULT.TEXT)
+	public show(text?: string, task?: Promise<any>): DestinationObject {
+		this.setText(text ?? NanosplashRepository.DEFAULT.TEXT)
 		display(this.mainElement, true)
 
 		const parent = this.mainElement.parentNode
 		if (parent && parent !== document.body) {
-			fitParentDimensions(this.mainElement)
+			fitToParent(this.mainElement)
+		}
+
+		if (task?.then) {
+			task.then(this.hide)
 		}
 
 		return {
-			inside: (destination: Destination) => this.moveTo(destination),
+			/**
+			 * @param {Destination} destination The destination argument can be any
+			 * of the following:
+			 * * A CSS selector.
+			 * * Any DOM element e.g. Node or Element.
+			 * * A synchronous function that returns any DOM element.
+			 */
+			inside: (destination: Destination) => {
+				const element = Nanosplash.getDestinationElement(destination)
+				move(this.mainElement).to(element, true)
+				fitToParent(this.mainElement)
+			},
 		}
 	}
 
@@ -159,7 +253,8 @@ export class NanoSplash {
 	public hide(): void {
 		display(this.mainElement, false)
 		this.setText(this.defaultText)
-		this.moveTo(this.defaultDestination)
+		move(this.mainElement).to(this.defaultDestination, true)
+		fitToParent(this.mainElement)
 	}
 
 	/**
@@ -167,32 +262,16 @@ export class NanoSplash {
 	 * @private
 	 */
 	private setDefaultStyles(): void {
-		this.setTextFontFamily(NanoSplashRepository.DEFAULT.TEXT_FONT)
-		this.setTextWeight(NanoSplashRepository.DEFAULT.TEXT_WEIGHT)
-		this.setTextColor(NanoSplashRepository.DEFAULT.TEXT_COLOR)
-		this.setTextSize(NanoSplashRepository.DEFAULT.TEXT_SIZE)
-		this.setSplashSource(NanoSplashRepository.DEFAULT.SPLASH_SOURCE)
-		this.setSplashWidth(NanoSplashRepository.DEFAULT.SPLASH_WIDTH)
-		this.setSplashHeight(NanoSplashRepository.DEFAULT.SPLASH_HEIGHT)
-		this.setSplashAnimation(NanoSplashRepository.DEFAULT.SPLASH_ANIMATION)
-		this.setBackgroundColor(NanoSplashRepository.DEFAULT.BACKGROUND_COLOR)
-		this.setBackgroundBlur(NanoSplashRepository.DEFAULT.BACKGROUND_BLUR)
-	}
-
-	/**
-	 * Move To
-	 *
-	 * @param destination
-	 * @private
-	 */
-	private moveTo(destination: Destination): void {
-		const destinationNode = NanoSplash.getDestinationElement(destination)
-		if (this.mainElement.parentNode) {
-			move(this.mainElement).to(destinationNode)
-		} else {
-			appendFirst(destinationNode, this.mainElement)
-		}
-		fitParentDimensions(this.mainElement)
+		this.setTextFontFamily(NanosplashRepository.DEFAULT.TEXT_FONT)
+		this.setTextWeight(NanosplashRepository.DEFAULT.TEXT_WEIGHT)
+		this.setTextColor(NanosplashRepository.DEFAULT.TEXT_COLOR)
+		this.setTextSize(NanosplashRepository.DEFAULT.TEXT_SIZE)
+		this.setSplashSource(NanosplashRepository.DEFAULT.SPLASH_SOURCE)
+		this.setSplashWidth(NanosplashRepository.DEFAULT.SPLASH_WIDTH)
+		this.setSplashHeight(NanosplashRepository.DEFAULT.SPLASH_HEIGHT)
+		this.setSplashAnimation(NanosplashRepository.DEFAULT.SPLASH_ANIMATION)
+		this.setBackgroundColor(NanosplashRepository.DEFAULT.BACKGROUND_COLOR)
+		this.setBackgroundBlur(NanosplashRepository.DEFAULT.BACKGROUND_BLUR)
 	}
 
 	/**
@@ -293,7 +372,7 @@ export class NanoSplash {
 	 * @private
 	 */
 	private setBackgroundColor(color: string): void {
-		setStyle(this.mainElement, 'background-color', color)
+		setStyle(this.mainElement, 'backgroundColor', color)
 	}
 
 	/**
@@ -315,12 +394,12 @@ export class NanoSplash {
 		const isCallback = isFunction(destination)
 		const isElement = isElementOrNode(destination)
 
-		let destinationNode: HTMLElement | null = null
+		let destinationNode: HTMLElement | null
 
 		if (isString) {
-			destinationNode = get(destination as string) as HTMLElement
+			destinationNode = ref(destination as string) as HTMLElement
 		} else if (isCallback) {
-			destinationNode = (destination as Function)()
+			destinationNode = (destination as Function)() as HTMLElement
 		} else if (isElement) {
 			destinationNode = destination as HTMLElement
 		} else {

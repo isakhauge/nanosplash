@@ -1,7 +1,7 @@
 import { BlurMode, SplashAnimation } from 'nanosplash'
 import { create, display } from '../utilities/dom'
 
-export class NanoSplashRepository {
+export class NanosplashRepository {
 	public static readonly DEFAULT = {
 		DESTINATION_NODE: document.body,
 		TEXT: 'Loading ...',
@@ -42,7 +42,7 @@ export class NanoSplashRepository {
 			className: 'nanosplash-img',
 			attributes: [
 				{ key: 'src', value: this.DEFAULT.SPLASH_SOURCE },
-				{ key: 'alt', value: 'NanoSplash indicator' },
+				{ key: 'alt', value: 'Nanosplash indicator' },
 			],
 		}) as HTMLImageElement
 		display(splashElement, false)
