@@ -1,100 +1,436 @@
-<!DOCTYPE html><html class="default no-js"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>nanosplash</title><meta name="description" content="Documentation for nanosplash"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">nanosplash</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1> nanosplash</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
-<a href="#nanosplash-🍩" id="nanosplash-🍩" style="color: inherit; text-decoration: none;">
-  <h1>nanosplash 🍩</h1>
-</a>
-<p><img src="https://img.shields.io/npm/v/nanosplash" alt="npm">
-<img src="https://badgen.net/bundlephobia/minzip/nanosplash" alt="Minified+gzip size">
-<img src="https://badgen.net/bundlephobia/dependency-count/nanosplash" alt="Minified size">
-<img src="https://badgen.net/bundlephobia/tree-shaking/nanosplash" alt="Tree shaking"></p>
-<p><img src="https://img.shields.io/npms-io/maintenance-score/nanosplash" alt="npm maintenance score">
-<img src="https://img.shields.io/npms-io/quality-score/nanosplash" alt="npm quality score">
-<img src="https://img.shields.io/npms-io/final-score/nanosplash" alt="npm final score">
-<img src="https://img.shields.io/npms-io/popularity-score/nanosplash" alt="npm popularity score"></p>
-<p><strong>The simple, tiny loading screen</strong></p>
-<blockquote>
-<p><em>No dependencies, pure JS</em></p>
-</blockquote>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDEwIiBoZWlnaHQ9IjQwNCIgdmlld0JveD0iMCAwIDQxMCA0MDQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0zOTkuNjQxIDU5LjUyNDZMMjE1LjY0MyAzODguNTQ1QzIxMS44NDQgMzk1LjMzOCAyMDIuMDg0IDM5NS4zNzggMTk4LjIyOCAzODguNjE4TDEwLjU4MTcgNTkuNTU2M0M2LjM4MDg3IDUyLjE4OTYgMTIuNjgwMiA0My4yNjY1IDIxLjAyODEgNDQuNzU4NkwyMDUuMjIzIDc3LjY4MjRDMjA2LjM5OCA3Ny44OTI0IDIwNy42MDEgNzcuODkwNCAyMDguNzc2IDc3LjY3NjNMMzg5LjExOSA0NC44MDU4QzM5Ny40MzkgNDMuMjg5NCA0MDMuNzY4IDUyLjE0MzQgMzk5LjY0MSA1OS41MjQ2WiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyKSIvPgo8cGF0aCBkPSJNMjkyLjk2NSAxLjU3NDRMMTU2LjgwMSAyOC4yNTUyQzE1NC41NjMgMjguNjkzNyAxNTIuOTA2IDMwLjU5MDMgMTUyLjc3MSAzMi44NjY0TDE0NC4zOTUgMTc0LjMzQzE0NC4xOTggMTc3LjY2MiAxNDcuMjU4IDE4MC4yNDggMTUwLjUxIDE3OS40OThMMTg4LjQyIDE3MC43NDlDMTkxLjk2NyAxNjkuOTMxIDE5NS4xNzIgMTczLjA1NSAxOTQuNDQzIDE3Ni42MjJMMTgzLjE4IDIzMS43NzVDMTgyLjQyMiAyMzUuNDg3IDE4NS45MDcgMjM4LjY2MSAxODkuNTMyIDIzNy41NkwyMTIuOTQ3IDIzMC40NDZDMjE2LjU3NyAyMjkuMzQ0IDIyMC4wNjUgMjMyLjUyNyAyMTkuMjk3IDIzNi4yNDJMMjAxLjM5OCAzMjIuODc1QzIwMC4yNzggMzI4LjI5NCAyMDcuNDg2IDMzMS4yNDkgMjEwLjQ5MiAzMjYuNjAzTDIxMi41IDMyMy41TDMyMy40NTQgMTAyLjA3MkMzMjUuMzEyIDk4LjM2NDUgMzIyLjEwOCA5NC4xMzcgMzE4LjAzNiA5NC45MjI4TDI3OS4wMTQgMTAyLjQ1NEMyNzUuMzQ3IDEwMy4xNjEgMjcyLjIyNyA5OS43NDYgMjczLjI2MiA5Ni4xNTgzTDI5OC43MzEgNy44NjY4OUMyOTkuNzY3IDQuMjczMTQgMjk2LjYzNiAwLjg1NTE4MSAyOTIuOTY1IDEuNTc0NFoiIGZpbGw9InVybCgjcGFpbnQxX2xpbmVhcikiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhciIgeDE9IjYuMDAwMTciIHkxPSIzMi45OTk5IiB4Mj0iMjM1IiB5Mj0iMzQ0IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiM0MUQxRkYiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjQkQzNEZFIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQxX2xpbmVhciIgeDE9IjE5NC42NTEiIHkxPSI4LjgxODE4IiB4Mj0iMjM2LjA3NiIgeTI9IjI5Mi45ODkiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iI0ZGRUE4MyIvPgo8c3RvcCBvZmZzZXQ9IjAuMDgzMzMzMyIgc3RvcC1jb2xvcj0iI0ZGREQzNSIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGRkE4MDAiLz4KPC9saW5lYXJHcmFkaWVudD4KPC9kZWZzPgo8L3N2Zz4K" />
+		<link
+			href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+			rel="stylesheet"
+		/>
+		<link href="https://cdn.lineicons.com/3.0/lineicons.css" rel="stylesheet" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Nanosplash</title>
+		<meta name="description" content="The tiny loading screen" />
+		<meta name="keywords" content="splash, screen, loading" />
+		<meta name="author" content="Isak Hauge" />
+	  <script type="module">
+//nanosplash.iife.js
+!function(){"use strict";class t extends Error{constructor(t){super(t)}getName(){return this.constructor.name}}class e extends t{constructor(t){super(t)}}const s=(t,e)=>{var s;const i=document.createElement(t);return e&&(i.id||(i.id=e.id+""),i.className||(i.className=e.className+""),null==(s=e.attributes)||s.filter((t=>t.value)).forEach((({key:t,value:e})=>o(i,t,e))),e.content&&("string"==typeof e.content?i.innerText=e.content:i.append(e.content))),i},i=(t,e)=>{t.hidden=!e,e?h(t,"hidden"):o(t,"hidden","true")},n=t=>({to:(e,s)=>{const i=Array.from(e.childNodes);if(i.length<1||!s)return void e.appendChild(t);const n=i[0];e.insertBefore(t,n)}}),l=t=>{const e=t.parentNode;e&&(s=>{const i="px",{pageYOffset:n,pageXOffset:l}=window;let o,h;e===document.body?(o=n+i,h="100vh"):(o=s.y+n+i,h=s.height+i),a(t,"top",o),a(t,"left",s.x+l+i),a(t,"width",s.width+i),a(t,"height",h)})(e.getBoundingClientRect())},a=(t,e,s)=>{t.style[e]=s},o=(t,e,s)=>{t.setAttribute(e,s)},h=(t,e)=>{t.removeAttribute(e)};class r{static makeMainElement(){const t=s("div",{className:"nanosplash-container",attributes:[{key:"data-splash-animation",value:this.DEFAULT.SPLASH_ANIMATION}]});return t.style.backgroundColor=this.DEFAULT.BACKGROUND_COLOR,t}static makeSplashElement(){const t=s("img",{className:"nanosplash-img",attributes:[{key:"src",value:this.DEFAULT.SPLASH_SOURCE},{key:"alt",value:"Nanosplash indicator"}]});return i(t,!1),t}static makeTextElement(){return s("div",{className:"nanosplash-text",content:this.DEFAULT.TEXT})}}r.DEFAULT={DESTINATION_NODE:document.body,TEXT:"Loading ...",TEXT_FONT:'"Arial", sans-serif',TEXT_WEIGHT:"medium",TEXT_COLOR:"#555",TEXT_SIZE:"26px",SPLASH_SOURCE:"favicon.svg",SPLASH_WIDTH:"100px",SPLASH_HEIGHT:"auto",SPLASH_ANIMATION:"pulse",BACKGROUND_COLOR:"rgba(255, 255, 255, 0.90)",BACKGROUND_BLUR:"light"};class m{constructor(t){this.defaultText=r.DEFAULT.TEXT,this.defaultDestination=r.DEFAULT.DESTINATION_NODE,this.mainElement=r.makeMainElement(),this.splashElement=r.makeSplashElement(),this.textElement=r.makeTextElement(),n(this.splashElement).to(this.mainElement),n(this.textElement).to(this.mainElement),n(this.mainElement).to(this.defaultDestination,!0),i(this.mainElement,!1),l(this.mainElement),this.setDefaultStyles(),t&&this.configure(t)}install(){var t,e,s;Object.defineProperty(window,"loading",{value:this,writable:!1}),t=window,e=()=>l(this.mainElement),s=["resize","scroll"],(([t,i])=>{s.forEach((s=>{t?t(`on${s}`,e):i(s,e,!0)}))})([t.attachEvent,t.addEventListener])}configure(t){var e,s,n,l,a,o,h,r,d,u,E,c;return(null==(e=null==t?void 0:t.default)?void 0:e.destination)&&(this.defaultDestination=m.getDestinationElement(t.default.destination)),this.defaultText||(this.defaultText=null==(s=t.default)?void 0:s.text),(null==(n=t.text)?void 0:n.family)&&this.setTextFontFamily(t.text.family),(null==(l=t.text)?void 0:l.weight)&&this.setTextWeight(t.text.weight),(null==(a=t.text)?void 0:a.color)&&this.setTextColor(t.text.color),(null==(o=t.text)?void 0:o.size)&&this.setTextSize(t.text.size),(null==(h=t.background)?void 0:h.color)&&this.setBackgroundColor(t.background.color),(null==(r=t.background)?void 0:r.blur)&&this.setBackgroundBlur(t.background.blur),t.splash?((null==(d=t.splash)?void 0:d.src)&&this.setSplashSource(t.splash.src),(null==(u=t.splash)?void 0:u.width)&&this.setSplashWidth(t.splash.width),(null==(E=t.splash)?void 0:E.height)&&this.setSplashHeight(t.splash.height),(null==(c=t.splash)?void 0:c.animation)&&this.setSplashAnimation(t.splash.animation)):i(this.splashElement,!1),this}show(t,e){this.setText(null!=t?t:r.DEFAULT.TEXT),i(this.mainElement,!0);const s=this.mainElement.parentNode;return s&&s!==document.body&&l(this.mainElement),(null==e?void 0:e.then)&&e.then(this.hide),{inside:t=>{const e=m.getDestinationElement(t);n(this.mainElement).to(e,!0),l(this.mainElement)}}}hide(){i(this.mainElement,!1),this.setText(this.defaultText),n(this.mainElement).to(this.defaultDestination,!0),l(this.mainElement)}setDefaultStyles(){this.setTextFontFamily(r.DEFAULT.TEXT_FONT),this.setTextWeight(r.DEFAULT.TEXT_WEIGHT),this.setTextColor(r.DEFAULT.TEXT_COLOR),this.setTextSize(r.DEFAULT.TEXT_SIZE),this.setSplashSource(r.DEFAULT.SPLASH_SOURCE),this.setSplashWidth(r.DEFAULT.SPLASH_WIDTH),this.setSplashHeight(r.DEFAULT.SPLASH_HEIGHT),this.setSplashAnimation(r.DEFAULT.SPLASH_ANIMATION),this.setBackgroundColor(r.DEFAULT.BACKGROUND_COLOR),this.setBackgroundBlur(r.DEFAULT.BACKGROUND_BLUR)}setText(t){this.textElement.innerText=t}setTextFontFamily(t){a(this.textElement,"fontFamily",t)}setTextWeight(t){a(this.textElement,"fontWeight",t)}setTextColor(t){a(this.textElement,"color",t)}setTextSize(t){a(this.textElement,"fontSize",t)}setSplashSource(t){this.splashElement.src=t,i(this.splashElement,!0)}setSplashWidth(t){a(this.splashElement,"width",t)}setSplashHeight(t){a(this.splashElement,"height",t)}setSplashAnimation(t){o(this.mainElement,"data-splash-animation",t)}setBackgroundColor(t){a(this.mainElement,"backgroundColor",t)}setBackgroundBlur(t){o(this.mainElement,"data-blur",t)}static getDestinationElement(t){const s="string"==typeof t,i=(n=t)&&"[object Function]"==={}.toString.call(n);var n;const l=(t=>t instanceof Element||t instanceof Node)(t);let a;if(s)o=t,a=document.querySelector(o);else if(i)a=t();else{if(!l)throw new e;a=t}var o;return a}}window&&window instanceof Window&&(new m).install()}();
 
-<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
-  <h1>Installation</h1>
-</a>
+</script>
+    <!-- style.css --><style type="text/css">
+@-webkit-keyframes pulse{0%{transform:scale(1)}to{transform:scale(1.1)}}@keyframes pulse{0%{transform:scale(1)}to{transform:scale(1.1)}}@-webkit-keyframes spin{0%{transform:rotate(0)}to{transform:rotate(1turn)}}@keyframes spin{0%{transform:rotate(0)}to{transform:rotate(1turn)}}.nanosplash-container{align-items:center;border-radius:inherit;flex-direction:column;justify-content:center;overflow:inherit;position:absolute;z-index:1}.nanosplash-container[hidden=true]{display:none}.nanosplash-container:not([hidden=true]){display:flex}.nanosplash-container[data-blur=none]:not([hidden=true])~*{filter:blur(0)}.nanosplash-container[data-blur=light]:not([hidden=true])~*{filter:blur(2px)}.nanosplash-container[data-blur=medium]:not([hidden=true])~*{filter:blur(4px)}.nanosplash-container[data-blur=heavy]:not([hidden=true])~*{filter:blur(10px)}.nanosplash-container .nanosplash-text{text-rendering:optimizeLegibility;-moz-osx-font-smoothing:grayscale;font-smoothing:antialiased;-webkit-font-smoothing:antialiased;text-shadow:0 0 2px rgba(0,0,0,.2)}.nanosplash-container img.nanosplash-img{margin-bottom:40px}.nanosplash-container[data-splash-animation=pulse]>img{-webkit-animation-direction:alternate;animation-direction:alternate;-webkit-animation-duration:.3s;animation-duration:.3s;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite;-webkit-animation-name:pulse;animation-name:pulse}.nanosplash-container[data-splash-animation=spin]>img{-webkit-animation-duration:.7s;animation-duration:.7s;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite;-webkit-animation-name:spin;animation-name:spin;-webkit-animation-timing-function:linear;animation-timing-function:linear}body>.nanosplash-container:not([hidden=true]){height:100vh;width:100%}
+</style>
+  </head>
+	<body class="flex flex-col justify-between">
+		<main class="bg-gray-100 flex-grow">
+			<div id="title">
+				<section class="bg-gray-800 pt-6 pb-2 md:py-12 text-white">
+					<div
+						class="
+							absolute
+							top-2
+							left-2
+							uppercase
+							bg-gray-600
+							text-white
+							pill
+							font-mono
+							tracking-wider
+							rounded
+						"
+					>
+						Title section
+					</div>
+					<div class="px-10 flex flex-col justify-center items-center">
+						<span class="animate-spin mb-3 md:mb-6 text-6xl md:text-7xl"
+							>🍩</span
+						>
+						<h1 class="text-3xl md:text-4xl">Nanosplash</h1>
+						<h2 class="text-lg md:text-xl md:mt-1 font-thin">
+							The tiny loading screen
+						</h2>
+					</div>
+				</section>
+				<section class="py-3 bg-gray-800">
+					<div class="flex flex-col space-y-2">
+						<div class="flex space-x-2 justify-center">
+							<img src="https://badgen.net/npm/v/nanosplash" />
+							<img src="https://badgen.net/npm/types/nanosplash" />
+							<img src="https://badgen.net/npm/dw/nanosplash" />
+						</div>
+						<div class="flex space-x-2 justify-center">
+							<img src="https://badgen.net/bundlephobia/min/nanosplash" />
+							<img
+								src="https://badgen.net/bundlephobia/tree-shaking/nanosplash"
+							/>
+						</div>
+					</div>
+				</section>
+			</div>
+			<section class="flex flex-col items-center py-10 md:pt-16 md:pb-10">
+				<div
+					class="
+						text-center text-xl
+						md:text-2xl
+						font-light
+						text-gray-600
+						flex
+						justify-center
+						mb-2
+						md:mb-3
+					"
+				>
+					API reference documentation
+				</div>
+				<div
+					class="text-center text-gray-500 flex font-light justify-center mb-6"
+				>
+					Please visit the&nbsp;<a
+						href="/typedoc/index.html"
+						class="text-blue-400"
+						>documentation</a
+					>
+				</div>
+				<div class="container px-10">
+					<div
+						class="
+							text-center text-xl
+							md:text-2xl
+							font-light
+							text-gray-600
+							flex
+							justify-center
+							mb-2
+							md:mb-3
+						"
+					>
+						Demo
+					</div>
+					<div class="text-center text-gray-500 flex font-light justify-center">
+						Play around with the loading screen using the controls below. The
+						demo serves as showcase of all features Nanosplash has, and what you
+						can do with it.
+					</div>
+				</div>
+			</section>
+			<section class="flex flex-col items-center pt-0 pb-10 md:pt-0 md:pb-20">
+				<div class="container px-10 md:max-w-3xl">
+					<div class="flex flex-col mb-5">
+						<label for="splash-src" class="text-gray-600 mb-2"
+							>Splash image URL</label
+						>
+						<input
+							type="text"
+							name="splash-src"
+							id="splash-src"
+							value="doughnut.png"
+							class="
+								py-3
+								px-4
+								text-gray-400
+								bg-white
+								appearance-none
+								rounded-lg
+							"
+						/>
+					</div>
+					<div class="grid sm:grid-cols-1 md:grid-cols-2 gap-5">
+						<div class="flex flex-col">
+							<label class="text-gray-600 mb-2" for="anim">Animation</label>
+							<select
+								class="
+									py-3
+									px-4
+									text-gray-400
+									bg-white
+									cursor-pointer
+									appearance-none
+									rounded-lg
+								"
+								name="anim"
+								id="anim"
+							>
+								<option value="none" selected disabled>Choose animation</option>
+								<option value="none">None</option>
+								<option value="pulse">Pulse</option>
+								<option value="spin">Spin</option>
+							</select>
+						</div>
+						<div class="flex flex-col">
+							<label class="text-gray-600 mb-2" for="elem"
+								>Show inside element</label
+							>
+							<select
+								class="
+									py-3
+									px-4
+									text-gray-400
+									bg-white
+									cursor-pointer
+									appearance-none
+									rounded-lg
+								"
+								name="elem"
+								id="elem"
+							>
+								<option value="none" selected disabled>Choose location</option>
+								<option value="body">Fullscreen (3s)</option>
+								<option value="#title">Title section</option>
+								<option value="#col1">Column 1</option>
+								<option value="#col2">Column 2</option>
+								<option value="#col3">Column 3</option>
+							</select>
+						</div>
+						<div class="flex flex-col">
+							<label class="text-gray-600 mb-2" for="text">Loading text</label>
+							<input
+								class="
+									py-3
+									px-4
+									appearance-none
+									rounded-lg
+									bg-white
+									text-gray-400
+								"
+								type="text"
+								name="text"
+								id="text"
+								value="Loading assets ..."
+							/>
+						</div>
+						<div class="flex flex-col">
+							<label class="text-gray-600 mb-2" for="show"
+								>Display loading screen</label
+							>
+							<div
+								id="show"
+								class="
+									bg-purple-900
+									text-gray-300
+									cursor-pointer
+									py-3
+									px-4
+									rounded-lg
+								"
+							>
+								Show loading screen
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section class="flex flex-col items-center pb-20">
+				<div class="container px-10">
+					<div class="grid sm:grid-cols-1 lg:grid-cols-3 gap-10">
+						<div id="col1" class="bg-white rounded-2xl shadow-lg">
+							<div class="relative p-8 rounded-2xl">
+								<div
+									class="
+										absolute
+										top-2
+										left-2
+										uppercase
+										bg-gray-500
+										text-white
+										pill
+										font-mono
+										tracking-wider
+										rounded
+									"
+								>
+									Column 1
+								</div>
+								<div class="text-4xl text-center">
+									<i class="lni lni-bolt-alt"></i>
+								</div>
+								<div class="text-xl font-medium my-6 text-center">
+									Tiny and lightning fast
+								</div>
+								<div>It is only 6kB in size, and it's lightning fast.</div>
+							</div>
+						</div>
+						<div id="col2" class="bg-white rounded-2xl shadow-lg">
+							<div class="relative p-8 rounded-2xl">
+								<div
+									class="
+										absolute
+										top-2
+										left-2
+										uppercase
+										bg-gray-500
+										text-white
+										pill
+										font-mono
+										tracking-wider
+										rounded
+									"
+								>
+									Column 2
+								</div>
+								<div class="text-4xl text-center">
+									<i class="lni lni-code"></i>
+								</div>
+								<div class="text-xl font-medium my-6 text-center">
+									Vanilla JS
+								</div>
+								<div>
+									Written from the ground up in vanilla JavaScript and comes
+									without any libraries.
+								</div>
+							</div>
+						</div>
+						<div id="col3" class="bg-white rounded-2xl shadow-lg">
+							<div class="relative p-8 rounded-2xl">
+								<div
+									class="
+										absolute
+										top-2
+										left-2
+										uppercase
+										bg-gray-500
+										text-white
+										pill
+										font-mono
+										tracking-wider
+										rounded
+									"
+								>
+									Column 3
+								</div>
+								<div class="text-4xl text-center">
+									<i class="lni lni-grid-alt"></i>
+								</div>
+								<div class="text-xl font-medium my-6 text-center">
+									ESM + CJS
+								</div>
+								<div>
+									Nanosplash comes in both ES and CJS modules, making it easy
+									for you to import it into your code.
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		<footer>
+			<section class="py-6 flex justify-center flex-grow-0">
+				<div class="container mx-5">
+					<div class="flex space-x-3 justify-center items-center text-gray-600">
+						<div class="text-2xl">
+							<i class="lni lni-github-original"></i>
+						</div>
+						<div>
+							Developed by
+							<a
+								class="text-purple-400 hover:text-purple-500"
+								href="https://github.com/isakhauge"
+								>Isak Hauge</a
+							>
+						</div>
+					</div>
+				</div>
+			</section>
+			
 
-<a href="#yarn" id="yarn" style="color: inherit; text-decoration: none;">
-  <h2>Yarn</h2>
-</a>
-<pre><code class="language-bash"><span class="hl-0">yarn add nanosplash</span>
-</code></pre>
+			<!-- Demo -->
+			<script>
+				const ref = function (v) {
+					return document.querySelector(v)
+				}
 
-<a href="#npm" id="npm" style="color: inherit; text-decoration: none;">
-  <h2>NPM</h2>
-</a>
-<pre><code class="language-bash"><span class="hl-0">npm install nanosplash</span>
-</code></pre>
+				// Elements
+				const textSplashElem = ref('#splash-src')
+				const selectAnimElem = ref('#anim')
+				const selectDestinationElem = ref('#elem')
+				const textElem = ref('#text')
+				const showBtn = ref('#show')
 
-<a href="#import" id="import" style="color: inherit; text-decoration: none;">
-  <h1>Import</h1>
-</a>
+				const cache = {
+					animation: 'none',
+					domSelector: 'body',
+					text: textElem.value,
+					showNextTime: true,
+				}
 
-<a href="#import-via-cdn" id="import-via-cdn" style="color: inherit; text-decoration: none;">
-  <h2>Import via CDN</h2>
-</a>
-<p>When you import the IIFE script there is no need to invoke the <code>install</code> function.</p>
-<pre><code class="language-html"><span class="hl-1">&lt;</span><span class="hl-2">script</span><span class="hl-3"> </span><span class="hl-4">src</span><span class="hl-3">=</span><span class="hl-5">&quot;https://unpkg.com/nanosplash/dist/iife/nanosplash.iife.js&quot;</span><span class="hl-1">&gt;</span>
-</code></pre>
+				const text = (function (postfix) {
+					return {
+						show: 'Show ' + postfix,
+						hide: 'Hide ' + postfix,
+					}
+				})('loading screen')
 
-<a href="#esm-es-modules" id="esm-es-modules" style="color: inherit; text-decoration: none;">
-  <h2>ESM (ES modules)</h2>
-</a>
-<pre><code class="language-js"><span class="hl-6">import</span><span class="hl-0"> { </span><span class="hl-7">Nanosplash</span><span class="hl-0"> } </span><span class="hl-6">from</span><span class="hl-0"> </span><span class="hl-8">&#39;nanosplash&#39;</span>
-</code></pre>
+				const display = function () {
+					const doughnutSrc =
+						'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/doughnut_1f369.png'
+					showBtn.innerText = 'Hide loading screen'
+					cache.showNextTime = false
+					const isDoughnut = textSplashElem.value === 'doughnut.png'
+					const splashSrc = isDoughnut ? doughnutSrc : textSplashElem.value
+					const text = textElem.value
+					const anim = selectAnimElem.value
+					const elem = selectDestinationElem.value
+					loading
+						.configure({
+							splash: { animation: cache.animation, src: splashSrc },
+						})
+						.show(cache.text)
+						.inside(cache.domSelector)
+				}
 
-<a href="#cjs-commonjs" id="cjs-commonjs" style="color: inherit; text-decoration: none;">
-  <h2>CJS (CommonJS)</h2>
-</a>
-<pre><code class="language-js"><span class="hl-9">const</span><span class="hl-0"> </span><span class="hl-10">Nanosplash</span><span class="hl-0"> = </span><span class="hl-11">require</span><span class="hl-0">(</span><span class="hl-8">&#39;nanosplash&#39;</span><span class="hl-0">)</span>
-</code></pre>
+				const hide = function () {
+					showBtn.innerText = 'Show loading screen'
+					cache.showNextTime = true
+					loading.hide()
+				}
 
-<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
-  <h1>Getting started</h1>
-</a>
+				const onSelectAnim = function ({ target }) {
+					cache.animation = target.value
+				}
+				const onSelectDestination = function ({ target }) {
+					cache.domSelector = target.value
+				}
+				const onInputText = function ({ target }) {
+					cache.text = target.value
+				}
+				const onClickBtn = function () {
+					if (cache.showNextTime) {
+						display()
+						const isBody = cache.domSelector === 'body'
+						if (isBody) {
+							setTimeout(hide, 3000)
+						}
+					} else {
+						hide()
+					}
+				}
 
-<a href="#basic-usage-cdn" id="basic-usage-cdn" style="color: inherit; text-decoration: none;">
-  <h2>Basic usage (CDN)</h2>
-</a>
-<p>When imported through the CDN, the instance is already injected into the <code>Window</code> object and accessible through the global variable <code>loading</code>.</p>
+				selectAnimElem.addEventListener('input', onSelectAnim)
+				selectDestinationElem.addEventListener('input', onSelectDestination)
+				textElem.addEventListener('input', onInputText)
+				showBtn.addEventListener('click', onClickBtn)
+			</script>
 
-<a href="#display-the-loading-screen" id="display-the-loading-screen" style="color: inherit; text-decoration: none;">
-  <h3>Display the loading screen</h3>
-</a>
-<pre><code class="language-js"><span class="hl-7">loading</span><span class="hl-0">.</span><span class="hl-11">show</span><span class="hl-0">(</span><span class="hl-8">&#39;Loading the good stuff ...&#39;</span><span class="hl-0">)</span>
-</code></pre>
-
-<a href="#hide-the-loading-screen" id="hide-the-loading-screen" style="color: inherit; text-decoration: none;">
-  <h3>Hide the loading screen</h3>
-</a>
-<pre><code class="language-js"><span class="hl-7">loading</span><span class="hl-0">.</span><span class="hl-11">hide</span><span class="hl-0">()</span>
-</code></pre>
-
-<a href="#display-the-loading-screen-inside-an-element" id="display-the-loading-screen-inside-an-element" style="color: inherit; text-decoration: none;">
-  <h3>Display the loading screen inside an element</h3>
-</a>
-<pre><code class="language-js"><span class="hl-7">loading</span><span class="hl-0">.</span><span class="hl-11">show</span><span class="hl-0">(</span><span class="hl-8">&#39;Loading component ...&#39;</span><span class="hl-0">).</span><span class="hl-11">inside</span><span class="hl-0">(</span><span class="hl-8">&#39;#my-element&#39;</span><span class="hl-0">)</span>
-</code></pre>
-
-<a href="#advanced-usage-modules" id="advanced-usage-modules" style="color: inherit; text-decoration: none;">
-  <h2>Advanced usage (modules)</h2>
-</a>
-<p><strong>⚠️ Always import the CSS file when importing modules manually</strong></p>
-<pre><code class="language-js"><span class="hl-6">import</span><span class="hl-0"> { </span><span class="hl-7">Nanosplash</span><span class="hl-0"> } </span><span class="hl-6">from</span><span class="hl-0"> </span><span class="hl-8">&#39;nanosplash&#39;</span><br/><span class="hl-6">import</span><span class="hl-0"> </span><span class="hl-8">&#39;nanosplash/dist/module/style.css&#39;</span>
-</code></pre>
-
-<a href="#demo-site" id="demo-site" style="color: inherit; text-decoration: none;">
-  <h1>Demo site</h1>
-</a>
-<p><a href="&#39;https://unpkg.com/nanosplash/dist/site/index.html&#39;">Go to demo site</a></p>
-
-<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
-  <h1>Documentation</h1>
-</a>
-<p><a href="&#39;https://unpkg.com/nanosplash/docs/index.html&#39;">Nanosplash API</a></p>
-</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="modules/Nanosplash.html">Nanosplash</a></li><li class=" tsd-kind-module"><a href="modules/types.html">types</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li><li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
+			<!-- Nanosplash -->
+			<script>
+				window.addEventListener('load', () => {
+					window.loading.configure({
+						splash: {
+							src: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/doughnut_1f369.png',
+						},
+					})
+				})
+			</script>
+		</footer>
+		<style>
+			body {
+				min-height: 100vh;
+			}
+			.pill {
+				font-size: 10px;
+				padding: 0.2em 0.5em;
+			}
+		</style>
+	</body>
+</html>

@@ -12,13 +12,13 @@ export default defineConfig({
 			fileName: 'nanosplash',
 			formats: ['iife'],
 		},
-		outDir: 'dist/site',
+		outDir: 'docs',
 		cssCodeSplit: false,
 		assetsInlineLimit: 100000000,
 		rollupOptions: {
 			outputOptions: {
 				inlineDynamicImports: true,
-				manualChunks: () => 'everything.js',
+				manualChunks: () => 'main.js',
 			},
 		},
 	},

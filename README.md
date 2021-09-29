@@ -85,8 +85,8 @@ import 'nanosplash/dist/module/style.css'
 
 # Demo site
 
-[Go to demo site]('https://unpkg.com/nanosplash/dist/site/index.html')
+[isakhauge.github.io/nanosplash]('https://isakhauge.github.io/nanosplash')
 
 # Documentation
 
-[Nanosplash API]('https://unpkg.com/nanosplash/docs/index.html')
+[Nanosplash API reference]('https://isakhauge.github.io/nanosplash/typedoc')

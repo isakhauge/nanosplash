@@ -1,7 +1,7 @@
 {
 	"name": "nanosplash",
 	"description": "The simple, 2KB loading screen",
-	"version": "2.2.0",
+	"version": "2.2.1",
 	"author": {
 		"name": "Isak K. Hauge",
 		"email": "isakhauge@gmail.com",
@@ -24,7 +24,7 @@
 		"cdn",
 		"vite"
 	],
-	"homepage": "https://github.com/isakhauge/nanosplash",
+	"homepage": "https://isakhauge.github.io/nanosplash",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/isakhauge/nanosplash.git"
@@ -47,8 +47,8 @@
 		"build.iife": "vite build -c vite.iife.config.js",
 		"build.mod": "vite build -c vite.mod.config.js",
 		"build.site": "vite build -c vite.site.config.js",
-		"build": "tsc && yarn build.iife && yarn build.mod",
-		"doc": "typedoc --excludePrivate --excludeInternal --entryPoints src/Nanosplash.ts src/types.d.ts",
+		"build": "tsc && yarn build.iife && yarn build.mod && yarn build.site && yarn doc",
+		"doc": "typedoc --readme none --excludePrivate --excludeInternal --out docs/typedoc --entryPoints src/Nanosplash.ts src/types.d.ts",
 		"doc.watch": "yarn doc --watch",
 		"serve": "vite preview"
 	},
