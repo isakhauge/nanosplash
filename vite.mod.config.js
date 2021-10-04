@@ -21,6 +21,7 @@ export default defineConfig({
 						'configure',
 						'show',
 						'hide',
+						'during',
 						'inside',
 						'window',
 						'install',

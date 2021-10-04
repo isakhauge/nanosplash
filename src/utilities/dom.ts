@@ -117,20 +117,43 @@ export const fitToParent = (node: HTMLElement): void => {
 	const parent = node.parentNode as HTMLElement
 	if (parent) {
 		;((domRect: DOMRect) => {
+			parent.style.position = 'relative' // Set parent as relative
 			const unit = 'px'
-			const { pageYOffset, pageXOffset } = window
-			let top: string
-			let height: string
-			if (parent === document.body) {
-				top = pageYOffset + unit
+			const parentIsBody = parent === document.body
+			let left, top, width, height
+
+			// Set distance from left
+			if (parentIsBody) {
+				left = scrollX + unit
+			} else {
+				left = 0 + unit
+			}
+
+			// Set distance from top
+			if (parentIsBody) {
+				top = scrollY + unit
+			} else {
+				top = 0 + unit
+			}
+
+			// Set width from parent
+			if (parentIsBody) {
+				width = '100%'
+			} else {
+				width = domRect.width + unit
+			}
+
+			// Set height from parent
+			if (parentIsBody) {
 				height = '100vh'
 			} else {
-				top = domRect.y + pageYOffset + unit
 				height = domRect.height + unit
 			}
+
+			setStyle(parent, 'position', 'relative')
+			setStyle(node, 'left', left)
 			setStyle(node, 'top', top)
-			setStyle(node, 'left', domRect.x + pageXOffset + unit)
-			setStyle(node, 'width', domRect.width + unit)
+			setStyle(node, 'width', width)
 			setStyle(node, 'height', height)
 		})(parent.getBoundingClientRect())
 	}

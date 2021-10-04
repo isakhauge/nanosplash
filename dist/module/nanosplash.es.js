@@ -1,1 +1,321 @@
-class t extends Error{constructor(t){super(t)}t(){return this.constructor.name}}class s extends t{constructor(t){super(t)}}const i=(t,s)=>{var i;const e=document.createElement(t);return s&&(e.id||(e.id=s.id+""),e.className||(e.className=s.className+""),null==(i=s.attributes)||i.filter((t=>t.value)).forEach((({key:t,value:s})=>l(e,t,s))),s.content&&("string"==typeof s.content?e.innerText=s.content:e.append(s.content))),e},e=(t,s)=>{t.hidden=!s,s?a(t,"hidden"):l(t,"hidden","true")},n=t=>({to:(s,i)=>{const e=Array.from(s.childNodes);if(e.length<1||!i)return void s.appendChild(t);const n=e[0];s.insertBefore(t,n)}}),h=t=>{const s=t.parentNode;s&&(i=>{const e="px",{pageYOffset:n,pageXOffset:h}=window;let l,a;s===document.body?(l=n+e,a="100vh"):(l=i.y+n+e,a=i.height+e),o(t,"top",l),o(t,"left",i.x+h+e),o(t,"width",i.width+e),o(t,"height",a)})(s.getBoundingClientRect())},o=(t,s,i)=>{t.style[s]=i},l=(t,s,i)=>{t.setAttribute(s,i)},a=(t,s)=>{t.removeAttribute(s)};class r{static i(){const t=i("div",{className:"nanosplash-container",attributes:[{key:"data-splash-animation",value:this.o.h}]});return t.style.backgroundColor=this.o.l,t}static u(){const t=i("img",{className:"nanosplash-img",attributes:[{key:"src",value:this.o.v},{key:"alt",value:"Nanosplash indicator"}]});return e(t,!1),t}static m(){return i("div",{className:"nanosplash-text",content:this.o.p})}}r.o={T:document.body,p:"Loading ...",g:'"Arial", sans-serif',S:"medium",N:"#555",O:"26px",v:"favicon.svg",A:"100px",_:"auto",h:"pulse",l:"rgba(255, 255, 255, 0.90)",k:"light"};class u{constructor(t){this.H=r.o.p,this.C=r.o.T,this.I=r.i(),this.L=r.u(),this.D=r.m(),n(this.L).to(this.I),n(this.D).to(this.I),n(this.I).to(this.C,!0),e(this.I,!1),h(this.I),this.B(),t&&this.configure(t)}install(){var t,s,i;Object.defineProperty(window,"loading",{value:this,writable:!1}),t=window,s=()=>h(this.I),i=["resize","scroll"],(([t,e])=>{i.forEach((i=>{t?t(`on${i}`,s):e(i,s,!0)}))})([t.attachEvent,t.addEventListener])}configure(t){var s,i,n,h,o,l,a,r,c,d,v,m;return(null==(s=null==t?void 0:t.default)?void 0:s.destination)&&(this.C=u.R(t.default.destination)),this.H||(this.H=null==(i=t.default)?void 0:i.text),(null==(n=t.text)?void 0:n.family)&&this.X(t.text.family),(null==(h=t.text)?void 0:h.weight)&&this.F(t.text.weight),(null==(o=t.text)?void 0:o.color)&&this.W(t.text.color),(null==(l=t.text)?void 0:l.size)&&this.G(t.text.size),(null==(a=t.background)?void 0:a.color)&&this.P(t.background.color),(null==(r=t.background)?void 0:r.blur)&&this.U(t.background.blur),t.j?((null==(c=t.j)?void 0:c.src)&&this.K(t.j.src),(null==(d=t.j)?void 0:d.width)&&this.M(t.j.width),(null==(v=t.j)?void 0:v.height)&&this.Y(t.j.height),(null==(m=t.j)?void 0:m.animation)&&this.Z(t.j.animation)):e(this.L,!1),this}show(t,s){this.$(null!=t?t:r.o.p),e(this.I,!0);const i=this.I.parentNode;return i&&i!==document.body&&h(this.I),(null==s?void 0:s.then)&&s.then(this.hide),{inside:t=>{const s=u.R(t);n(this.I).to(s,!0),h(this.I)}}}hide(){e(this.I,!1),this.$(this.H),n(this.I).to(this.C,!0),h(this.I)}B(){this.X(r.o.g),this.F(r.o.S),this.W(r.o.N),this.G(r.o.O),this.K(r.o.v),this.M(r.o.A),this.Y(r.o._),this.Z(r.o.h),this.P(r.o.l),this.U(r.o.k)}$(t){this.D.innerText=t}X(t){o(this.D,"fontFamily",t)}F(t){o(this.D,"fontWeight",t)}W(t){o(this.D,"color",t)}G(t){o(this.D,"fontSize",t)}K(t){this.L.src=t,e(this.L,!0)}M(t){o(this.L,"width",t)}Y(t){o(this.L,"height",t)}Z(t){l(this.I,"data-splash-animation",t)}P(t){o(this.I,"backgroundColor",t)}U(t){l(this.I,"data-blur",t)}static R(t){const i="string"==typeof t,e=(n=t)&&"[object Function]"==={}.toString.call(n);var n;const h=(t=>t instanceof Element||t instanceof Node)(t);let o;if(i)l=t,o=document.querySelector(l);else if(e)o=t();else{if(!h)throw new s;o=t}var l;return o}}export{u as Nanosplash};
+class Exception extends Error {
+  constructor(message) {
+    super(message);
+  }
+  getName() {
+    return this.constructor.name;
+  }
+}
+class InvalidDestinationException extends Exception {
+  constructor(message) {
+    super(message);
+  }
+}
+const ref = (cssSelector) => document.querySelector(cssSelector);
+const create = (tag, options) => {
+  var _a;
+  const element = document.createElement(tag);
+  if (options) {
+    element.id || (element.id = options.id + "");
+    element.className || (element.className = options.className + "");
+    (_a = options.attributes) == null ? void 0 : _a.filter((v) => v.value).forEach(({ key, value }) => setAttribute(element, key, value));
+    if (options.content) {
+      if (typeof options.content === "string") {
+        element.innerText = options.content;
+      } else {
+        element.append(options.content);
+      }
+    }
+  }
+  return element;
+};
+const display = (node, show) => {
+  node.hidden = !show;
+  if (show) {
+    removeAttribute(node, "hidden");
+  } else {
+    setAttribute(node, "hidden", "true");
+  }
+};
+const move = (node) => ({
+  to: (targetNode, asFirstChild) => {
+    const children = Array.from(targetNode.childNodes);
+    const noChildren = children.length < 1;
+    if (noChildren || !asFirstChild) {
+      targetNode.appendChild(node);
+      return;
+    }
+    const firstChild = children[0];
+    targetNode.insertBefore(node, firstChild);
+  }
+});
+const fitToParent = (node) => {
+  const parent = node.parentNode;
+  if (parent) {
+    ((domRect) => {
+      parent.style.position = "relative";
+      const unit = "px";
+      const parentIsBody = parent === document.body;
+      let left, top, width, height;
+      if (parentIsBody) {
+        left = scrollX + unit;
+      } else {
+        left = 0 + unit;
+      }
+      if (parentIsBody) {
+        top = scrollY + unit;
+      } else {
+        top = 0 + unit;
+      }
+      if (parentIsBody) {
+        width = "100%";
+      } else {
+        width = domRect.width + unit;
+      }
+      if (parentIsBody) {
+        height = "100vh";
+      } else {
+        height = domRect.height + unit;
+      }
+      setStyle(parent, "position", "relative");
+      setStyle(node, "left", left);
+      setStyle(node, "top", top);
+      setStyle(node, "width", width);
+      setStyle(node, "height", height);
+    })(parent.getBoundingClientRect());
+  }
+};
+const invokeOn = (dispatcher, handler, events) => (([addEventListenerLegacy, addEventListener]) => {
+  events.forEach((event) => {
+    if (addEventListenerLegacy) {
+      addEventListenerLegacy(`on${event}`, handler);
+    } else {
+      addEventListener(event, handler, true);
+    }
+  });
+})([dispatcher.attachEvent, dispatcher.addEventListener]);
+const isElementOrNode = (value) => {
+  return value instanceof Element || value instanceof Node;
+};
+const isFunction = (value) => {
+  return value && {}.toString.call(value) === "[object Function]";
+};
+const setStyle = (node, prop, value) => {
+  node.style[prop] = value;
+};
+const setAttribute = (node, key, value) => {
+  node.setAttribute(key, value);
+};
+const removeAttribute = (node, key) => {
+  node.removeAttribute(key);
+};
+class NanosplashRepository {
+  static makeMainElement() {
+    const mainElement = create("div", {
+      className: "nanosplash-container",
+      attributes: [
+        {
+          key: "data-splash-animation",
+          value: this.DEFAULT.SPLASH_ANIMATION
+        }
+      ]
+    });
+    mainElement.style.backgroundColor = this.DEFAULT.BACKGROUND_COLOR;
+    return mainElement;
+  }
+  static makeSplashElement() {
+    const splashElement = create("img", {
+      className: "nanosplash-img",
+      attributes: [
+        { key: "src", value: this.DEFAULT.SPLASH_SOURCE },
+        { key: "alt", value: "Nanosplash indicator" }
+      ]
+    });
+    display(splashElement, false);
+    return splashElement;
+  }
+  static makeTextElement() {
+    return create("div", {
+      className: "nanosplash-text",
+      content: this.DEFAULT.TEXT
+    });
+  }
+}
+NanosplashRepository.DEFAULT = {
+  DESTINATION_NODE: document.body,
+  TEXT: "Loading ...",
+  TEXT_FONT: '"Arial", sans-serif',
+  TEXT_WEIGHT: "medium",
+  TEXT_COLOR: "#555",
+  TEXT_SIZE: "26px",
+  SPLASH_SOURCE: "favicon.svg",
+  SPLASH_WIDTH: "100px",
+  SPLASH_HEIGHT: "auto",
+  SPLASH_ANIMATION: "pulse",
+  BACKGROUND_COLOR: "rgba(255, 255, 255, 0.90)",
+  BACKGROUND_BLUR: "light"
+};
+var style = "";
+class Nanosplash {
+  constructor(config) {
+    this.cache = {
+      parentPosition: ""
+    };
+    this.defaultText = NanosplashRepository.DEFAULT.TEXT;
+    this.defaultDestination = NanosplashRepository.DEFAULT.DESTINATION_NODE;
+    this.mainElement = NanosplashRepository.makeMainElement();
+    this.splashElement = NanosplashRepository.makeSplashElement();
+    this.textElement = NanosplashRepository.makeTextElement();
+    move(this.splashElement).to(this.mainElement);
+    move(this.textElement).to(this.mainElement);
+    move(this.mainElement).to(this.defaultDestination, true);
+    display(this.mainElement, false);
+    fitToParent(this.mainElement);
+    this.setDefaultStyles();
+    if (config) {
+      this.configure(config);
+    }
+  }
+  install() {
+    Object.defineProperty(window, "loading", {
+      value: this,
+      writable: false
+    });
+    invokeOn(window, () => fitToParent(this.mainElement), ["resize", "scroll"]);
+  }
+  configure(config) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
+    if ((_a = config == null ? void 0 : config.default) == null ? void 0 : _a.destination) {
+      this.defaultDestination = Nanosplash.getDestinationElement(config.default.destination);
+    }
+    this.defaultText || (this.defaultText = (_b = config.default) == null ? void 0 : _b.text);
+    if ((_c = config.text) == null ? void 0 : _c.family) {
+      this.setTextFontFamily(config.text.family);
+    }
+    if ((_d = config.text) == null ? void 0 : _d.weight) {
+      this.setTextWeight(config.text.weight);
+    }
+    if ((_e = config.text) == null ? void 0 : _e.color) {
+      this.setTextColor(config.text.color);
+    }
+    if ((_f = config.text) == null ? void 0 : _f.size) {
+      this.setTextSize(config.text.size);
+    }
+    if ((_g = config.background) == null ? void 0 : _g.color) {
+      this.setBackgroundColor(config.background.color);
+    }
+    if ((_h = config.background) == null ? void 0 : _h.blur) {
+      this.setBackgroundBlur(config.background.blur);
+    }
+    if (config.splash) {
+      if ((_i = config.splash) == null ? void 0 : _i.src) {
+        this.setSplashSource(config.splash.src);
+      }
+      if ((_j = config.splash) == null ? void 0 : _j.width) {
+        this.setSplashWidth(config.splash.width);
+      }
+      if ((_k = config.splash) == null ? void 0 : _k.height) {
+        this.setSplashHeight(config.splash.height);
+      }
+      if ((_l = config.splash) == null ? void 0 : _l.animation) {
+        this.setSplashAnimation(config.splash.animation);
+      }
+    } else {
+      display(this.splashElement, false);
+    }
+    return this;
+  }
+  show(text) {
+    this.setText(text != null ? text : NanosplashRepository.DEFAULT.TEXT);
+    display(this.mainElement, true);
+    const parent = this.mainElement.parentNode;
+    if (parent && parent !== document.body) {
+      fitToParent(this.mainElement);
+    }
+    const during = async (task) => {
+      await task;
+      this.hide();
+    };
+    return {
+      inside: (destination) => {
+        const element = Nanosplash.getDestinationElement(destination);
+        move(this.mainElement).to(element, true);
+        this.cache.parentPosition = element.style.position;
+        fitToParent(this.mainElement);
+        return { during };
+      },
+      during
+    };
+  }
+  hide() {
+    const parent = this.mainElement.parentElement;
+    setStyle(parent, "position", this.cache.parentPosition);
+    display(this.mainElement, false);
+    this.setText(this.defaultText);
+    move(this.mainElement).to(this.defaultDestination, true);
+    fitToParent(this.mainElement);
+  }
+  setDefaultStyles() {
+    this.setTextFontFamily(NanosplashRepository.DEFAULT.TEXT_FONT);
+    this.setTextWeight(NanosplashRepository.DEFAULT.TEXT_WEIGHT);
+    this.setTextColor(NanosplashRepository.DEFAULT.TEXT_COLOR);
+    this.setTextSize(NanosplashRepository.DEFAULT.TEXT_SIZE);
+    this.setSplashSource(NanosplashRepository.DEFAULT.SPLASH_SOURCE);
+    this.setSplashWidth(NanosplashRepository.DEFAULT.SPLASH_WIDTH);
+    this.setSplashHeight(NanosplashRepository.DEFAULT.SPLASH_HEIGHT);
+    this.setSplashAnimation(NanosplashRepository.DEFAULT.SPLASH_ANIMATION);
+    this.setBackgroundColor(NanosplashRepository.DEFAULT.BACKGROUND_COLOR);
+    this.setBackgroundBlur(NanosplashRepository.DEFAULT.BACKGROUND_BLUR);
+  }
+  setText(text) {
+    this.textElement.innerText = text;
+  }
+  setTextFontFamily(fontFamily) {
+    setStyle(this.textElement, "fontFamily", fontFamily);
+  }
+  setTextWeight(fontWeight) {
+    setStyle(this.textElement, "fontWeight", fontWeight);
+  }
+  setTextColor(color) {
+    setStyle(this.textElement, "color", color);
+  }
+  setTextSize(fontSize) {
+    setStyle(this.textElement, "fontSize", fontSize);
+  }
+  setSplashSource(src) {
+    this.splashElement.src = src;
+    display(this.splashElement, true);
+  }
+  setSplashWidth(width) {
+    setStyle(this.splashElement, "width", width);
+  }
+  setSplashHeight(height) {
+    setStyle(this.splashElement, "height", height);
+  }
+  setSplashAnimation(animation) {
+    setAttribute(this.mainElement, "data-splash-animation", animation);
+  }
+  setBackgroundColor(color) {
+    setStyle(this.mainElement, "backgroundColor", color);
+  }
+  setBackgroundBlur(blurMode) {
+    setAttribute(this.mainElement, "data-blur", blurMode);
+  }
+  static getDestinationElement(destination) {
+    const isString = typeof destination === "string";
+    const isCallback = isFunction(destination);
+    const isElement = isElementOrNode(destination);
+    let destinationNode;
+    if (isString) {
+      destinationNode = ref(destination);
+    } else if (isCallback) {
+      destinationNode = destination();
+    } else if (isElement) {
+      destinationNode = destination;
+    } else {
+      throw new InvalidDestinationException();
+    }
+    return destinationNode;
+  }
+}
+export { Nanosplash };

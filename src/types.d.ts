@@ -52,53 +52,59 @@ declare module 'nanosplash' {
 		 *
 		 * @param {string | undefined} text The text that will be shown in the
 		 * loading screen. If undefined, Nanosplash will use the default text.
-		 * @param {Promise<any> | undefined} task An asynchronous function that
-		 * contains any given workload that shall compute while the loading screen is
-		 * visible. If undefined, you will have to manually invoke the hide function
-		 * in order to hide the loading screen.
-		 * @return {DestinationObject} An object with a function that controls the
-		 * destination of the loading screen.
+		 * @return {DisplayController} An object with a function that controls the
+		 * visibility and destination of the loading screen.
 		 *
 		 * @description Shows the loading screen. Invoking the inside function will
 		 * display the loading screen within the constraints of the defined
 		 * destination.
 		 *
+		 * Basic usage.
 		 * @example
 		 * ```js
 		 * // Basic usage.
 		 * loading.show(text)
 		 * ```
 		 *
+		 * Display Nanosplash inside other DOM elements.
 		 * @example
 		 * ```js
 		 * // Show loading screen within another element using CSS selector.
 		 * loading.show(text).inside('#my-element')
-		 * ```
-		 *
-		 * @example
-		 * ```js
 		 * // Use DOM element reference.
 		 * loading.show(text).inside(document.getElementById(id))
-		 * ```
-		 *
-		 * @example
-		 * ```js
 		 * // Use function that returns a DOM element reference.
 		 * loading.show(text).inside(() => getDomReference())
 		 * ```
 		 *
+		 * Display Nanosplash while an asynchronous task is resolving.
 		 * @example
 		 * ```js
 		 * // Define an asynchronous task.
-		 * const task = async () => getDataFromApi()
-		 * // Show loading screen while the task is not yet resolved.
-		 * loading.show(text, task).inside(document.body)
+		 * const task = async () => await getDataFromApi()
+		 * // Show loading screen while the task is running.
+		 * loading.show(text).during(task)
+		 * loading.show(text).inside('#my-element').during(task)
 		 * ```
 		 */
-		show(text?: string): DestinationObject
+		show(text?: string): DisplayController
 
 		/**
 		 * Hide
+		 *
+		 * @description Hides the loading screen and moves to its default destination.
+		 * If no custom default destination is defined, it will move to the document
+		 * body.
+		 *
+		 * @example
+		 * ```js
+		 * // Basic usage
+		 * loading.hide()
+		 * // Use with async functions
+		 * loading.show('Loading ...')
+		 * await fetchStuffFromApi()
+		 * loading.hide()
+		 * ```
 		 */
 		hide(): void
 
@@ -158,13 +164,17 @@ declare module 'nanosplash' {
 	}
 
 	type TargetNodeController<T> = (target: T, asFirstChild?: boolean) => void
-
 	type TargetNodeObject<T> = {
 		[key: string]: TargetNodeController<T>
 	}
+	type TaskController<T> = (task: Promise<T>) => Promise<void>
 
-	type DestinationController = TargetNodeController<Destination>
-	type DestinationObject = TargetNodeObject<Destination>
+	type DisplayController = {
+		during: (task: Promise<any>) => Promise<void>
+		inside: (destination: Destination) => {
+			during: (task: Promise<any>) => Promise<void>
+		}
+	}
 
 	/**
 	 * @internal

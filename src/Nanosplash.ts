@@ -2,7 +2,7 @@ import {
 	BlurMode,
 	Config,
 	Destination,
-	DestinationObject,
+	DisplayController,
 	SplashAnimation,
 } from 'nanosplash'
 import InvalidDestinationException from './exceptions/InvalidDestinationException'
@@ -31,6 +31,9 @@ export class Nanosplash {
 	private readonly mainElement: HTMLDivElement
 	private readonly splashElement: HTMLImageElement
 	private readonly textElement: HTMLDivElement
+	private cache = {
+		parentPosition: '',
+	}
 
 	/**
 	 * Constructor
@@ -175,50 +178,42 @@ export class Nanosplash {
 	 *
 	 * @param {string | undefined} text The text that will be shown in the
 	 * loading screen. If undefined, Nanosplash will use the default text.
-	 * @param {Promise<any> | undefined} task An asynchronous function that
-	 * contains any given workload that shall compute while the loading screen is
-	 * visible. If undefined, you will have to manually invoke the hide function
-	 * in order to hide the loading screen.
-	 * @return {DestinationObject} An object with a function that controls the
-	 * destination of the loading screen.
+	 * @return {DisplayController} An object with a function that controls the
+	 * visibility and destination of the loading screen.
 	 *
 	 * @description Shows the loading screen. Invoking the inside function will
 	 * display the loading screen within the constraints of the defined
 	 * destination.
 	 *
+	 * Basic usage.
 	 * @example
 	 * ```js
 	 * // Basic usage.
 	 * loading.show(text)
 	 * ```
 	 *
+	 * Display Nanosplash inside other DOM elements.
 	 * @example
 	 * ```js
 	 * // Show loading screen within another element using CSS selector.
 	 * loading.show(text).inside('#my-element')
-	 * ```
-	 *
-	 * @example
-	 * ```js
 	 * // Use DOM element reference.
 	 * loading.show(text).inside(document.getElementById(id))
-	 * ```
-	 *
-	 * @example
-	 * ```js
 	 * // Use function that returns a DOM element reference.
 	 * loading.show(text).inside(() => getDomReference())
 	 * ```
 	 *
+	 * Display Nanosplash while an asynchronous task is resolving.
 	 * @example
 	 * ```js
 	 * // Define an asynchronous task.
-	 * const task = async () => getDataFromApi()
-	 * // Show loading screen while the task is not yet resolved.
-	 * loading.show(text, task).inside(document.body)
+	 * const task = async () => await getDataFromApi()
+	 * // Show loading screen while the task is running.
+	 * loading.show(text).during(task)
+	 * loading.show(text).inside('#my-element').during(task)
 	 * ```
 	 */
-	public show(text?: string, task?: Promise<any>): DestinationObject {
+	public show(text?: string): DisplayController {
 		this.setText(text ?? NanosplashRepository.DEFAULT.TEXT)
 		display(this.mainElement, true)
 
@@ -227,30 +222,45 @@ export class Nanosplash {
 			fitToParent(this.mainElement)
 		}
 
-		if (task?.then) {
-			task.then(this.hide)
+		// Async task handler
+		const during = async (task: Promise<any>) => {
+			await task
+			this.hide()
 		}
 
+		// Returns a
 		return {
-			/**
-			 * @param {Destination} destination The destination argument can be any
-			 * of the following:
-			 * * A CSS selector.
-			 * * Any DOM element e.g. Node or Element.
-			 * * A synchronous function that returns any DOM element.
-			 */
 			inside: (destination: Destination) => {
 				const element = Nanosplash.getDestinationElement(destination)
 				move(this.mainElement).to(element, true)
+				this.cache.parentPosition = element.style.position
 				fitToParent(this.mainElement)
+				return { during }
 			},
+			during: during,
 		}
 	}
 
 	/**
 	 * Hide
+	 *
+	 * @description Hides the loading screen and moves to its default destination.
+	 * If no custom default destination is defined, it will move to the document
+	 * body.
+	 *
+	 * @example
+	 * ```js
+	 * // Basic usage
+	 * loading.hide()
+	 * // Use with async functions
+	 * loading.show('Loading ...')
+	 * await fetchStuffFromApi()
+	 * loading.hide()
+	 * ```
 	 */
 	public hide(): void {
+		const parent = this.mainElement.parentElement as HTMLElement
+		setStyle(parent, 'position', this.cache.parentPosition)
 		display(this.mainElement, false)
 		this.setText(this.defaultText)
 		move(this.mainElement).to(this.defaultDestination, true)
@@ -389,7 +399,7 @@ export class Nanosplash {
 	 * @throws InvalidDestinationException
 	 * @private
 	 */
-	private static getDestinationElement(destination: Destination): Element {
+	private static getDestinationElement(destination: Destination): HTMLElement {
 		const isString = typeof destination === 'string'
 		const isCallback = isFunction(destination)
 		const isElement = isElementOrNode(destination)
@@ -406,6 +416,6 @@ export class Nanosplash {
 			throw new InvalidDestinationException()
 		}
 
-		return destinationNode as Element
+		return destinationNode as HTMLElement
 	}
 }

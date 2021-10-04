@@ -30,7 +30,7 @@ npm install nanosplash
 
 # Import
 
-## Import via CDN
+## Import via CDN (recommended)
 
 When you import the IIFE script there is no need to invoke the `install` function.
 
@@ -38,13 +38,26 @@ When you import the IIFE script there is no need to invoke the `install` functio
 <script src="https://unpkg.com/nanosplash/dist/iife/nanosplash.iife.js">
 ```
 
-## ESM (ES modules)
+## Modules
+
+When including either ES or CJS modules, you need the CSS in the dist folder, whereas in the IIFE variant, everything is included. If you are using a modern bundler e.g Vite, NextJS, NuxtJS, you can import the CSS directly into your code.
+
+```js
+import 'nanosplash/dist/module/style.css'
+```
+
+> ### Location of the stylesheet
+>
+> Full: `node_modules/nanosplash/dist/module/style.css`<br>
+> Relative: `nanosplash/dist/module/style.css`
+
+### ESM (ES modules)
 
 ```js
 import { Nanosplash } from 'nanosplash'
 ```
 
-## CJS (CommonJS)
+### CJS (CommonJS)
 
 ```js
 const Nanosplash = require('nanosplash')
@@ -74,19 +87,18 @@ loading.hide()
 loading.show('Loading component ...').inside('#my-element')
 ```
 
-## Advanced usage (modules)
+## Advanced usage
 
-**⚠️ Always import the CSS file when importing modules manually**
+### Combine Nanosplash with async tasks
 
 ```js
-import { Nanosplash } from 'nanosplash'
-import 'nanosplash/dist/module/style.css'
+const task1 = new Promise(r => setTimeout(() => r(), 3000))
+const task2 = async () => await getDataFromApi()
+
+loading.show('Loading resources ...').during(task1)
+loading.show('Fetching table data ...').inside('#my-table').during(task2)
 ```
 
-# Demo site
+<hr>
 
-[isakhauge.github.io/nanosplash]('https://isakhauge.github.io/nanosplash')
-
-# Documentation
-
-[Nanosplash API reference]('https://isakhauge.github.io/nanosplash/typedoc')
+## If you like it, give it a star! ⭐️
