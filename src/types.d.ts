@@ -117,6 +117,9 @@ declare module 'nanosplash' {
 		 *
 		 * @example
 		 * ```js
+		 * // Install
+		 * (new Nanosplash()).install()
+		 *
 		 * // Access the instance globally
 		 * loading.show('Some text')
 		 * ```

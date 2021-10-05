@@ -110,3 +110,5 @@ dist-ssr
 
 # JetBrains
 .idea/
+
+demo.html

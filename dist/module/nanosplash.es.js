@@ -1,9 +1,15 @@
 class Exception extends Error {
   constructor(message) {
     super(message);
+    this.name = this.constructor.name;
   }
   getName() {
     return this.constructor.name;
+  }
+}
+class IllegalArgumentException extends Exception {
+  constructor(message) {
+    super(message);
   }
 }
 class InvalidDestinationException extends Exception {
@@ -11,7 +17,13 @@ class InvalidDestinationException extends Exception {
     super(message);
   }
 }
+class MissingResourceException extends Exception {
+  constructor(message) {
+    super(message);
+  }
+}
 const ref = (cssSelector) => document.querySelector(cssSelector);
+const refAll = (cssSelector) => Array.from(document.querySelectorAll(cssSelector));
 const create = (tag, options) => {
   var _a;
   const element = document.createElement(tag);
@@ -53,7 +65,6 @@ const fitToParent = (node) => {
   const parent = node.parentNode;
   if (parent) {
     ((domRect) => {
-      parent.style.position = "relative";
       const unit = "px";
       const parentIsBody = parent === document.body;
       let left, top, width, height;
@@ -77,7 +88,6 @@ const fitToParent = (node) => {
       } else {
         height = domRect.height + unit;
       }
-      setStyle(parent, "position", "relative");
       setStyle(node, "left", left);
       setStyle(node, "top", top);
       setStyle(node, "width", width);
@@ -127,11 +137,10 @@ class NanosplashRepository {
     const splashElement = create("img", {
       className: "nanosplash-img",
       attributes: [
-        { key: "src", value: this.DEFAULT.SPLASH_SOURCE },
+        { key: "src", value: null },
         { key: "alt", value: "Nanosplash indicator" }
       ]
     });
-    display(splashElement, false);
     return splashElement;
   }
   static makeTextElement() {
@@ -148,7 +157,6 @@ NanosplashRepository.DEFAULT = {
   TEXT_WEIGHT: "medium",
   TEXT_COLOR: "#555",
   TEXT_SIZE: "26px",
-  SPLASH_SOURCE: "favicon.svg",
   SPLASH_WIDTH: "100px",
   SPLASH_HEIGHT: "auto",
   SPLASH_ANIMATION: "pulse",
@@ -158,20 +166,25 @@ NanosplashRepository.DEFAULT = {
 var style = "";
 class Nanosplash {
   constructor(config) {
+    var _a, _b, _c, _d, _e;
     this.cache = {
       parentPosition: ""
     };
-    this.defaultText = NanosplashRepository.DEFAULT.TEXT;
-    this.defaultDestination = NanosplashRepository.DEFAULT.DESTINATION_NODE;
+    this.defaultText = (_b = (_a = config == null ? void 0 : config.default) == null ? void 0 : _a.text) != null ? _b : NanosplashRepository.DEFAULT.TEXT;
+    this.defaultDestination = Nanosplash.getDestinationElement((_d = (_c = config == null ? void 0 : config.default) == null ? void 0 : _c.destination) != null ? _d : NanosplashRepository.DEFAULT.DESTINATION_NODE);
     this.mainElement = NanosplashRepository.makeMainElement();
     this.splashElement = NanosplashRepository.makeSplashElement();
     this.textElement = NanosplashRepository.makeTextElement();
-    move(this.splashElement).to(this.mainElement);
+    this.setDefaultStyles();
+    const splashSrc = (_e = config == null ? void 0 : config.splash) == null ? void 0 : _e.src;
+    if (splashSrc) {
+      this.setSplashSource(splashSrc);
+      move(this.splashElement).to(this.mainElement);
+    }
     move(this.textElement).to(this.mainElement);
     move(this.mainElement).to(this.defaultDestination, true);
     display(this.mainElement, false);
     fitToParent(this.mainElement);
-    this.setDefaultStyles();
     if (config) {
       this.configure(config);
     }
@@ -182,6 +195,7 @@ class Nanosplash {
       writable: false
     });
     invokeOn(window, () => fitToParent(this.mainElement), ["resize", "scroll"]);
+    Nanosplash.checkStyleResources();
   }
   configure(config) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
@@ -209,6 +223,10 @@ class Nanosplash {
     }
     if (config.splash) {
       if ((_i = config.splash) == null ? void 0 : _i.src) {
+        const hasSplashElement = this.mainElement.contains(this.splashElement);
+        if (!hasSplashElement) {
+          move(this.splashElement).to(this.mainElement, true);
+        }
         this.setSplashSource(config.splash.src);
       }
       if ((_j = config.splash) == null ? void 0 : _j.width) {
@@ -228,28 +246,23 @@ class Nanosplash {
   show(text) {
     this.setText(text != null ? text : NanosplashRepository.DEFAULT.TEXT);
     display(this.mainElement, true);
-    const parent = this.mainElement.parentNode;
-    if (parent && parent !== document.body) {
-      fitToParent(this.mainElement);
-    }
-    const during = async (task) => {
-      await task;
-      this.hide();
+    const during = (task) => {
+      return task.finally(() => this.hide());
     };
     return {
       inside: (destination) => {
+        this.restoreParentPosition();
         const element = Nanosplash.getDestinationElement(destination);
         move(this.mainElement).to(element, true);
-        this.cache.parentPosition = element.style.position;
         fitToParent(this.mainElement);
+        this.setParentPositionToRelative();
         return { during };
       },
       during
     };
   }
   hide() {
-    const parent = this.mainElement.parentElement;
-    setStyle(parent, "position", this.cache.parentPosition);
+    this.restoreParentPosition();
     display(this.mainElement, false);
     this.setText(this.defaultText);
     move(this.mainElement).to(this.defaultDestination, true);
@@ -260,12 +273,35 @@ class Nanosplash {
     this.setTextWeight(NanosplashRepository.DEFAULT.TEXT_WEIGHT);
     this.setTextColor(NanosplashRepository.DEFAULT.TEXT_COLOR);
     this.setTextSize(NanosplashRepository.DEFAULT.TEXT_SIZE);
-    this.setSplashSource(NanosplashRepository.DEFAULT.SPLASH_SOURCE);
     this.setSplashWidth(NanosplashRepository.DEFAULT.SPLASH_WIDTH);
     this.setSplashHeight(NanosplashRepository.DEFAULT.SPLASH_HEIGHT);
     this.setSplashAnimation(NanosplashRepository.DEFAULT.SPLASH_ANIMATION);
     this.setBackgroundColor(NanosplashRepository.DEFAULT.BACKGROUND_COLOR);
     this.setBackgroundBlur(NanosplashRepository.DEFAULT.BACKGROUND_BLUR);
+  }
+  doIfParentExist(callback) {
+    ((parent) => {
+      if (parent) {
+        callback(parent);
+      }
+    })(this.mainElement.parentElement);
+  }
+  setParentPosition(position) {
+    this.doIfParentExist((parent) => {
+      setStyle(parent, "position", position);
+    });
+  }
+  cacheParentPosition() {
+    this.doIfParentExist((parent) => {
+      this.cache.parentPosition = parent.style.position;
+    });
+  }
+  restoreParentPosition() {
+    this.setParentPosition(this.cache.parentPosition);
+  }
+  setParentPositionToRelative() {
+    this.cacheParentPosition();
+    this.setParentPosition("relative");
   }
   setText(text) {
     this.textElement.innerText = text;
@@ -301,6 +337,15 @@ class Nanosplash {
   setBackgroundBlur(blurMode) {
     setAttribute(this.mainElement, "data-blur", blurMode);
   }
+  static checkStyleResources() {
+    const hrefElements = refAll('link[href*="nanosplash"]');
+    const nanosplashFilter = (v) => /\.nanosplash/.test(v.innerText);
+    const styleElements = refAll("style").filter(nanosplashFilter);
+    const hasRequiredCss = hrefElements.length > 0 || styleElements.length > 0;
+    if (!hasRequiredCss) {
+      throw new MissingResourceException("Missing the Nanosplash CSS");
+    }
+  }
   static getDestinationElement(destination) {
     const isString = typeof destination === "string";
     const isCallback = isFunction(destination);
@@ -313,6 +358,9 @@ class Nanosplash {
     } else if (isElement) {
       destinationNode = destination;
     } else {
+      throw new IllegalArgumentException();
+    }
+    if (!destinationNode) {
       throw new InvalidDestinationException();
     }
     return destinationNode;

@@ -16,8 +16,8 @@
 	</head>
 	<body class="flex flex-col justify-between">
 		<main class="bg-gray-100 flex-grow">
-			<div id="title">
-				<section class="bg-gray-800 pt-6 pb-2 md:py-12 text-white">
+			<div id="title" class="bg-gray-800">
+				<section class="pt-6 pb-2 md:py-12 text-white">
 					<div
 						class="
 							absolute
@@ -42,6 +42,21 @@
 						<h2 class="text-lg md:text-xl md:mt-1 font-thin">
 							The tiny loading screen
 						</h2>
+						<div
+							class="
+								mt-3
+								md:mt-6
+								text-xs
+								sm:text-sm
+								font-mono
+								p-2
+								bg-gray-700
+								rounded
+							"
+						>
+							loading.show(<span class="text-green-400">text</span
+							>).inside(<span class="text-green-400">element</span>)
+						</div>
 					</div>
 				</section>
 				<section class="py-3 bg-gray-800">
@@ -100,9 +115,9 @@
 						Demo
 					</div>
 					<div class="text-center text-gray-500 flex font-light justify-center">
-						Play around with Nanosplash using the controls below.<br />
-						The demo serves as showcase of some of the<br />
-						features it has to offer.
+						Play around with Nanosplash using the<br />
+						controls below. The demo serves as a<br />
+						showcase of what it has to offer.
 					</div>
 				</div>
 			</section>
@@ -307,7 +322,7 @@
 			</section>
 		</main>
 		<footer>
-			<section class="py-6 flex justify-center flex-grow-0">
+			<section class="py-4 flex justify-center flex-grow-0">
 				<div class="container mx-5">
 					<div class="flex space-x-3 justify-center items-center text-gray-600">
 						<div class="text-2xl">

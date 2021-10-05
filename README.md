@@ -65,9 +65,17 @@ const Nanosplash = require('nanosplash')
 
 # Getting started
 
-## Basic usage (CDN)
+## Inject Nanosplash into global scope
 
-When imported through the CDN, the instance is already injected into the `Window` object and accessible through the global variable `loading`.
+> When imported through the CDN, the instance is already injected into the `Window` object and accessible through the global variable `loading`.
+
+If you are importing Nanosplash through modules, invoking the `install` function is essential in order to make it react to changes in the browser.
+
+```js
+nanosplash.install()
+```
+
+## Basic usage
 
 ### Display the loading screen
 
@@ -81,13 +89,26 @@ loading.show('Loading the good stuff ...')
 loading.hide()
 ```
 
+## Advanced usage
+
 ### Display the loading screen inside an element
 
 ```js
+// Use CSS selector string
 loading.show('Loading component ...').inside('#my-element')
-```
 
-## Advanced usage
+// Use HTMLElement objects directly
+loading
+	.show('Loading component ...')
+	.inside(document.getElementById('my-element'))
+
+// Use functions returning HTMLElement objects
+loading
+	.show('Loading component ...')
+	.inside(() =>
+		Array.from(document.querySelectorAll()).filter((element.id = 'my-element'))
+	)
+```
 
 ### Combine Nanosplash with async tasks
 

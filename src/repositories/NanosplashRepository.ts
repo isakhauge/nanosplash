@@ -1,5 +1,5 @@
 import { BlurMode, SplashAnimation } from 'nanosplash'
-import { create, display } from '../utilities/dom'
+import { create } from '../utilities/dom'
 
 export class NanosplashRepository {
 	public static readonly DEFAULT = {
@@ -9,7 +9,6 @@ export class NanosplashRepository {
 		TEXT_WEIGHT: 'medium',
 		TEXT_COLOR: '#555',
 		TEXT_SIZE: '26px',
-		SPLASH_SOURCE: 'favicon.svg',
 		SPLASH_WIDTH: '100px',
 		SPLASH_HEIGHT: 'auto',
 		SPLASH_ANIMATION: 'pulse' as SplashAnimation,
@@ -41,11 +40,10 @@ export class NanosplashRepository {
 		const splashElement = create('img', {
 			className: 'nanosplash-img',
 			attributes: [
-				{ key: 'src', value: this.DEFAULT.SPLASH_SOURCE },
+				{ key: 'src', value: null },
 				{ key: 'alt', value: 'Nanosplash indicator' },
 			],
 		}) as HTMLImageElement
-		display(splashElement, false)
 		return splashElement
 	}
 

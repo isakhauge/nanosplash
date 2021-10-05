@@ -14,8 +14,20 @@ import {
  * @description Returns the instance reference of whatever element in the DOM
  * that matches the CSS selector string.
  */
-export const ref = (cssSelector: string): Element | null =>
+export const ref = (cssSelector: string): HTMLElement | null =>
 	document.querySelector(cssSelector)
+
+/**
+ * Ref All (reference)
+ *
+ * @param {string} cssSelector
+ * @return {Element[]}
+ *
+ * @description Returns the instance references of whatever element in the DOM
+ * that matches the CSS selector string.
+ */
+export const refAll = (cssSelector: string): HTMLElement[] =>
+	Array.from(document.querySelectorAll(cssSelector))
 
 /**
  * Create
@@ -117,7 +129,6 @@ export const fitToParent = (node: HTMLElement): void => {
 	const parent = node.parentNode as HTMLElement
 	if (parent) {
 		;((domRect: DOMRect) => {
-			parent.style.position = 'relative' // Set parent as relative
 			const unit = 'px'
 			const parentIsBody = parent === document.body
 			let left, top, width, height
@@ -150,7 +161,6 @@ export const fitToParent = (node: HTMLElement): void => {
 				height = domRect.height + unit
 			}
 
-			setStyle(parent, 'position', 'relative')
 			setStyle(node, 'left', left)
 			setStyle(node, 'top', top)
 			setStyle(node, 'width', width)

@@ -5,7 +5,9 @@ import {
 	DisplayController,
 	SplashAnimation,
 } from 'nanosplash'
+import IllegalArgumentException from './exceptions/IllegalArgumentException'
 import InvalidDestinationException from './exceptions/InvalidDestinationException'
+import MissingResourceException from './exceptions/MissingResourceException'
 import { NanosplashRepository } from './repositories/NanosplashRepository'
 import './style.sass'
 import {
@@ -16,6 +18,7 @@ import {
 	isFunction,
 	move,
 	ref,
+	refAll,
 	setAttribute,
 	setStyle,
 } from './utilities/dom'
@@ -55,16 +58,27 @@ export class Nanosplash {
 	 * ```
 	 */
 	public constructor(config?: Config) {
-		this.defaultText = NanosplashRepository.DEFAULT.TEXT
-		this.defaultDestination = NanosplashRepository.DEFAULT.DESTINATION_NODE
+		this.defaultText =
+			config?.default?.text ?? NanosplashRepository.DEFAULT.TEXT
+		this.defaultDestination = Nanosplash.getDestinationElement(
+			config?.default?.destination ??
+				NanosplashRepository.DEFAULT.DESTINATION_NODE
+		)
 
 		// Build UI elements
 		this.mainElement = NanosplashRepository.makeMainElement()
 		this.splashElement = NanosplashRepository.makeSplashElement()
 		this.textElement = NanosplashRepository.makeTextElement()
 
+		// Set default configuration
+		this.setDefaultStyles()
+
 		// Assemble UI elements
-		move(this.splashElement).to(this.mainElement)
+		const splashSrc = config?.splash?.src
+		if (splashSrc) {
+			this.setSplashSource(splashSrc)
+			move(this.splashElement).to(this.mainElement)
+		}
 		move(this.textElement).to(this.mainElement)
 
 		// Insert loader into destination element
@@ -72,9 +86,7 @@ export class Nanosplash {
 		display(this.mainElement, false) // Hide by default
 		fitToParent(this.mainElement)
 
-		// Set default configuration
-		this.setDefaultStyles()
-
+		// Apply custom configuration
 		if (config) {
 			this.configure(config)
 		}
@@ -89,6 +101,9 @@ export class Nanosplash {
 	 *
 	 * @example
 	 * ```js
+	 * // Install
+	 * (new Nanosplash()).install()
+	 *
 	 * // Access the instance globally
 	 * loading.show('Some text')
 	 * ```
@@ -99,6 +114,7 @@ export class Nanosplash {
 			writable: false,
 		})
 		invokeOn(window, () => fitToParent(this.mainElement), ['resize', 'scroll'])
+		Nanosplash.checkStyleResources()
 	}
 
 	/**
@@ -152,9 +168,12 @@ export class Nanosplash {
 		}
 
 		// Splash:
-		// TODO: Fix logical error here.
 		if (config.splash) {
 			if (config.splash?.src) {
+				const hasSplashElement = this.mainElement.contains(this.splashElement)
+				if (!hasSplashElement) {
+					move(this.splashElement).to(this.mainElement, true)
+				}
 				this.setSplashSource(config.splash.src)
 			}
 			if (config.splash?.width) {
@@ -217,27 +236,22 @@ export class Nanosplash {
 		this.setText(text ?? NanosplashRepository.DEFAULT.TEXT)
 		display(this.mainElement, true)
 
-		const parent = this.mainElement.parentNode
-		if (parent && parent !== document.body) {
-			fitToParent(this.mainElement)
-		}
-
 		// Async task handler
-		const during = async (task: Promise<any>) => {
-			await task
-			this.hide()
+		const during = (task: Promise<any>) => {
+			return task.finally(() => this.hide())
 		}
 
 		// Returns a
 		return {
 			inside: (destination: Destination) => {
+				this.restoreParentPosition()
 				const element = Nanosplash.getDestinationElement(destination)
 				move(this.mainElement).to(element, true)
-				this.cache.parentPosition = element.style.position
 				fitToParent(this.mainElement)
+				this.setParentPositionToRelative()
 				return { during }
 			},
-			during: during,
+			during,
 		}
 	}
 
@@ -259,8 +273,7 @@ export class Nanosplash {
 	 * ```
 	 */
 	public hide(): void {
-		const parent = this.mainElement.parentElement as HTMLElement
-		setStyle(parent, 'position', this.cache.parentPosition)
+		this.restoreParentPosition()
 		display(this.mainElement, false)
 		this.setText(this.defaultText)
 		move(this.mainElement).to(this.defaultDestination, true)
@@ -276,12 +289,40 @@ export class Nanosplash {
 		this.setTextWeight(NanosplashRepository.DEFAULT.TEXT_WEIGHT)
 		this.setTextColor(NanosplashRepository.DEFAULT.TEXT_COLOR)
 		this.setTextSize(NanosplashRepository.DEFAULT.TEXT_SIZE)
-		this.setSplashSource(NanosplashRepository.DEFAULT.SPLASH_SOURCE)
 		this.setSplashWidth(NanosplashRepository.DEFAULT.SPLASH_WIDTH)
 		this.setSplashHeight(NanosplashRepository.DEFAULT.SPLASH_HEIGHT)
 		this.setSplashAnimation(NanosplashRepository.DEFAULT.SPLASH_ANIMATION)
 		this.setBackgroundColor(NanosplashRepository.DEFAULT.BACKGROUND_COLOR)
 		this.setBackgroundBlur(NanosplashRepository.DEFAULT.BACKGROUND_BLUR)
+	}
+
+	private doIfParentExist(callback: (parent: HTMLElement) => any): void {
+		;(parent => {
+			if (parent) {
+				callback(parent)
+			}
+		})(this.mainElement.parentElement as HTMLElement)
+	}
+
+	private setParentPosition(position: string): void {
+		this.doIfParentExist(parent => {
+			setStyle(parent, 'position', position)
+		})
+	}
+
+	private cacheParentPosition(): void {
+		this.doIfParentExist(parent => {
+			this.cache.parentPosition = parent.style.position
+		})
+	}
+
+	private restoreParentPosition(): void {
+		this.setParentPosition(this.cache.parentPosition)
+	}
+
+	private setParentPositionToRelative(): void {
+		this.cacheParentPosition()
+		this.setParentPosition('relative')
 	}
 
 	/**
@@ -396,7 +437,23 @@ export class Nanosplash {
 	}
 
 	/**
+	 * @throws {MissingResourceException}
+	 * @description Throws an exception if the CSS is missing from the browser.
+	 */
+	private static checkStyleResources(): void {
+		const hrefElements = refAll('link[href*="nanosplash"]')
+		const nanosplashFilter = (v: HTMLElement) =>
+			/\.nanosplash/.test(v.innerText)
+		const styleElements = refAll('style').filter(nanosplashFilter)
+		const hasRequiredCss = hrefElements.length > 0 || styleElements.length > 0
+		if (!hasRequiredCss) {
+			throw new MissingResourceException('Missing the Nanosplash CSS')
+		}
+	}
+
+	/**
 	 * @throws InvalidDestinationException
+	 * @throws IllegalArgumentException
 	 * @private
 	 */
 	private static getDestinationElement(destination: Destination): HTMLElement {
@@ -413,6 +470,10 @@ export class Nanosplash {
 		} else if (isElement) {
 			destinationNode = destination as HTMLElement
 		} else {
+			throw new IllegalArgumentException()
+		}
+
+		if (!destinationNode) {
 			throw new InvalidDestinationException()
 		}
 
