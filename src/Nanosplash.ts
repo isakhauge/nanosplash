@@ -5,9 +5,9 @@ import {
 	DisplayController,
 	SplashAnimation,
 } from 'nanosplash'
-import IllegalArgumentException from './exceptions/IllegalArgumentException'
-import InvalidDestinationException from './exceptions/InvalidDestinationException'
-import MissingResourceException from './exceptions/MissingResourceException'
+import IllegalArgumentException from './Exceptions/IllegalArgumentException'
+import InvalidDestinationException from './Exceptions/InvalidDestinationException'
+import MissingResourceException from './Exceptions/MissingResourceException'
 import { NanosplashRepository } from './repositories/NanosplashRepository'
 import './style.sass'
 import {
@@ -441,14 +441,16 @@ export class Nanosplash {
 	 * @description Throws an exception if the CSS is missing from the browser.
 	 */
 	private static checkStyleResources(): void {
-		const hrefElements = refAll('link[href*="nanosplash"]')
-		const nanosplashFilter = (v: HTMLElement) =>
-			/\.nanosplash/.test(v.innerText)
-		const styleElements = refAll('style').filter(nanosplashFilter)
-		const hasRequiredCss = hrefElements.length > 0 || styleElements.length > 0
-		if (!hasRequiredCss) {
-			throw new MissingResourceException('Missing the Nanosplash CSS')
-		}
+		window.addEventListener('load', async function() {
+			const hrefElements = refAll('link[href*="nanosplash"]')
+			const nanosplashFilter = (v: HTMLElement) =>
+				/\.nanosplash/.test(v.innerText)
+			const styleElements = refAll('style').filter(nanosplashFilter)
+			const hasRequiredCss = hrefElements.length > 0 || styleElements.length > 0
+			if (!hasRequiredCss) {
+				throw new MissingResourceException('Missing the Nanosplash CSS')
+			}
+		})
 	}
 
 	/**
@@ -474,7 +476,7 @@ export class Nanosplash {
 		}
 
 		if (!destinationNode) {
-			throw new InvalidDestinationException()
+			throw new InvalidDestinationException('Destination element is falsy')
 		}
 
 		return destinationNode as HTMLElement

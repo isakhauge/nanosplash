@@ -338,13 +338,15 @@ class Nanosplash {
     setAttribute(this.mainElement, "data-blur", blurMode);
   }
   static checkStyleResources() {
-    const hrefElements = refAll('link[href*="nanosplash"]');
-    const nanosplashFilter = (v) => /\.nanosplash/.test(v.innerText);
-    const styleElements = refAll("style").filter(nanosplashFilter);
-    const hasRequiredCss = hrefElements.length > 0 || styleElements.length > 0;
-    if (!hasRequiredCss) {
-      throw new MissingResourceException("Missing the Nanosplash CSS");
-    }
+    window.addEventListener("load", async function() {
+      const hrefElements = refAll('link[href*="nanosplash"]');
+      const nanosplashFilter = (v) => /\.nanosplash/.test(v.innerText);
+      const styleElements = refAll("style").filter(nanosplashFilter);
+      const hasRequiredCss = hrefElements.length > 0 || styleElements.length > 0;
+      if (!hasRequiredCss) {
+        throw new MissingResourceException("Missing the Nanosplash CSS");
+      }
+    });
   }
   static getDestinationElement(destination) {
     const isString = typeof destination === "string";
@@ -361,7 +363,7 @@ class Nanosplash {
       throw new IllegalArgumentException();
     }
     if (!destinationNode) {
-      throw new InvalidDestinationException();
+      throw new InvalidDestinationException("Destination element is falsy");
     }
     return destinationNode;
   }

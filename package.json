@@ -37,9 +37,9 @@
 	"style": "./dist/module/style.css",
 	"exports": {
 		".": {
-			"default": "./dist/module/nanosplash.es.js",
-			"import": "./dist/module/nanosplash.es.js",
-			"require": "./dist/module/nanosplash.cjs.js"
+      "import": "./dist/module/nanosplash.es.js",
+			"require": "./dist/module/nanosplash.cjs.js",
+			"default": "./dist/module/nanosplash.es.js"
 		}
 	},
 	"types": "./src/types.d.ts",
