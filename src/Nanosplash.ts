@@ -441,14 +441,16 @@ export class Nanosplash {
 	 * @description Throws an exception if the CSS is missing from the browser.
 	 */
 	private static checkStyleResources(): void {
-		const hrefElements = refAll('link[href*="nanosplash"]')
-		const nanosplashFilter = (v: HTMLElement) =>
-			/\.nanosplash/.test(v.innerText)
-		const styleElements = refAll('style').filter(nanosplashFilter)
-		const hasRequiredCss = hrefElements.length > 0 || styleElements.length > 0
-		if (!hasRequiredCss) {
-			throw new MissingResourceException('Missing the Nanosplash CSS')
-		}
+		window.addEventListener('load', async function() {
+			const hrefElements = refAll('link[href*="nanosplash"]')
+			const nanosplashFilter = (v: HTMLElement) =>
+				/\.nanosplash/.test(v.innerText)
+			const styleElements = refAll('style').filter(nanosplashFilter)
+			const hasRequiredCss = hrefElements.length > 0 || styleElements.length > 0
+			if (!hasRequiredCss) {
+				throw new MissingResourceException('Missing the Nanosplash CSS')
+			}
+		})
 	}
 
 	/**
@@ -474,7 +476,10 @@ export class Nanosplash {
 		}
 
 		if (!destinationNode) {
-			throw new InvalidDestinationException()
+			throw new InvalidDestinationException('Destination element is falsy:', {
+				providedArgument: destination,
+				destinationNode
+			})
 		}
 
 		return destinationNode as HTMLElement

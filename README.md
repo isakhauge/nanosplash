@@ -72,6 +72,7 @@ const Nanosplash = require('nanosplash')
 If you are importing Nanosplash through modules, invoking the `install` function is essential in order to make it react to changes in the browser.
 
 ```js
+const nanosplash = new Nanosplash()
 nanosplash.install()
 ```
 
@@ -106,7 +107,7 @@ loading
 loading
 	.show('Loading component ...')
 	.inside(() =>
-		Array.from(document.querySelectorAll()).filter((element.id = 'my-element'))
+		Array.from(document.querySelectorAll()).filter((element.id = 'my-element'))[0]
 	)
 ```
 
