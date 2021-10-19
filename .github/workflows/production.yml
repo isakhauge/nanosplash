@@ -6,9 +6,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ production ]
+    branches: [production]
   pull_request:
-    branches: [ production ]
+    branches: [production]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -28,13 +28,16 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo My first Github Action!
-        
+
+      - name: Install npm packages
+        run: yarn install
+
       - name: Transpile Typescript
         run: yarn tsc
-        
+
       - name: Build IIFE bundle
         run: yarn vite build -c vite.iife.config.js
-        
+
       - name: Build module bundles
         run: yarn vite build -c vite.mod.config.js
 
