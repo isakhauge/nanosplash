@@ -5,6 +5,7 @@ import {
 	DisplayController,
 	SplashAnimation,
 } from 'nanosplash'
+import Exception from './Exceptions/Exception'
 import IllegalArgumentException from './Exceptions/IllegalArgumentException'
 import InvalidDestinationException from './Exceptions/InvalidDestinationException'
 import MissingResourceException from './Exceptions/MissingResourceException'
@@ -114,7 +115,11 @@ export class Nanosplash {
 			writable: false,
 		})
 		invokeOn(window, () => fitToParent(this.mainElement), ['resize', 'scroll'])
-		Nanosplash.checkStyleResources()
+		try {
+			Nanosplash.checkStyleResources()
+		} catch (exception) {
+			console.error(exception as Exception)
+		}
 	}
 
 	/**
@@ -441,7 +446,7 @@ export class Nanosplash {
 	 * @description Throws an exception if the CSS is missing from the browser.
 	 */
 	private static checkStyleResources(): void {
-		window.addEventListener('load', async function() {
+		window.addEventListener('load', async function () {
 			const hrefElements = refAll('link[href*="nanosplash"]')
 			const nanosplashFilter = (v: HTMLElement) =>
 				/\.nanosplash/.test(v.innerText)
