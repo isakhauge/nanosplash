@@ -1,10 +1,10 @@
-name: Production CI
+name: Release CI
 
 on:
   push:
-    branches: [production]
+    branches: [release]
   pull_request:
-    branches: [production]
+    branches: [release]
 
   workflow_dispatch:
 
@@ -14,6 +14,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          registry-url: https://registry.npmjs.org/
 
       - name: Run a one-line script
         run: echo My first Github Action!
@@ -42,5 +46,11 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git commit -m "Github Actions CI: Build Project for Production"
+          git commit -m "Github Actions CI: Build Project for Release"
           git push
+
+      # Publish to NPM
+      - name: Publish NPM package
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTOMATION_TOKEN}}
