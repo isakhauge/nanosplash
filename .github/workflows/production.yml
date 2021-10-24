@@ -48,4 +48,4 @@ jobs:
           git config user.email github-actions@github.com
           git add .
           git commit -m "Github Actions CI: Build Project for Production"
-          git push
+          git push origin production
