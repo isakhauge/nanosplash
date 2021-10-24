@@ -1,10 +1,10 @@
-name: Production CI
+name: Release CI
 
 on:
   push:
-    branches: [production]
+    branches: [release]
   pull_request:
-    branches: [production]
+    branches: [release]
 
   workflow_dispatch:
 
@@ -49,3 +49,13 @@ jobs:
           git add .
           git commit -m "Github Actions CI: Build Project for Production"
           git push
+
+  # Publish to NPM
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish NPM package
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTOMATION_TOKEN}}

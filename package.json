@@ -1,68 +1,75 @@
 {
-	"name": "nanosplash",
-	"description": "The simple, 2KB loading screen",
-	"version": "2.2.4",
-	"author": {
-		"name": "Isak K. Hauge",
-		"email": "isakhauge@gmail.com",
-		"url": "https://no.linkedin.com/in/isakhauge"
-	},
-	"keywords": [
-		"loading",
-		"loader",
-		"screen",
-		"splash",
-		"nano",
-		"nanosplash",
-		"small",
-		"tiny",
-		"es",
-		"esm",
-		"ts",
-		"typescript",
-		"iife",
-		"cdn",
-		"vite"
-	],
-	"homepage": "https://isakhauge.github.io/nanosplash",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/isakhauge/nanosplash.git"
-	},
-	"license": "MIT",
-	"main": "./dist/module/nanosplash.es.js",
-	"module": "./dist/module/nanosplash.es.js",
-	"source": "./src/Nanosplash.ts",
-	"unpkg": "./dist/iife/nanosplash.iife.js",
-	"style": "./dist/module/style.css",
-	"exports": {
-		".": {
-			"import": "./dist/module/nanosplash.es.js",
-			"require": "./dist/module/nanosplash.cjs.js",
-			"default": "./dist/module/nanosplash.es.js"
-		}
-	},
-	"types": "./src/types.d.ts",
-	"scripts": {
-		"dev": "vite --host",
-		"build.iife": "vite build -c vite.iife.config.js",
-		"build.mod": "vite build -c vite.mod.config.js",
-		"build.site": "vite build -c vite.site.config.js",
-		"build": "tsc && yarn build.iife && yarn build.mod && yarn build.site && yarn doc",
-		"doc": "typedoc --readme none --excludePrivate --excludeInternal --out docs/typedoc --entryPoints src/Nanosplash.ts src/types.d.ts",
-		"doc.watch": "yarn doc --watch",
-		"serve": "vite preview"
-	},
-	"devDependencies": {
-		"@vitejs/plugin-vue": "^1.9.3",
-		"@vue/compiler-sfc": "^3.2.20",
-		"autoprefixer": "^10.3.7",
-		"cssnano": "^5.0.8",
-		"postcss": "^8.3.9",
-		"sass": "^1.43.2",
-		"typedoc": "^0.22.6",
-		"typescript": "^4.4.4",
-		"vite": "^2.6.10",
-		"vite-plugin-singlefile": "^0.5.1"
-	}
+  "name": "nanosplash",
+  "description": "The simple, 2KB loading screen",
+  "version": "2.2.4",
+  "author": {
+    "name": "Isak K. Hauge",
+    "email": "isakhauge@gmail.com",
+    "url": "https://no.linkedin.com/in/isakhauge"
+  },
+  "keywords": [
+    "loading",
+    "loader",
+    "screen",
+    "splash",
+    "nano",
+    "nanosplash",
+    "small",
+    "tiny",
+    "es",
+    "esm",
+    "ts",
+    "typescript",
+    "iife",
+    "cdn",
+    "vite"
+  ],
+  "homepage": "https://isakhauge.github.io/nanosplash",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/isakhauge/nanosplash.git"
+  },
+  "license": "MIT",
+  "main": "./dist/module/nanosplash.es.js",
+  "module": "./dist/module/nanosplash.es.js",
+  "source": "./src/Nanosplash.ts",
+  "unpkg": "./dist/iife/nanosplash.iife.js",
+  "style": "./dist/module/style.css",
+  "exports": {
+    ".": {
+      "import": "./dist/module/nanosplash.es.js",
+      "require": "./dist/module/nanosplash.cjs.js",
+      "default": "./dist/module/nanosplash.es.js"
+    }
+  },
+  "types": "./src/types.d.ts",
+  "scripts": {
+    "dev": "vite --host",
+    "build.iife": "vite build -c vite.iife.config.js",
+    "build.mod": "vite build -c vite.mod.config.js",
+    "build.site": "vite build -c vite.site.config.js",
+    "build": "tsc && yarn build.iife && yarn build.mod && yarn build.site && yarn doc",
+    "doc": "typedoc --readme none --excludePrivate --excludeInternal --out docs/typedoc --entryPoints src/Nanosplash.ts src/types.d.ts",
+    "doc.watch": "yarn doc --watch",
+    "serve": "vite preview",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "@types/jsdom": "^16.2.13",
+    "@vitejs/plugin-vue": "^1.9.3",
+    "@vue/compiler-sfc": "^3.2.20",
+    "autoprefixer": "^10.3.7",
+    "cssnano": "^5.0.8",
+    "jest": "^27.3.1",
+    "jsdom": "^18.0.0",
+    "postcss": "^8.3.9",
+    "sass": "^1.43.2",
+    "ts-jest": "^27.0.7",
+    "ts-node": "^10.3.0",
+    "typedoc": "^0.22.6",
+    "typescript": "^4.4.4",
+    "vite": "^2.6.10",
+    "vite-plugin-singlefile": "^0.5.1"
+  }
 }
