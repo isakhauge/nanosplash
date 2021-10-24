@@ -20,12 +20,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
-
-      - name: Run a one-line script
-        run: echo My first Github Action!
 
       - name: Install npm packages
         run: yarn install
