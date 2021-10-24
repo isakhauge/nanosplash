@@ -195,7 +195,11 @@ class Nanosplash {
       writable: false
     });
     invokeOn(window, () => fitToParent(this.mainElement), ["resize", "scroll"]);
-    Nanosplash.checkStyleResources();
+    try {
+      Nanosplash.checkStyleResources();
+    } catch (exception) {
+      console.error(exception);
+    }
   }
   configure(config) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
