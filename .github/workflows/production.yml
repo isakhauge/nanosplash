@@ -22,6 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GitHub_PAT }}
+          # ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install npm packages
         run: yarn install
@@ -48,4 +51,4 @@ jobs:
           git config user.email github-actions@github.com
           git add .
           git commit -m "Github Actions CI: Build Project for Production"
-          git push origin production
+          git push
