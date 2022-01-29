@@ -57,8 +57,6 @@
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "@types/jsdom": "^16.2.14",
-    "@vitejs/plugin-vue": "^2.1.0",
-    "@vue/compiler-sfc": "^3.2.29",
     "autoprefixer": "^10.4.2",
     "cssnano": "^5.0.16",
     "jest": "^27.4.7",
@@ -69,7 +67,6 @@
     "ts-node": "^10.4.0",
     "typedoc": "^0.22.11",
     "typescript": "^4.5.5",
-    "vite": "^2.7.13",
-    "vite-plugin-singlefile": "^0.6.3"
+    "vite": "^2.7.13"
   }
 }
