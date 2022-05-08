@@ -1,68 +1,43 @@
-// Keyframe animations:
-@keyframes pulse
-    from
-        transform: scale(1)
-    to
-        transform: scale(1.1)
+$z-index-regular: 1
+$z-index-fullscreen: 2
+$bg-color: rgba(White, 0.8)
 
-@keyframes spin
-    from
-        transform: rotate(0deg)
-    to
-        transform: rotate(360deg)
+%blur
+  filter: blur(5px)
+  overflow: hidden
 
-.nanosplash-container
-    // Base of container
-    position: absolute
-    flex-direction: column
-    justify-content: center
-    align-items: center
-    z-index: 1
-    border-radius: inherit
-    overflow: inherit
+.ns-wrapper
+  position: relative
 
-    // When container is hidden
-    &[hidden="true"]
-        display: none
-    // When container is visible
-    &:not([hidden="true"])
-        display: flex
+.ns-fs
+  top: 0
+  left: 0
+  position: fixed
+  min-width: 100%
+  min-height: 100vh
+  z-index: $z-index-fullscreen
 
-    // Standardized blur modes:
-    &[data-blur="none"]:not([hidden="true"]) ~ *
-        filter: blur(0)
-    &[data-blur="light"]:not([hidden="true"]) ~ *
-        filter: blur(2px)
-    &[data-blur="medium"]:not([hidden="true"]) ~ *
-        filter: blur(4px)
-    &[data-blur="heavy"]:not([hidden="true"]) ~ *
-        filter: blur(10px)
+// Fullscreen content blur
+body .ns-fs ~ *, .ns-blur
+  @extend %blur
 
-    // Loading text
-    .nanosplash-text
-        text-rendering: optimizeLegibility
-        -moz-osx-font-smoothing: grayscale
-        font-smoothing: antialiased
-        -webkit-font-smoothing: antialiased
-        text-shadow:  0 0 2px rgba(0, 0, 0, 0.2)
-    
-    // Splash image
-    img.nanosplash-img
-        margin-bottom: 40px
+.ns-window
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  display: flex
+  position: absolute
+  align-items: center
+  justify-content: center
+  z-index: $z-index-regular
+  background-color: $bg-color
 
-    // Standardized splash image animations:
-    &[data-splash-animation="pulse"] > img
-        animation-name: pulse
-        animation-duration: 300ms
-        animation-direction: alternate
-        animation-iteration-count: infinite
-    &[data-splash-animation="spin"] > img
-        animation-name: spin
-        animation-duration: 700ms
-        animation-iteration-count: infinite
-        animation-timing-function: linear
+.ns-img
+  max-width: 9rem
+  max-height: 9rem
+  margin-bottom: 1rem
 
-    // Style exception when container is the direct child of body
-    body > &:not([hidden="true"])
-        height: 100vh
-        width: 100%
+.ns-text
+  color: #333
+  text-align: center

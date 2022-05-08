@@ -3,10 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/svg+xml" href="favicon.svg" />
-		<link
-			href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
-			rel="stylesheet"
-		/>
+		<script src="https://cdn.tailwindcss.com"></script>
 		<link href="https://cdn.lineicons.com/3.0/lineicons.css" rel="stylesheet" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Nanosplash</title>
@@ -15,421 +12,63 @@
 		<meta name="author" content="Isak Hauge" />
 	</head>
 	<body class="flex flex-col justify-between">
-		<main class="bg-gray-100 flex-grow">
-			<div id="title" class="bg-gray-800">
-				<section class="pt-6 pb-2 md:py-12 text-white">
-					<div
-						class="
-							absolute
-							top-2
-							left-2
-							uppercase
-							bg-gray-600
-							text-white
-							pill
-							font-mono
-							tracking-wider
-							rounded
-						"
-					>
-						Title section
-					</div>
-					<div class="px-10 flex flex-col justify-center items-center">
-						<span class="animate-spin mb-3 md:mb-6 text-6xl md:text-7xl"
-							>🍩</span
-						>
-						<h1 class="text-3xl md:text-4xl">Nanosplash</h1>
-						<h2 class="text-lg md:text-xl md:mt-1 font-thin">
-							The tiny loading screen
-						</h2>
-						<div
-							class="
-								mt-3
-								md:mt-6
-								text-xs
-								sm:text-sm
-								font-mono
-								p-2
-								bg-gray-700
-								rounded
-							"
-						>
-							loading.show(<span class="text-green-400">text</span
-							>).inside(<span class="text-green-400">element</span>)
-						</div>
-					</div>
-				</section>
-				<section class="py-3 bg-gray-800">
-					<div class="flex flex-col space-y-2">
-						<div class="flex space-x-2 justify-center">
-							<img src="https://badgen.net/npm/v/nanosplash" />
-							<img src="https://badgen.net/npm/types/nanosplash" />
-							<img src="https://badgen.net/npm/dw/nanosplash" />
-						</div>
-						<div class="flex space-x-2 justify-center">
-							<img src="https://badgen.net/bundlephobia/min/nanosplash" />
-							<img
-								src="https://badgen.net/bundlephobia/tree-shaking/nanosplash"
-							/>
-						</div>
-					</div>
-				</section>
+		<div class="w-100 min-h-screen flex flex-col justify-center items-center">
+			<div class="text-3xl">Nanosplash</div>
+			<div class="mt-3">Small. Simple. Reliable.</div>
+			<div class="flex flex-col space-y-2 my-10">
+				<div class="flex space-x-2 justify-center">
+					<img src="https://badgen.net/npm/v/nanosplash" />
+					<img src="https://badgen.net/npm/types/nanosplash" />
+					<img src="https://badgen.net/npm/dw/nanosplash" />
+				</div>
+				<div class="flex space-x-2 justify-center">
+					<img src="https://badgen.net/bundlephobia/min/nanosplash" />
+					<img
+							src="https://badgen.net/bundlephobia/tree-shaking/nanosplash"
+					/>
+				</div>
 			</div>
-			<section class="flex flex-col items-center py-10 md:pt-16 md:pb-10">
-				<div
-					class="
-						text-center text-xl
-						md:text-2xl
-						font-light
-						text-gray-600
-						flex
-						justify-center
-						mb-2
-						md:mb-3
-					"
-				>
-					API reference documentation
+			<div class="text-white bg-slate-700 p-3 rounded shadow-xl font-mono text-sm">ns.show('text').inside('#myDiv')</div>
+		</div>
+		<div class="grid grid-cols-2 gap-1">
+			<div id="a" class="p-20 bg-slate-100 flex flex-col items-center">
+				<div class="text-xl mb-10">Give user progress feedback</div>
+				<div class="text-white bg-slate-800 p-5 rounded-lg shadow-2xl font-mono text-sm">
+					ns.img(src).progress(<br>
+					&nbsp;&nbsp;[promise1, 'Loading A'],<br>
+					&nbsp;&nbsp;[promise2, 'Loading B'],<br>
+					&nbsp;&nbsp;[promise3, 'Loading C'],<br>
+					).inside('#myDiv')
 				</div>
-				<div
-					class="text-center text-gray-500 flex font-light justify-center mb-6"
-				>
-					Please visit the&nbsp;<a
-						href="/nanosplash/typedoc/index.html"
-						class="text-blue-400"
-						>documentation</a
-					>
+			</div>
+			<div id="b" class="p-20 bg-slate-100 flex flex-col items-center">
+				<div class="text-xl mb-10">Handle async functions</div>
+				<div class="text-white bg-slate-800 p-5 rounded-lg shadow-2xl font-mono text-sm">
+					ns.while(promise).show('Loading ...').inside('#myDiv')
 				</div>
-				<div class="container px-10">
-					<div
-						class="
-							text-center text-xl
-							md:text-2xl
-							font-light
-							text-gray-600
-							flex
-							justify-center
-							mb-2
-							md:mb-3
-						"
-					>
-						Demo
-					</div>
-					<div class="text-center text-gray-500 flex font-light justify-center">
-						Play around with Nanosplash using the<br />
-						controls below. The demo serves as a<br />
-						showcase of what it has to offer.
-					</div>
+			</div>
+			<div id="c" class="p-20 bg-slate-100 flex flex-col items-center">
+				<div class="text-xl mb-10">Display fullscreen</div>
+				<div class="text-white bg-slate-800 p-5 rounded-lg shadow-2xl font-mono text-sm">
+					const splash = ns.show('Fullscreen text')<br>
+					splash.moveTo('#myDiv')<br>
+					splash.remove()
 				</div>
-			</section>
-			<section class="flex flex-col items-center pt-0 pb-10 md:pt-0 md:pb-20">
-				<div class="container px-10 md:max-w-3xl">
-					<div class="flex flex-col mb-5">
-						<label for="splash-src" class="text-gray-600 mb-2"
-							>Splash image URL</label
-						>
-						<input
-							type="text"
-							name="splash-src"
-							id="splash-src"
-							value="doughnut.png"
-							class="
-								py-3
-								px-4
-								text-gray-400
-								bg-white
-								appearance-none
-								rounded-lg
-							"
-						/>
-					</div>
-					<div class="grid sm:grid-cols-1 md:grid-cols-2 gap-5">
-						<div class="flex flex-col">
-							<label class="text-gray-600 mb-2" for="anim">Animation</label>
-							<select
-								class="
-									py-3
-									px-4
-									text-gray-400
-									bg-white
-									cursor-pointer
-									appearance-none
-									rounded-lg
-								"
-								name="anim"
-								id="anim"
-							>
-								<option value="none" selected disabled>Choose animation</option>
-								<option value="none">None</option>
-								<option value="pulse">Pulse</option>
-								<option value="spin">Spin</option>
-							</select>
-						</div>
-						<div class="flex flex-col">
-							<label class="text-gray-600 mb-2" for="elem"
-								>Show inside element</label
-							>
-							<select
-								class="
-									py-3
-									px-4
-									text-gray-400
-									bg-white
-									cursor-pointer
-									appearance-none
-									rounded-lg
-								"
-								name="elem"
-								id="elem"
-							>
-								<option value="none" selected disabled>Choose location</option>
-								<option value="body">Fullscreen (3s)</option>
-								<option value="#title">Title section</option>
-								<option value="#col1">Column 1</option>
-								<option value="#col2">Column 2</option>
-								<option value="#col3">Column 3</option>
-							</select>
-						</div>
-						<div class="flex flex-col">
-							<label class="text-gray-600 mb-2" for="text">Loading text</label>
-							<input
-								class="
-									py-3
-									px-4
-									appearance-none
-									rounded-lg
-									bg-white
-									text-gray-400
-								"
-								type="text"
-								name="text"
-								id="text"
-								value="Loading assets ..."
-							/>
-						</div>
-						<div class="flex flex-col">
-							<label class="text-gray-600 mb-2" for="show"
-								>Display loading screen</label
-							>
-							<div
-								id="show"
-								class="
-									bg-purple-900
-									text-gray-300
-									cursor-pointer
-									py-3
-									px-4
-									rounded-lg
-								"
-							>
-								Show loading screen
-							</div>
-						</div>
-					</div>
+			</div>
+			<div id="d" class="p-20 bg-slate-100 flex flex-col items-center">
+				<div class="text-xl mb-10">Display multiple, independent instances</div>
+				<div class="text-white bg-slate-800 p-5 rounded-lg shadow-2xl font-mono text-sm">
+					ns.img(src).show('Loading component A').inside('#a')<br>
+					ns.show('Loading component A').inside('#b')<br>
+					ns.show('Loading component A').inside('#c')<br>
+					<br><br>
+					ns.hide() // Removes instances in a FIFO manner.<br>
+					ns.hideAll() // Removes all instances.
 				</div>
-			</section>
-			<section class="flex flex-col items-center pb-20">
-				<div class="container px-10">
-					<div class="grid sm:grid-cols-1 lg:grid-cols-3 gap-10">
-						<div id="col1" class="bg-white rounded-2xl shadow-lg">
-							<div class="relative p-8 rounded-2xl">
-								<div
-									class="
-										absolute
-										top-2
-										left-2
-										uppercase
-										bg-gray-500
-										text-white
-										pill
-										font-mono
-										tracking-wider
-										rounded
-									"
-								>
-									Column 1
-								</div>
-								<div class="text-4xl text-center">
-									<i class="lni lni-bolt-alt"></i>
-								</div>
-								<div class="text-xl font-medium my-6 text-center">
-									Tiny and lightning fast
-								</div>
-								<div>It is only 6kB in size, and it's lightning fast.</div>
-							</div>
-						</div>
-						<div id="col2" class="bg-white rounded-2xl shadow-lg">
-							<div class="relative p-8 rounded-2xl">
-								<div
-									class="
-										absolute
-										top-2
-										left-2
-										uppercase
-										bg-gray-500
-										text-white
-										pill
-										font-mono
-										tracking-wider
-										rounded
-									"
-								>
-									Column 2
-								</div>
-								<div class="text-4xl text-center">
-									<i class="lni lni-code"></i>
-								</div>
-								<div class="text-xl font-medium my-6 text-center">
-									Vanilla JS
-								</div>
-								<div>
-									Written from the ground up in vanilla JavaScript and comes
-									without any libraries.
-								</div>
-							</div>
-						</div>
-						<div id="col3" class="bg-white rounded-2xl shadow-lg">
-							<div class="relative p-8 rounded-2xl">
-								<div
-									class="
-										absolute
-										top-2
-										left-2
-										uppercase
-										bg-gray-500
-										text-white
-										pill
-										font-mono
-										tracking-wider
-										rounded
-									"
-								>
-									Column 3
-								</div>
-								<div class="text-4xl text-center">
-									<i class="lni lni-grid-alt"></i>
-								</div>
-								<div class="text-xl font-medium my-6 text-center">
-									ESM + CJS
-								</div>
-								<div>
-									Nanosplash comes in both ES and CJS modules, making it easy
-									for you to import it into your code.
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-		</main>
+			</div>
+		</div>
 		<footer>
-			<section class="py-4 flex justify-center flex-grow-0">
-				<div class="container mx-5">
-					<div class="flex space-x-3 justify-center items-center text-gray-600">
-						<div class="text-2xl">
-							<i class="lni lni-github-original"></i>
-						</div>
-						<div>
-							Developed by
-							<a
-								class="text-purple-400 hover:text-purple-500"
-								href="https://github.com/isakhauge"
-								target="_blank"
-								>Isak Hauge</a
-							>
-						</div>
-					</div>
-				</div>
-			</section>
 			<script type="module" src="/src/main.ts"></script>
-
-			<!-- Demo -->
-			<script>
-				const ref = function (v) {
-					return document.querySelector(v)
-				}
-
-				// Elements
-				const textSplashElem = ref('#splash-src')
-				const selectAnimElem = ref('#anim')
-				const selectDestinationElem = ref('#elem')
-				const textElem = ref('#text')
-				const showBtn = ref('#show')
-
-				const cache = {
-					animation: 'none',
-					domSelector: 'body',
-					text: textElem.value,
-					showNextTime: true,
-				}
-
-				const text = (function (postfix) {
-					return {
-						show: 'Show ' + postfix,
-						hide: 'Hide ' + postfix,
-					}
-				})('loading screen')
-
-				const display = function () {
-					const doughnutSrc =
-						'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/doughnut_1f369.png'
-					showBtn.innerText = 'Hide loading screen'
-					cache.showNextTime = false
-					const isDoughnut = textSplashElem.value === 'doughnut.png'
-					const splashSrc = isDoughnut ? doughnutSrc : textSplashElem.value
-					const text = textElem.value
-					const anim = selectAnimElem.value
-					const elem = selectDestinationElem.value
-					loading
-						.configure({
-							splash: { animation: cache.animation, src: splashSrc },
-						})
-						.show(cache.text)
-						.inside(cache.domSelector)
-				}
-
-				const hide = function () {
-					showBtn.innerText = 'Show loading screen'
-					cache.showNextTime = true
-					loading.hide()
-				}
-
-				const onSelectAnim = function ({ target }) {
-					cache.animation = target.value
-				}
-				const onSelectDestination = function ({ target }) {
-					cache.domSelector = target.value
-				}
-				const onInputText = function ({ target }) {
-					cache.text = target.value
-				}
-				const onClickBtn = function () {
-					if (cache.showNextTime) {
-						display()
-						const isBody = cache.domSelector === 'body'
-						if (isBody) {
-							setTimeout(hide, 3000)
-						}
-					} else {
-						hide()
-					}
-				}
-
-				selectAnimElem.addEventListener('input', onSelectAnim)
-				selectDestinationElem.addEventListener('input', onSelectDestination)
-				textElem.addEventListener('input', onInputText)
-				showBtn.addEventListener('click', onClickBtn)
-			</script>
-
-			<!-- Nanosplash -->
-			<script>
-				window.addEventListener('load', () => {
-					window.loading.configure({
-						splash: {
-							src: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/doughnut_1f369.png',
-						},
-					})
-				})
-			</script>
 		</footer>
 		<style>
 			body {

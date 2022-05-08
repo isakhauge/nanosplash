@@ -1,6 +1,2 @@
-import { Nanosplash } from './Nanosplash'
-
-const windowExists = window && window instanceof Window
-if (windowExists) {
-	new Nanosplash().install()
-}
+import {Nanosplash} from "./Core/Nanosplash";
+window.addEventListener('load', () => window.ns = new Nanosplash())
