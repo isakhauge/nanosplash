@@ -1,375 +1,285 @@
-class Exception extends Error {
-  constructor(message) {
-    super(message);
-    this.name = this.constructor.name;
-  }
-  getName() {
-    return this.constructor.name;
-  }
-}
-class IllegalArgumentException extends Exception {
-  constructor(message) {
-    super(message);
-  }
-}
-class InvalidDestinationException extends Exception {
-  constructor(message) {
-    super(message);
-  }
-}
-class MissingResourceException extends Exception {
-  constructor(message) {
-    super(message);
-  }
-}
-const ref = (cssSelector) => document.querySelector(cssSelector);
-const refAll = (cssSelector) => Array.from(document.querySelectorAll(cssSelector));
-const create = (tag, options) => {
-  var _a;
-  const element = document.createElement(tag);
-  if (options) {
-    element.id || (element.id = options.id + "");
-    element.className || (element.className = options.className + "");
-    (_a = options.attributes) == null ? void 0 : _a.filter((v) => v.value).forEach(({ key, value }) => setAttribute(element, key, value));
-    if (options.content) {
-      if (typeof options.content === "string") {
-        element.innerText = options.content;
-      } else {
-        element.append(options.content);
-      }
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
     }
-  }
-  return element;
+  return a;
 };
-const display = (node, show) => {
-  node.hidden = !show;
-  if (show) {
-    removeAttribute(node, "hidden");
-  } else {
-    setAttribute(node, "hidden", "true");
-  }
-};
-const move = (node) => ({
-  to: (targetNode, asFirstChild) => {
-    const children = Array.from(targetNode.childNodes);
-    const noChildren = children.length < 1;
-    if (noChildren || !asFirstChild) {
-      targetNode.appendChild(node);
-      return;
-    }
-    const firstChild = children[0];
-    targetNode.insertBefore(node, firstChild);
-  }
-});
-const fitToParent = (node) => {
-  const parent = node.parentNode;
-  if (parent) {
-    ((domRect) => {
-      const unit = "px";
-      const parentIsBody = parent === document.body;
-      let left, top, width, height;
-      if (parentIsBody) {
-        left = scrollX + unit;
-      } else {
-        left = 0 + unit;
-      }
-      if (parentIsBody) {
-        top = scrollY + unit;
-      } else {
-        top = 0 + unit;
-      }
-      if (parentIsBody) {
-        width = "100%";
-      } else {
-        width = domRect.width + unit;
-      }
-      if (parentIsBody) {
-        height = "100vh";
-      } else {
-        height = domRect.height + unit;
-      }
-      setStyle(node, "left", left);
-      setStyle(node, "top", top);
-      setStyle(node, "width", width);
-      setStyle(node, "height", height);
-    })(parent.getBoundingClientRect());
-  }
-};
-const invokeOn = (dispatcher, handler, events) => (([addEventListenerLegacy, addEventListener]) => {
-  events.forEach((event) => {
-    if (addEventListenerLegacy) {
-      addEventListenerLegacy(`on${event}`, handler);
-    } else {
-      addEventListener(event, handler, true);
-    }
-  });
-})([dispatcher.attachEvent, dispatcher.addEventListener]);
-const isElementOrNode = (value) => {
-  return value instanceof Element || value instanceof Node;
-};
-const isFunction = (value) => {
-  return value && {}.toString.call(value) === "[object Function]";
-};
-const setStyle = (node, prop, value) => {
-  node.style[prop] = value;
-};
-const setAttribute = (node, key, value) => {
-  node.setAttribute(key, value);
-};
-const removeAttribute = (node, key) => {
-  node.removeAttribute(key);
-};
-class NanosplashRepository {
-  static makeMainElement() {
-    const mainElement = create("div", {
-      className: "nanosplash-container",
-      attributes: [
-        {
-          key: "data-splash-animation",
-          value: this.DEFAULT.SPLASH_ANIMATION
-        }
-      ]
-    });
-    mainElement.style.backgroundColor = this.DEFAULT.BACKGROUND_COLOR;
-    return mainElement;
-  }
-  static makeSplashElement() {
-    const splashElement = create("img", {
-      className: "nanosplash-img",
-      attributes: [
-        { key: "src", value: null },
-        { key: "alt", value: "Nanosplash indicator" }
-      ]
-    });
-    return splashElement;
-  }
-  static makeTextElement() {
-    return create("div", {
-      className: "nanosplash-text",
-      content: this.DEFAULT.TEXT
-    });
-  }
-}
-NanosplashRepository.DEFAULT = {
-  DESTINATION_NODE: document.body,
-  TEXT: "Loading ...",
-  TEXT_FONT: '"Arial", sans-serif',
-  TEXT_WEIGHT: "medium",
-  TEXT_COLOR: "#555",
-  TEXT_SIZE: "26px",
-  SPLASH_WIDTH: "100px",
-  SPLASH_HEIGHT: "auto",
-  SPLASH_ANIMATION: "pulse",
-  BACKGROUND_COLOR: "rgba(255, 255, 255, 0.90)",
-  BACKGROUND_BLUR: "light"
-};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 var style = "";
-class Nanosplash {
-  constructor(config) {
-    var _a, _b, _c, _d, _e;
-    this.cache = {
-      parentPosition: ""
+function get(selector) {
+  return document.querySelector(selector);
+}
+function move(source, destination, asFirstChild = false) {
+  if (source && destination) {
+    destination.hasChildNodes() && asFirstChild ? destination.insertBefore(source, destination.firstChild) : destination.appendChild(source);
+  }
+}
+const mk = (tag) => document.createElement(tag);
+function addClass(node, ...classes) {
+  node.classList.add(...classes);
+}
+function setAttr(node, attribute, value) {
+  node.setAttribute(attribute, value);
+}
+class NanosplashRepository {
+  static destinationToNode(destination) {
+    if (typeof destination === "string") {
+      const element = get(destination);
+      if (!element) {
+        throw new Error(`No match with ${destination}`);
+      }
+      return element;
+    } else if (destination instanceof Node) {
+      return destination;
+    }
+    throw new Error("Destination argument must string or Node");
+  }
+  static createContextualApiObject(splash) {
+    const ctx = {
+      getId: () => splash.getId(),
+      remove: () => splash.delete(),
+      moveTo: (selector) => splash.moveTo(selector),
+      getText: () => splash.getText(),
+      setText: (text) => splash.setText(text),
+      getImgSrc: () => splash.getImgSrc(),
+      setImgSrc: (src) => splash.setImgSrc(src)
     };
-    this.defaultText = (_b = (_a = config == null ? void 0 : config.default) == null ? void 0 : _a.text) != null ? _b : NanosplashRepository.DEFAULT.TEXT;
-    this.defaultDestination = Nanosplash.getDestinationElement((_d = (_c = config == null ? void 0 : config.default) == null ? void 0 : _c.destination) != null ? _d : NanosplashRepository.DEFAULT.DESTINATION_NODE);
-    this.mainElement = NanosplashRepository.makeMainElement();
-    this.splashElement = NanosplashRepository.makeSplashElement();
-    this.textElement = NanosplashRepository.makeTextElement();
-    this.setDefaultStyles();
-    const splashSrc = (_e = config == null ? void 0 : config.splash) == null ? void 0 : _e.src;
-    if (splashSrc) {
-      this.setSplashSource(splashSrc);
-      move(this.splashElement).to(this.mainElement);
-    }
-    move(this.textElement).to(this.mainElement);
-    move(this.mainElement).to(this.defaultDestination, true);
-    display(this.mainElement, false);
-    fitToParent(this.mainElement);
-    if (config) {
-      this.configure(config);
-    }
-  }
-  install() {
-    Object.defineProperty(window, "loading", {
-      value: this,
-      writable: false
-    });
-    invokeOn(window, () => fitToParent(this.mainElement), ["resize", "scroll"]);
-    try {
-      Nanosplash.checkStyleResources();
-    } catch (exception) {
-      console.error(exception);
-    }
-  }
-  configure(config) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
-    if ((_a = config == null ? void 0 : config.default) == null ? void 0 : _a.destination) {
-      this.defaultDestination = Nanosplash.getDestinationElement(config.default.destination);
-    }
-    this.defaultText || (this.defaultText = (_b = config.default) == null ? void 0 : _b.text);
-    if ((_c = config.text) == null ? void 0 : _c.family) {
-      this.setTextFontFamily(config.text.family);
-    }
-    if ((_d = config.text) == null ? void 0 : _d.weight) {
-      this.setTextWeight(config.text.weight);
-    }
-    if ((_e = config.text) == null ? void 0 : _e.color) {
-      this.setTextColor(config.text.color);
-    }
-    if ((_f = config.text) == null ? void 0 : _f.size) {
-      this.setTextSize(config.text.size);
-    }
-    if ((_g = config.background) == null ? void 0 : _g.color) {
-      this.setBackgroundColor(config.background.color);
-    }
-    if ((_h = config.background) == null ? void 0 : _h.blur) {
-      this.setBackgroundBlur(config.background.blur);
-    }
-    if (config.splash) {
-      if ((_i = config.splash) == null ? void 0 : _i.src) {
-        const hasSplashElement = this.mainElement.contains(this.splashElement);
-        if (!hasSplashElement) {
-          move(this.splashElement).to(this.mainElement, true);
-        }
-        this.setSplashSource(config.splash.src);
+    return __spreadProps(__spreadValues({}, ctx), {
+      inside: (selector) => {
+        splash.moveTo(selector);
+        return ctx;
       }
-      if ((_j = config.splash) == null ? void 0 : _j.width) {
-        this.setSplashWidth(config.splash.width);
-      }
-      if ((_k = config.splash) == null ? void 0 : _k.height) {
-        this.setSplashHeight(config.splash.height);
-      }
-      if ((_l = config.splash) == null ? void 0 : _l.animation) {
-        this.setSplashAnimation(config.splash.animation);
-      }
-    } else {
-      display(this.splashElement, false);
-    }
-    return this;
-  }
-  show(text) {
-    this.setText(text != null ? text : NanosplashRepository.DEFAULT.TEXT);
-    display(this.mainElement, true);
-    const during = (task) => {
-      return task.finally(() => this.hide());
-    };
-    return {
-      inside: (destination) => {
-        this.restoreParentPosition();
-        const element = Nanosplash.getDestinationElement(destination);
-        move(this.mainElement).to(element, true);
-        fitToParent(this.mainElement);
-        this.setParentPositionToRelative();
-        return { during };
-      },
-      during
-    };
-  }
-  hide() {
-    this.restoreParentPosition();
-    display(this.mainElement, false);
-    this.setText(this.defaultText);
-    move(this.mainElement).to(this.defaultDestination, true);
-    fitToParent(this.mainElement);
-  }
-  setDefaultStyles() {
-    this.setTextFontFamily(NanosplashRepository.DEFAULT.TEXT_FONT);
-    this.setTextWeight(NanosplashRepository.DEFAULT.TEXT_WEIGHT);
-    this.setTextColor(NanosplashRepository.DEFAULT.TEXT_COLOR);
-    this.setTextSize(NanosplashRepository.DEFAULT.TEXT_SIZE);
-    this.setSplashWidth(NanosplashRepository.DEFAULT.SPLASH_WIDTH);
-    this.setSplashHeight(NanosplashRepository.DEFAULT.SPLASH_HEIGHT);
-    this.setSplashAnimation(NanosplashRepository.DEFAULT.SPLASH_ANIMATION);
-    this.setBackgroundColor(NanosplashRepository.DEFAULT.BACKGROUND_COLOR);
-    this.setBackgroundBlur(NanosplashRepository.DEFAULT.BACKGROUND_BLUR);
-  }
-  doIfParentExist(callback) {
-    ((parent) => {
-      if (parent) {
-        callback(parent);
-      }
-    })(this.mainElement.parentElement);
-  }
-  setParentPosition(position) {
-    this.doIfParentExist((parent) => {
-      setStyle(parent, "position", position);
     });
   }
-  cacheParentPosition() {
-    this.doIfParentExist((parent) => {
-      this.cache.parentPosition = parent.style.position;
-    });
+}
+class SplashInstance {
+  constructor(ns, text, imgSrc) {
+    var _a;
+    this.nsRootElement = mk("div");
+    this.nsWrapperElement = mk("div");
+    this.nsWindowElement = mk("div");
+    this.nsContentElement = mk("div");
+    this.nsImageElement = mk("img");
+    this.nsTextElement = mk("div");
+    this.id = Math.random().toString(36).substring(2);
+    this.nsInstance = ns;
+    this.nsTextElement.innerText = text;
+    this.imgSrc = imgSrc;
+    this.nsImageElement.src = (_a = this.imgSrc) != null ? _a : "";
+    this.nsImageElement.alt = Nanosplash.APP_NAME;
+    this.assembleNSComponent();
+    this.setImgSrc(imgSrc);
   }
-  restoreParentPosition() {
-    this.setParentPosition(this.cache.parentPosition);
+  assignCSSClasses() {
+    addClass(this.nsContentElement, "ns-container");
+    addClass(this.nsWrapperElement, "ns-blur");
+    addClass(this.nsImageElement, "ns-img");
+    addClass(this.nsTextElement, "ns-text");
+    addClass(this.nsWindowElement, "ns", "ns-window");
+    addClass(this.nsRootElement, "ns-wrapper");
   }
-  setParentPositionToRelative() {
-    this.cacheParentPosition();
-    this.setParentPosition("relative");
+  assembleElementStructure() {
+    this.nsContentElement.append(this.nsImageElement, this.nsTextElement);
+    this.nsWindowElement.append(this.nsContentElement);
+    this.nsRootElement.append(this.nsWrapperElement, this.nsWindowElement);
+  }
+  assembleNSComponent() {
+    this.nsRootElement.id = this.getId();
+    setAttr(this.nsRootElement, "data-ctx", "nanosplash");
+    this.assembleElementStructure();
+    this.assignCSSClasses();
+  }
+  getId() {
+    return this.id;
+  }
+  getText() {
+    return this.nsTextElement.innerText;
   }
   setText(text) {
-    this.textElement.innerText = text;
+    this.nsTextElement.innerText = text;
+    return this;
   }
-  setTextFontFamily(fontFamily) {
-    setStyle(this.textElement, "fontFamily", fontFamily);
+  getImgSrc() {
+    return this.imgSrc;
   }
-  setTextWeight(fontWeight) {
-    setStyle(this.textElement, "fontWeight", fontWeight);
+  setImgSrc(src) {
+    this.nsImageElement.src = src != null ? src : "";
+    this.nsImageElement.style.display = src ? "block" : "none";
+    this.assembleElementStructure();
+    return this;
   }
-  setTextColor(color) {
-    setStyle(this.textElement, "color", color);
+  cleanup() {
+    const currentParent = this.nsRootElement.parentElement;
+    if (currentParent) {
+      this.restoreDOMStructure(currentParent);
+    }
   }
-  setTextSize(fontSize) {
-    setStyle(this.textElement, "fontSize", fontSize);
+  resetFullscreenAttributes() {
+    setAttr(this.nsRootElement, "style", "");
+    this.nsRootElement.classList.remove("ns-fs");
   }
-  setSplashSource(src) {
-    this.splashElement.src = src;
-    display(this.splashElement, true);
+  moveWithRegularStrategy(targetNode) {
+    const targetParentNode = targetNode.parentNode;
+    if (targetParentNode) {
+      this.restoreDOMStructure(targetParentNode);
+      targetParentNode.replaceChild(this.nsRootElement, targetNode);
+      this.nsWrapperElement.appendChild(targetNode);
+    }
   }
-  setSplashWidth(width) {
-    setStyle(this.splashElement, "width", width);
+  moveWithFullscreenStrategy() {
+    this.nsRootElement.classList.add("ns-fs");
+    move(this.nsRootElement, document.body, true);
   }
-  setSplashHeight(height) {
-    setStyle(this.splashElement, "height", height);
-  }
-  setSplashAnimation(animation) {
-    setAttribute(this.mainElement, "data-splash-animation", animation);
-  }
-  setBackgroundColor(color) {
-    setStyle(this.mainElement, "backgroundColor", color);
-  }
-  setBackgroundBlur(blurMode) {
-    setAttribute(this.mainElement, "data-blur", blurMode);
-  }
-  static checkStyleResources() {
-    window.addEventListener("load", async function() {
-      const hrefElements = refAll('link[href*="nanosplash"]');
-      const nanosplashFilter = (v) => /\.nanosplash/.test(v.innerText);
-      const styleElements = refAll("style").filter(nanosplashFilter);
-      const hasRequiredCss = hrefElements.length > 0 || styleElements.length > 0;
-      if (!hasRequiredCss) {
-        throw new MissingResourceException("Missing the Nanosplash CSS");
-      }
-    });
-  }
-  static getDestinationElement(destination) {
-    const isString = typeof destination === "string";
-    const isCallback = isFunction(destination);
-    const isElement = isElementOrNode(destination);
-    let destinationNode;
-    if (isString) {
-      destinationNode = ref(destination);
-    } else if (isCallback) {
-      destinationNode = destination();
-    } else if (isElement) {
-      destinationNode = destination;
+  moveTo(destination) {
+    this.cleanup();
+    const targetNode = NanosplashRepository.destinationToNode(destination);
+    const targetIsBody = targetNode === document.body;
+    if (targetIsBody) {
+      this.moveWithFullscreenStrategy();
     } else {
-      throw new IllegalArgumentException();
+      this.resetFullscreenAttributes();
+      this.moveWithRegularStrategy(targetNode);
     }
-    if (!destinationNode) {
-      throw new InvalidDestinationException("Destination element is falsy");
-    }
-    return destinationNode;
+    this.assembleNSComponent();
+  }
+  forEachWrappedNode(callback) {
+    Array.from(this.nsWrapperElement.childNodes).forEach(callback);
+  }
+  restoreDOMStructure(parentNode) {
+    this.forEachWrappedNode((child) => parentNode.insertBefore(child, this.nsRootElement));
+  }
+  removeElementsFromDOM() {
+    [
+      this.nsTextElement,
+      this.nsImageElement,
+      this.nsContentElement,
+      this.nsWrapperElement,
+      this.nsWindowElement,
+      this.nsRootElement
+    ].forEach((v) => v.remove());
+  }
+  delete() {
+    this.cleanup();
+    this.removeElementsFromDOM();
+    this.nsInstance.delete(this);
   }
 }
+class NanosplashFactory {
+  static ensureInstance(splash, ns, text, imgSrc) {
+    var _a;
+    if (!splash) {
+      splash = new SplashInstance(ns, text, imgSrc);
+    }
+    return splash.setText(text).setImgSrc((_a = splash.getImgSrc()) != null ? _a : imgSrc);
+  }
+  static createImgFunction(ns, splash) {
+    return (src) => {
+      splash = NanosplashFactory.ensureInstance(splash, ns, "", src);
+      return {
+        show: NanosplashFactory.createShowFunction(ns, splash),
+        progress: NanosplashFactory.createProgressFunction(ns, splash),
+        while: NanosplashFactory.createWhileFunction(ns, splash)
+      };
+    };
+  }
+  static createShowFunction(ns, splash) {
+    return (text) => {
+      splash = NanosplashFactory.ensureInstance(splash, ns, text);
+      ns.instances.set(splash.getId(), splash);
+      splash.moveTo(document.body);
+      return NanosplashRepository.createContextualApiObject(splash);
+    };
+  }
+  static createProgressFunction(ns, splash) {
+    return (...jobs) => {
+      splash = NanosplashFactory.ensureInstance(splash, ns, "");
+      splash.moveTo(document.body);
+      (async () => {
+        for (const [_, [job, text]] of jobs.entries()) {
+          splash.setText(text);
+          await job;
+        }
+        splash.delete();
+      })();
+      return NanosplashRepository.createContextualApiObject(splash);
+    };
+  }
+  static createWhileFunction(ns, splash) {
+    return (asyncTask) => {
+      splash = NanosplashFactory.ensureInstance(splash, ns, "");
+      return {
+        show(text) {
+          ns.instances.set(splash.getId(), splash);
+          splash.moveTo(document.body);
+          splash.setText(text);
+          asyncTask.finally(() => splash.delete());
+          return NanosplashRepository.createContextualApiObject(splash);
+        }
+      };
+    };
+  }
+}
+class Nanosplash {
+  constructor() {
+    this.instances = /* @__PURE__ */ new Map();
+  }
+  img(src) {
+    return NanosplashFactory.createImgFunction(this, new SplashInstance(this, "", src))(src);
+  }
+  show(text) {
+    return NanosplashFactory.createShowFunction(this, new SplashInstance(this, text))(text);
+  }
+  progress(...jobs) {
+    return NanosplashFactory.createProgressFunction(this, new SplashInstance(this, ""))(...jobs);
+  }
+  while(asyncTask) {
+    return NanosplashFactory.createWhileFunction(this, new SplashInstance(this, ""))(asyncTask);
+  }
+  fifoIterate(callback) {
+    let i = 0;
+    const instanceEntries = this.instances.entries();
+    for (const [id, splashInstance] of instanceEntries) {
+      if (!callback(id, splashInstance, i++)) {
+        break;
+      }
+    }
+  }
+  delete(splashInstance) {
+    this.instances.delete(splashInstance.getId());
+  }
+  hideAll() {
+    this.instances.forEach((instance) => instance.delete());
+  }
+  hide(id) {
+    if (id) {
+      const splashInstance = this.instances.get(id);
+      if (splashInstance) {
+        splashInstance.delete();
+      } else {
+        throw new Error(`Could not find element with id: ${id}`);
+      }
+    } else {
+      this.fifoIterate((_, splashInstance, i) => {
+        const remove = i === 0;
+        if (remove) {
+          splashInstance.delete();
+        }
+        return remove;
+      });
+    }
+  }
+}
+Nanosplash.APP_NAME = "Nanosplash";
 export { Nanosplash };

@@ -1,6 +1,8 @@
-import { ref, refAll } from './dom'
+import {addClass, get, mk, move, setAttr} from "./dom";
 
-test('Single reference function', () => {
+const resetDOM = () => document.body.innerHTML = ''
+
+test('Single DOM get function', () => {
 	const element = document.createElement('div')
 	element.id = 'a'
 	element.classList.add('b')
@@ -8,22 +10,61 @@ test('Single reference function', () => {
 	document.body.append(element)
 
 	const selector = 'div#a.b[data-ref="c"]'
-	const refElement = ref(selector)
+	const refElement = get<HTMLDivElement>(selector)
 
 	expect(refElement?.outerHTML).toBe(element.outerHTML)
+
+	resetDOM()
 })
 
-test('Multiple reference function', () => {
+test('Move Element from origin to destination', () => {
 	const html = `
-		<ul>
-			<li></li>
-			<li></li>
-			<li></li>
-		</ul>
+		<div id="main">
+			<div id="a">
+			    <div id="b">
+			        <div id="c">
+		                <div id="first"></div>
+                    </div>
+                </div>
+            </div>
+		</div>
 	`
 	document.body.innerHTML = html
-	const selector = 'body ul > li'
-	const refs = refAll(selector)
 
-	expect(refs.length).toBe(3)
+    const main = get('#main') as HTMLDivElement
+    const first = get('#first') as HTMLDivElement
+    const b = get('#b') as HTMLDivElement
+    const c = get('#c') as HTMLDivElement
+
+    move(b, main)
+    move(c, main)
+    move(first, main, true)
+
+    const ids = Array.from(main.children).map((v => v.id))
+
+	expect(ids.join(',')).toBe('first,a,b,c')
+
+	resetDOM()
+})
+
+test('Make HTML Element', () => {
+	document.body.appendChild(mk('span'))
+	const span = document.body.children.item(0) as Node
+	expect(span instanceof HTMLSpanElement).toBe(true)
+	resetDOM()
+})
+
+test('Add CSS classes', () => {
+	const div = mk('div')
+	addClass(div, 'ns-1', 'ns-2', 'ns-3')
+	expect(div.classList.toString()).toBe('ns-1 ns-2 ns-3')
+	resetDOM()
+})
+
+test('Set Node attribute', () => {
+	const div = mk('div')
+	const attr = {name: 'data-test', value: 'success'}
+	setAttr(div, attr.name, attr.value)
+	expect(div.getAttribute(attr.name)).toBe(attr.value)
+	resetDOM()
 })

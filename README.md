@@ -72,8 +72,8 @@ const Nanosplash = require('nanosplash')
 If you are importing Nanosplash through modules, invoking the `install` function is essential in order to make it react to changes in the browser.
 
 ```js
-const nanosplash = new Nanosplash()
-nanosplash.install()
+const ns = new Nanosplash()
+window.ns = ns
 ```
 
 ## Basic usage
@@ -81,13 +81,17 @@ nanosplash.install()
 ### Display the loading screen
 
 ```js
-loading.show('Loading the good stuff ...')
+ns.show('Loading the good stuff ...')
 ```
 
 ### Hide the loading screen
 
 ```js
-loading.hide()
+// Hide one at a time
+ns.hide()
+
+// Hide all
+ns.hideAll()
 ```
 
 ## Advanced usage
@@ -96,19 +100,12 @@ loading.hide()
 
 ```js
 // Use CSS selector string
-loading.show('Loading component ...').inside('#my-element')
+ns.show('Loading component ...').inside('#my-element')
 
 // Use HTMLElement objects directly
-loading
+ns
 	.show('Loading component ...')
 	.inside(document.getElementById('my-element'))
-
-// Use functions returning HTMLElement objects
-loading
-	.show('Loading component ...')
-	.inside(() =>
-		Array.from(document.querySelectorAll()).filter((element.id = 'my-element'))[0]
-	)
 ```
 
 ### Combine Nanosplash with async tasks
@@ -117,8 +114,13 @@ loading
 const task1 = new Promise(r => setTimeout(() => r(), 3000))
 const task2 = async () => await getDataFromApi()
 
-loading.show('Loading resources ...').during(task1)
-loading.show('Fetching table data ...').inside('#my-table').during(task2)
+ns.while(task1).show('Loading resources ...')
+ns.while(task2).show('Fetching table data ...').inside('#my-table')
+
+ns.progress(
+    [task1, 'Loading data from API ...'],
+    [task2, 'Processing data ...']
+).inside('#my-table')
 ```
 
 <hr>
