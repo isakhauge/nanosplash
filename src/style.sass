@@ -3,8 +3,8 @@ $z-index-fullscreen: 2
 $bg-color: rgba(White, 0.8)
 
 %blur
-  filter: blur(5px)
   overflow: hidden
+  filter: blur(5px)
 
 .ns-wrapper
   position: relative
@@ -40,4 +40,19 @@ body .ns-fs ~ *, .ns-blur
 
 .ns-text
   color: #333
+  display: flex
   text-align: center
+  &::after
+    margin-left: 0.25em
+    content: '\00a0\00a0\00a0'
+    animation: anim 1s infinite
+
+@keyframes anim
+  0%
+    content: '\00a0\00a0\00a0'
+  30%
+    content: '.\00a0\00a0'
+  60%
+    content: '..\00a0'
+  90%
+    content: '...'
