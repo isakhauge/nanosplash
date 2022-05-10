@@ -17,7 +17,8 @@ export class NanosplashRepository {
         throw new Error('Destination argument must string or Node')
     }
 
-    public static createContextualApiObject(splash: SplashInstance): ContextualAPIObject {
+    public static createContextualApiObject(splash: SplashInstance): ContextualAPIObject
+    {
         const ctx = {
             getId: () => splash.getId(),
             remove: () => splash.delete(),

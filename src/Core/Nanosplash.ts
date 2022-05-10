@@ -71,4 +71,10 @@ export class Nanosplash implements NanosplashInterface {
             })
         }
     }
+
+    public getSplashesWithDestinationNode(node: HTMLElement): SplashInstance[]
+    {
+        const fnSameDestinationNode = (v: SplashInstance) => v.getDestination() === node
+        return Array.from(this.instances.values()).filter(fnSameDestinationNode)
+    }
 }

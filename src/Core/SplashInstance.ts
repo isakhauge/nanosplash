@@ -1,19 +1,20 @@
 import {Destination} from "../types";
 import {Nanosplash} from "./Nanosplash";
 import {addClass, mk, move, setAttr} from "../utilities/dom";
-import {NanosplashRepository} from "../repositories/NanosplashRepository";
 import {IdentityInterface} from "../Interfaces/IdentityInterface";
+import {NanosplashRepository} from "../repositories/NanosplashRepository";
 
 export class SplashInstance implements IdentityInterface {
     private readonly id: string
     private imgSrc: string | undefined
     private readonly nsInstance: Nanosplash
+    private destinationNode: HTMLElement | undefined
     private readonly nsRootElement: HTMLDivElement = mk('div') as HTMLDivElement
-    private readonly nsWrapperElement: HTMLDivElement = mk('div') as HTMLDivElement
+    private readonly nsTextElement: HTMLDivElement = mk('div') as HTMLDivElement
     private readonly nsWindowElement: HTMLDivElement = mk('div') as HTMLDivElement
+    private readonly nsWrapperElement: HTMLDivElement = mk('div') as HTMLDivElement
     private readonly nsContentElement: HTMLDivElement = mk('div') as HTMLDivElement
     private readonly nsImageElement: HTMLImageElement = mk('img') as HTMLImageElement
-    private readonly nsTextElement: HTMLDivElement = mk('div') as HTMLDivElement
 
     public constructor(ns: Nanosplash, text: string, imgSrc?: string) {
         this.id = Math.random().toString(36).substring(2)
@@ -80,7 +81,12 @@ export class SplashInstance implements IdentityInterface {
         return this
     }
 
-    private cleanup(): void
+    public getDestination(): HTMLElement | undefined
+    {
+        return this.destinationNode
+    }
+
+    private cleanAndRestore(): void
     {
         const currentParent = this.nsRootElement.parentElement
         if (currentParent) {
@@ -110,17 +116,36 @@ export class SplashInstance implements IdentityInterface {
         move(this.nsRootElement, document.body, true)
     }
 
+    private replaceSplashInstancesHavingSameDestination(destinationNode: HTMLElement): void
+    {
+        const fnNotSameInstance = (v: SplashInstance) => v.getId() !== this.getId()
+        const fnDelete = (v: SplashInstance) => v.delete()
+        this.nsInstance.getSplashesWithDestinationNode(destinationNode).filter(fnNotSameInstance).forEach(fnDelete)
+    }
+
     public moveTo(destination: Destination): void
     {
-        this.cleanup()
-        const targetNode = NanosplashRepository.destinationToNode(destination)
-        const targetIsBody = targetNode === document.body
+        // Clean up and restore previous location if any.
+        this.cleanAndRestore()
+
+        // Convert the destination into a DOM Node
+        this.destinationNode = NanosplashRepository.destinationToNode(destination)
+
+        // Replace splash instances having the same destination node
+        this.replaceSplashInstancesHavingSameDestination(this.destinationNode)
+
+        // Assess whether the destination node is the Document body or not
+        const targetIsBody = this.destinationNode === document.body
+
+
         if (targetIsBody) {
             this.moveWithFullscreenStrategy()
         } else {
             this.resetFullscreenAttributes()
-            this.moveWithRegularStrategy(targetNode)
+            this.moveWithRegularStrategy(this.destinationNode)
         }
+
+        // Assemble the Nanosplash component
         this.assembleNSComponent()
     }
 
@@ -147,7 +172,7 @@ export class SplashInstance implements IdentityInterface {
     }
 
     public delete(): void {
-        this.cleanup()
+        this.cleanAndRestore()
         this.removeElementsFromDOM()
         this.nsInstance.delete(this)
     }
