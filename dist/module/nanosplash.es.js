@@ -68,11 +68,11 @@ class SplashInstance {
   constructor(ns, text, imgSrc) {
     var _a;
     this.nsRootElement = mk("div");
-    this.nsWrapperElement = mk("div");
+    this.nsTextElement = mk("div");
     this.nsWindowElement = mk("div");
+    this.nsWrapperElement = mk("div");
     this.nsContentElement = mk("div");
     this.nsImageElement = mk("img");
-    this.nsTextElement = mk("div");
     this.id = Math.random().toString(36).substring(2);
     this.nsInstance = ns;
     this.nsTextElement.innerText = text;
@@ -120,7 +120,10 @@ class SplashInstance {
     this.assembleElementStructure();
     return this;
   }
-  cleanup() {
+  getDestination() {
+    return this.destinationNode;
+  }
+  cleanAndRestore() {
     const currentParent = this.nsRootElement.parentElement;
     if (currentParent) {
       this.restoreDOMStructure(currentParent);
@@ -142,15 +145,21 @@ class SplashInstance {
     this.nsRootElement.classList.add("ns-fs");
     move(this.nsRootElement, document.body, true);
   }
+  replaceSplashInstancesHavingSameDestination(destinationNode) {
+    const fnNotSameInstance = (v) => v.getId() !== this.getId();
+    const fnDelete = (v) => v.delete();
+    this.nsInstance.getSplashesWithDestinationNode(destinationNode).filter(fnNotSameInstance).forEach(fnDelete);
+  }
   moveTo(destination) {
-    this.cleanup();
-    const targetNode = NanosplashRepository.destinationToNode(destination);
-    const targetIsBody = targetNode === document.body;
+    this.cleanAndRestore();
+    this.destinationNode = NanosplashRepository.destinationToNode(destination);
+    this.replaceSplashInstancesHavingSameDestination(this.destinationNode);
+    const targetIsBody = this.destinationNode === document.body;
     if (targetIsBody) {
       this.moveWithFullscreenStrategy();
     } else {
       this.resetFullscreenAttributes();
-      this.moveWithRegularStrategy(targetNode);
+      this.moveWithRegularStrategy(this.destinationNode);
     }
     this.assembleNSComponent();
   }
@@ -171,7 +180,7 @@ class SplashInstance {
     ].forEach((v) => v.remove());
   }
   delete() {
-    this.cleanup();
+    this.cleanAndRestore();
     this.removeElementsFromDOM();
     this.nsInstance.delete(this);
   }
@@ -279,6 +288,10 @@ class Nanosplash {
         return remove;
       });
     }
+  }
+  getSplashesWithDestinationNode(node) {
+    const fnSameDestinationNode = (v) => v.getDestination() === node;
+    return Array.from(this.instances.values()).filter(fnSameDestinationNode);
   }
 }
 Nanosplash.APP_NAME = "Nanosplash";
