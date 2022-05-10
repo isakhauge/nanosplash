@@ -1,7 +1,6 @@
 import {Nanosplash} from "./Core/Nanosplash";
-import {ShowInterface} from "./Interfaces/ShowInterface";
-import {InsideInterface} from "./Interfaces/InsideInterface";
 import {SplashInstance} from "./Core/SplashInstance";
+import {ShowInterface} from "./Interfaces/ShowInterface";
 import {ContextualAPIInterface} from "./Interfaces/ContextualAPIInterface";
 
 declare global {
