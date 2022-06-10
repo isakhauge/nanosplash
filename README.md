@@ -16,10 +16,14 @@
 
 ## Import via CDN (recommended)
 
-When you import the IIFE script there is no need to invoke the `install` function.
-
 ```html
 <script src="https://unpkg.com/nanosplash/dist/iife/nanosplash.iife.js">
+```
+```js
+// Install Nanosplash in the browser
+window.installNanosplash()
+// Display your first Nanosplash
+window.ns.show('Hello world')
 ```
 
 ## Install (advanced)
@@ -53,14 +57,21 @@ const Nanosplash = require('nanosplash')
 ```
 
 ### Inject Nanosplash into global scope
-
-> When imported through the CDN, the instance is already injected into the `Window` object and accessible through the global variable `loading`.
-
-If you are importing Nanosplash through modules, invoking the `install` function is essential in order to make it react to changes in the browser.
-
+#### Using CDN
 ```js
-const ns = new Nanosplash()
-window.ns = ns
+const nsOptions = {
+    spinner: true,
+    fontSize: '18px',
+}
+window.installNanosplash(nsOptions)
+```
+#### Using modules
+```js
+const nsOptions = {
+    spinner: true,
+    fontSize: '18px',
+}
+window.ns = new Nanosplash(nsOptions)
 ```
 
 ## Basic usage
@@ -68,7 +79,7 @@ window.ns = ns
 ### Display the loading screen
 
 ```js
-ns.show('Loading the good stuff ...')
+ns.show('Loading the good stuff')
 ```
 
 ### Hide the loading screen
@@ -87,26 +98,24 @@ ns.hideAll()
 
 ```js
 // Use CSS selector string
-ns.show('Loading component ...').inside('#my-element')
+ns.show('Loading component').inside('#my-element')
 
 // Use HTMLElement objects directly
-ns
-	.show('Loading component ...')
-	.inside(document.getElementById('my-element'))
+ns.show('Loading component').inside(document.getElementById('my-element'))
 ```
 
 ### Combine Nanosplash with async tasks
 
 ```js
-const task1 = new Promise(r => setTimeout(() => r(), 3000))
+const task1 = new Promise(r => setTimeout(r, 3000))
 const task2 = async () => await getDataFromApi()
 
-ns.while(task1).show('Loading resources ...')
-ns.while(task2).show('Fetching table data ...').inside('#my-table')
+ns.while(task1).show('Loading resources')
+ns.while(task2).show('Fetching table data').inside('#my-table')
 
 ns.progress(
-    [task1, 'Loading data from API ...'],
-    [task2, 'Processing data ...']
+    [task1, 'Loading data from API'],
+    [task2, 'Processing data']
 ).inside('#my-table')
 ```
 
