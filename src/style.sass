@@ -1,14 +1,17 @@
 $z-index-regular: 1
 $z-index-fullscreen: 2
+$text-color: #5a6685
 $bg-color: rgba(White, 0.8)
 
 %blur
   overflow: hidden
   filter: blur(5px)
 
+// Wraps the content replaced by Nanosplash
 .ns-wrapper
   position: relative
 
+// Only active while in fullscreen mode
 .ns-fs
   top: 0
   left: 0
@@ -17,10 +20,11 @@ $bg-color: rgba(White, 0.8)
   min-height: 100vh
   z-index: $z-index-fullscreen
 
-// Fullscreen content blur
+// Blurs the wrapped content
 body .ns-fs ~ *, .ns-blur
   @extend %blur
 
+// Nanosplash window containing image and text
 .ns-window
   top: 0
   left: 0
@@ -33,26 +37,52 @@ body .ns-fs ~ *, .ns-blur
   z-index: $z-index-regular
   background-color: $bg-color
 
+// Image
 .ns-img
-  max-width: 9rem
+  width: 9rem
   max-height: 9rem
-  margin-bottom: 1rem
+  margin-bottom: 2em
 
-.ns-text
-  color: #333
+// Text container containing text and spinner
+.ns-text-container
   display: flex
-  text-align: center
-  &::after
-    margin-left: 0.25em
-    content: '\00a0\00a0\00a0'
-    animation: anim 1s infinite
+  justify-content: center
+  align-items: center
 
-@keyframes anim
+// Text node
+.ns-text
+  display: flex
+  justify-content: center
+  color: $text-color
+
+// Spinner node
+.ns-spinner
+  display: flex
+  margin-left: 1em
+  width: 1em
+  height: 1em
+  & > svg
+    animation: Rotate 2s linear infinite
+    position: relative
+    width: inherit
+    height: inherit
+    stroke-width: 8
+  & .path
+    stroke: $text-color
+    stroke-linecap: round
+    animation: Dash 1.5s ease-in-out infinite
+
+// Spinner animations:
+@keyframes Rotate
+  100%
+    transform: rotate(360deg)
+@keyframes Dash
   0%
-    content: '\00a0\00a0\00a0'
-  30%
-    content: '.\00a0\00a0'
-  60%
-    content: '..\00a0'
-  90%
-    content: '...'
+    stroke-dasharray: 1, 150
+    stroke-dashoffset: 0
+  50%
+    stroke-dasharray: 90, 150
+    stroke-dashoffset: -35
+  100%
+    stroke-dasharray: 90, 150
+    stroke-dashoffset: -124

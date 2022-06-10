@@ -1,4 +1,4 @@
-import {get} from "../utilities/dom";
+import {addClass, get, mk} from "../utilities/dom";
 import {SplashInstance} from "../Core/SplashInstance";
 import {ContextualAPIObject, Destination} from "../types";
 
@@ -35,5 +35,17 @@ export class NanosplashRepository {
                 return ctx
             },
         }
+    }
+
+    public static createNanosplashSpinnerElement(): HTMLDivElement
+    {
+        const div = mk('div') as HTMLDivElement
+        addClass(div, 'ns-spinner')
+        div.innerHTML = `
+            <svg viewBox="0 0 50 50">
+                <circle class="path" cx="25" cy="25" r="20" fill="none"></circle>
+            </svg>
+        `
+        return div
     }
 }

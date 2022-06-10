@@ -1,4 +1,4 @@
-import {HTMLElementTag} from "../types";
+import {ElementTag} from "../types";
 
 export function get<T>(selector: string): HTMLElement | T | null {
     return document.querySelector(selector) as HTMLElement | T | null
@@ -13,7 +13,7 @@ export function move(source: Node, destination: Node, asFirstChild: boolean = fa
     }
 }
 
-export const mk = (tag: HTMLElementTag) => document.createElement(tag)
+export const mk = (tag: ElementTag) => document.createElement(tag)
 
 export function addClass(node: HTMLElement, ...classes: string[]): void
 {

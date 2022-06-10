@@ -1,4 +1,4 @@
-import {ImgFunction, ProgressFunction, ShowFunction, SplashJob, WhileFunction} from "../types";
+import {ProgressFunction, ShowFunction, SplashJob, WhileFunction} from "../types";
 import {Nanosplash} from "../Core/Nanosplash";
 import {SplashInstance} from "../Core/SplashInstance";
 import {NanosplashRepository} from "../repositories/NanosplashRepository";
@@ -15,18 +15,6 @@ export class NanosplashFactory {
             splash = new SplashInstance(ns, text, imgSrc)
         }
         return splash.setText(text).setImgSrc(splash.getImgSrc() ?? imgSrc)
-    }
-
-    public static createImgFunction(ns: Nanosplash, splash: SplashInstance | null): ImgFunction
-    {
-        return (src: string) => {
-            splash = NanosplashFactory.ensureInstance(splash, ns, '', src)
-            return {
-                show: NanosplashFactory.createShowFunction(ns, splash),
-                progress: NanosplashFactory.createProgressFunction(ns, splash),
-                while: NanosplashFactory.createWhileFunction(ns, splash)
-            }
-        }
     }
 
     public static createShowFunction(ns: Nanosplash, splash: SplashInstance | null): ShowFunction

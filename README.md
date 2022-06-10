@@ -12,23 +12,7 @@
 
 <strong>The simple, tiny loading screen</strong>
 
-> <em>No dependencies, pure JS</em>
-
-# Installation
-
-## Yarn
-
-```bash
-yarn add nanosplash
-```
-
-## NPM
-
-```bash
-npm install nanosplash
-```
-
-# Import
+# Getting started
 
 ## Import via CDN (recommended)
 
@@ -38,7 +22,12 @@ When you import the IIFE script there is no need to invoke the `install` functio
 <script src="https://unpkg.com/nanosplash/dist/iife/nanosplash.iife.js">
 ```
 
-## Modules
+## Install (advanced)
+```bash
+yarn add nanosplash
+```
+
+### Modules
 
 When including either ES or CJS modules, you need the CSS in the dist folder, whereas in the IIFE variant, everything is included. If you are using a modern bundler e.g Vite, NextJS, NuxtJS, you can import the CSS directly into your code.
 
@@ -51,21 +40,19 @@ import 'nanosplash/dist/module/style.css'
 > Full: `node_modules/nanosplash/dist/module/style.css`<br>
 > Relative: `nanosplash/dist/module/style.css`
 
-### ESM (ES modules)
+#### ESM (ES modules)
 
 ```js
 import { Nanosplash } from 'nanosplash'
 ```
 
-### CJS (CommonJS)
+#### CJS (CommonJS)
 
 ```js
 const Nanosplash = require('nanosplash')
 ```
 
-# Getting started
-
-## Inject Nanosplash into global scope
+### Inject Nanosplash into global scope
 
 > When imported through the CDN, the instance is already injected into the `Window` object and accessible through the global variable `loading`.
 

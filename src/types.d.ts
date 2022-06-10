@@ -5,6 +5,8 @@ import {ContextualAPIInterface} from "./Interfaces/ContextualAPIInterface";
 
 declare global {
 	interface Window {
+		Nanosplash: typeof Nanosplash
+		installNanosplash: (options?: NanosplashOptions) => void
 		ns: Nanosplash
 	}
 }
@@ -15,7 +17,7 @@ type SplashJob = [Promise<any>, string]
 /**
  * @internal
  */
-export type HTMLElementTag = keyof HTMLElementTagNameMap
+export type ElementTag = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMap
 
 /**
  * @internal
@@ -42,8 +44,10 @@ type ContextualAPIObject = {
 	getImgSrc: () => string | undefined,
 	setImgSrc: (src?: string) => SplashInstance
 }
+type InstanceIterationCallback = (id: string, splashInstance: SplashInstance, i: number) => boolean
 
-declare module 'nanosplash' {
-	class Nanosplash {}
-	class SplashInstance {}
+type NanosplashOptions = {
+	imgSrc?: string,
+	spinner?: boolean,
+	fontSize?: string
 }

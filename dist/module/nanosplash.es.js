@@ -17,7 +17,7 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-var style = "";
+var style = /* @__PURE__ */ (() => ".ns-blur,body .ns-fs~*{filter:blur(5px);overflow:hidden}.ns-wrapper{position:relative}.ns-fs{left:0;min-height:100vh;min-width:100%;position:fixed;top:0;z-index:2}.ns-window{align-items:center;background-color:#fffc;display:flex;height:100%;justify-content:center;left:0;position:absolute;top:0;width:100%;z-index:1}.ns-img{margin-bottom:2em;max-height:9rem;width:9rem}.ns-text-container{align-items:center}.ns-text,.ns-text-container{display:flex;justify-content:center}.ns-text{color:#5a6685}.ns-spinner{display:flex;height:1em;margin-left:1em;width:1em}.ns-spinner>svg{stroke-width:8;-webkit-animation:Rotate 2s linear infinite;animation:Rotate 2s linear infinite;height:inherit;position:relative;width:inherit}.ns-spinner .path{stroke:#5a6685;stroke-linecap:round;-webkit-animation:Dash 1.5s ease-in-out infinite;animation:Dash 1.5s ease-in-out infinite}@-webkit-keyframes Rotate{to{transform:rotate(1turn)}}@keyframes Rotate{to{transform:rotate(1turn)}}@-webkit-keyframes Dash{0%{stroke-dasharray:1,150;stroke-dashoffset:0}50%{stroke-dasharray:90,150;stroke-dashoffset:-35}to{stroke-dasharray:90,150;stroke-dashoffset:-124}}@keyframes Dash{0%{stroke-dasharray:1,150;stroke-dashoffset:0}50%{stroke-dasharray:90,150;stroke-dashoffset:-35}to{stroke-dasharray:90,150;stroke-dashoffset:-124}}\n")();
 function get(selector) {
   return document.querySelector(selector);
 }
@@ -63,12 +63,24 @@ class NanosplashRepository {
       }
     });
   }
+  static createNanosplashSpinnerElement() {
+    const div = mk("div");
+    addClass(div, "ns-spinner");
+    div.innerHTML = `
+            <svg viewBox="0 0 50 50">
+                <circle class="path" cx="25" cy="25" r="20" fill="none"></circle>
+            </svg>
+        `;
+    return div;
+  }
 }
 class SplashInstance {
   constructor(ns, text, imgSrc) {
     var _a;
     this.nsRootElement = mk("div");
     this.nsTextElement = mk("div");
+    this.nsTextContainerElement = mk("div");
+    this.nsSpinnerElement = NanosplashRepository.createNanosplashSpinnerElement();
     this.nsWindowElement = mk("div");
     this.nsWrapperElement = mk("div");
     this.nsContentElement = mk("div");
@@ -79,6 +91,8 @@ class SplashInstance {
     this.imgSrc = imgSrc;
     this.nsImageElement.src = (_a = this.imgSrc) != null ? _a : "";
     this.nsImageElement.alt = Nanosplash.APP_NAME;
+    this.nsRootElement.style.fontSize = ns.fontSize;
+    this.nsSpinnerElement.style.display = ns.showSpinner ? "flex" : "none";
     this.assembleNSComponent();
     this.setImgSrc(imgSrc);
   }
@@ -87,11 +101,14 @@ class SplashInstance {
     addClass(this.nsWrapperElement, "ns-blur");
     addClass(this.nsImageElement, "ns-img");
     addClass(this.nsTextElement, "ns-text");
+    addClass(this.nsTextContainerElement, "ns-text-container");
+    addClass(this.nsSpinnerElement, "ns-spinner");
     addClass(this.nsWindowElement, "ns", "ns-window");
     addClass(this.nsRootElement, "ns-wrapper");
   }
   assembleElementStructure() {
-    this.nsContentElement.append(this.nsImageElement, this.nsTextElement);
+    this.nsTextContainerElement.append(this.nsTextElement, this.nsSpinnerElement);
+    this.nsContentElement.append(this.nsImageElement, this.nsTextContainerElement);
     this.nsWindowElement.append(this.nsContentElement);
     this.nsRootElement.append(this.nsWrapperElement, this.nsWindowElement);
   }
@@ -172,6 +189,8 @@ class SplashInstance {
   removeElementsFromDOM() {
     [
       this.nsTextElement,
+      this.nsSpinnerElement,
+      this.nsTextContainerElement,
       this.nsImageElement,
       this.nsContentElement,
       this.nsWrapperElement,
@@ -192,16 +211,6 @@ class NanosplashFactory {
       splash = new SplashInstance(ns, text, imgSrc);
     }
     return splash.setText(text).setImgSrc((_a = splash.getImgSrc()) != null ? _a : imgSrc);
-  }
-  static createImgFunction(ns, splash) {
-    return (src) => {
-      splash = NanosplashFactory.ensureInstance(splash, ns, "", src);
-      return {
-        show: NanosplashFactory.createShowFunction(ns, splash),
-        progress: NanosplashFactory.createProgressFunction(ns, splash),
-        while: NanosplashFactory.createWhileFunction(ns, splash)
-      };
-    };
   }
   static createShowFunction(ns, splash) {
     return (text) => {
@@ -241,26 +250,34 @@ class NanosplashFactory {
   }
 }
 class Nanosplash {
-  constructor() {
+  constructor(options) {
+    var _a, _b, _c;
+    this.imgSrc = (_a = options == null ? void 0 : options.imgSrc) != null ? _a : void 0;
+    this.showSpinner = (_b = options == null ? void 0 : options.spinner) != null ? _b : false;
+    this.fontSize = (_c = options == null ? void 0 : options.fontSize) != null ? _c : "18px";
     this.instances = /* @__PURE__ */ new Map();
   }
-  img(src) {
-    return NanosplashFactory.createImgFunction(this, new SplashInstance(this, "", src))(src);
-  }
   show(text) {
-    return NanosplashFactory.createShowFunction(this, new SplashInstance(this, text))(text);
+    return NanosplashFactory.createShowFunction(this, new SplashInstance(this, text, this.imgSrc))(text);
   }
   progress(...jobs) {
-    return NanosplashFactory.createProgressFunction(this, new SplashInstance(this, ""))(...jobs);
+    return NanosplashFactory.createProgressFunction(this, new SplashInstance(this, "", this.imgSrc))(...jobs);
   }
   while(asyncTask) {
-    return NanosplashFactory.createWhileFunction(this, new SplashInstance(this, ""))(asyncTask);
+    return NanosplashFactory.createWhileFunction(this, new SplashInstance(this, "", this.imgSrc))(asyncTask);
   }
-  fifoIterate(callback) {
-    let i = 0;
-    const instanceEntries = this.instances.entries();
-    for (const [id, splashInstance] of instanceEntries) {
-      if (!callback(id, splashInstance, i++)) {
+  lifoIterate(callback) {
+    const n = this.instances.size;
+    const instances = Array.from(this.instances.values());
+    for (let i = n - 1; i >= 0; i--) {
+      console.log({
+        size: n,
+        lastIdx: n - 1,
+        currentIdx: i
+      });
+      const instance = instances[i];
+      const id = instance.getId();
+      if (!callback(id, instance, i)) {
         break;
       }
     }
@@ -280,8 +297,9 @@ class Nanosplash {
         throw new Error(`Could not find element with id: ${id}`);
       }
     } else {
-      this.fifoIterate((_, splashInstance, i) => {
-        const remove = i === 0;
+      const n = this.instances.size;
+      this.lifoIterate((_, splashInstance, i) => {
+        const remove = i === n - 1;
         if (remove) {
           splashInstance.delete();
         }

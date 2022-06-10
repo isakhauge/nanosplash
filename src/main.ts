@@ -1,2 +1,8 @@
 import {Nanosplash} from "./Core/Nanosplash";
-window.addEventListener('load', () => window.ns = new Nanosplash())
+import {NanosplashOptions} from "./types";
+window.addEventListener('load', () => {
+    window.Nanosplash = Nanosplash
+    window.installNanosplash = (options?: NanosplashOptions) => {
+        window.ns = new Nanosplash(options)
+    }
+})

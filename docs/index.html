@@ -15,8 +15,8 @@
 	</head>
 	<body class="flex flex-col justify-between">
 		<div class="w-100 min-h-screen flex flex-col justify-center items-center">
-			<div class="text-3xl">Nanosplash</div>
-			<div class="mt-3">Small. Simple. Reliable.</div>
+			<div class="text-4xl text-slate-900 drop-shadow-lg">Nanosplash</div>
+			<div class="text-pink-500 mt-3 font-mono text-sm">ns.show('text').inside('#id')</div>
 			<div class="flex flex-col space-y-2 my-10">
 				<div class="flex space-x-2 justify-center">
 					<img src="https://badgen.net/npm/v/nanosplash" />
@@ -30,13 +30,23 @@
 					/>
 				</div>
 			</div>
-			<div class="text-white bg-slate-700 p-3 rounded shadow-xl font-mono text-sm">ns.show('text').inside('#myDiv')</div>
+			<div class="flex rounded-xl text-slate-400 shadow-xl overflow-hidden">
+				<div data-copy class="p-3 bg-slate-800 text-slate-400 font-mono">
+					&lt;script src=&quot;https://unpkg.com/nanosplash/dist/iife/nanosplash.iife.js&quot;&gt;
+				</div>
+				<div id="copy" class="bg-pink-500 text-pink-200 p-3 cursor-pointer hover:text-white">Copy</div>
+			</div>
+			<div class="mt-10 flex justify-content items-center divide-x-2 text-slate-400">
+				<a href="https://www.npmjs.com/package/nanosplash" target="_blank"><i class="lni lni-npm text-4xl hover:text-pink-500 px-5"></i></a>
+				<a href="https://github.com/isakhauge/nanosplash" target="_blank"><i class="lni lni-github-original text-2xl hover:text-pink-500 px-5"></i></a>
+			</div>
+			<a class="mt-10 text-pink-300 hover:text-pink-500" href="/typedoc">API Reference Documentation</a>
 		</div>
-		<div class="grid grid-cols-2 gap-1">
+		<div class="grid grid-cols-1 xl:grid-cols-2 gap-1">
 			<div id="a" class="p-20 bg-slate-100 flex flex-col items-center">
 				<div class="text-xl mb-10">Give user progress feedback</div>
-				<div class="text-white bg-slate-800 p-5 rounded-lg shadow-2xl font-mono text-sm">
-					ns.img(src).progress(<br>
+				<div class="text-white bg-slate-800 p-5 rounded-xl shadow-2xl font-mono text-sm break-all">
+					ns.progress(<br>
 					&nbsp;&nbsp;[promise1, 'Loading A'],<br>
 					&nbsp;&nbsp;[promise2, 'Loading B'],<br>
 					&nbsp;&nbsp;[promise3, 'Loading C'],<br>
@@ -45,13 +55,13 @@
 			</div>
 			<div id="b" class="p-20 bg-slate-100 flex flex-col items-center">
 				<div class="text-xl mb-10">Handle async functions</div>
-				<div class="text-white bg-slate-800 p-5 rounded-lg shadow-2xl font-mono text-sm">
+				<div class="text-white bg-slate-800 p-5 rounded-xl shadow-2xl font-mono text-sm break-all">
 					ns.while(promise).show('Loading ...').inside('#myDiv')
 				</div>
 			</div>
 			<div id="c" class="p-20 bg-slate-100 flex flex-col items-center">
 				<div class="text-xl mb-10">Display fullscreen</div>
-				<div class="text-white bg-slate-800 p-5 rounded-lg shadow-2xl font-mono text-sm">
+				<div class="text-white bg-slate-800 p-5 rounded-xl shadow-2xl font-mono text-sm break-all">
 					const splash = ns.show('Fullscreen text')<br>
 					splash.moveTo('#myDiv')<br>
 					splash.remove()
@@ -59,19 +69,32 @@
 			</div>
 			<div id="d" class="p-20 bg-slate-100 flex flex-col items-center">
 				<div class="text-xl mb-10">Display multiple, independent instances</div>
-				<div class="text-white bg-slate-800 p-5 rounded-lg shadow-2xl font-mono text-sm">
-					ns.img(src).show('Loading component A').inside('#a')<br>
-					ns.show('Loading component A').inside('#b')<br>
-					ns.show('Loading component A').inside('#c')<br>
+				<div class="text-white bg-slate-800 p-5 rounded-xl shadow-2xl font-mono text-sm break-all">
+					ns.show('Loading component A').inside('#a')<br>
+					ns.show('Loading component B').inside('#b')<br>
+					ns.show('Loading component C').inside('#c')<br>
 					<br><br>
-					ns.hide() // Removes instances in a FIFO manner.<br>
+					ns.hide() // Removes instances in a LIFO manner.<br>
 					ns.hideAll() // Removes all instances.
 				</div>
 			</div>
 		</div>
 		<footer>
 			
+			<script>
+				document.getElementById('copy').onclick = function () {
+					const text = document.querySelector('[data-copy]').innerText
+					navigator.clipboard.writeText(text)
+					alert('Copied to clipboard!')
+				}
+				window.onload = () => {
+					setTimeout(() => {
+						window.installNanosplash({spinner: true})
+						ns.while(new Promise(r => setTimeout(r, 1000))).show('Loading')
+					}, 100)
+				}
+			</script>
 		</footer>
-		<style>body{min-height:100vh}.pill{font-size:10px;padding:.2em .5em}</style>
+		<style>body{min-height:100vh}</style>
 	</body>
 </html>
