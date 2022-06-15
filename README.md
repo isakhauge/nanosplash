@@ -17,7 +17,7 @@
 ## Import via CDN (recommended)
 
 ```html
-<script src="https://unpkg.com/nanosplash/dist/iife/nanosplash.iife.js">
+<script src="https://unpkg.com/nanosplash/dist/iife/nanosplash.iife.js"></script>
 ```
 ```js
 // Install Nanosplash in the browser

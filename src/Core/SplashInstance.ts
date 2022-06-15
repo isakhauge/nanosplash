@@ -1,5 +1,5 @@
 import {Destination} from "../types";
-import {Nanosplash} from "./Nanosplash";
+import Nanosplash from "./Nanosplash";
 import {addClass, mk, move, setAttr} from "../utilities/dom";
 import {IdentityInterface} from "../Interfaces/IdentityInterface";
 import {NanosplashRepository} from "../repositories/NanosplashRepository";
@@ -36,8 +36,8 @@ export class SplashInstance implements IdentityInterface {
         this.nsImageElement.src = this.imgSrc ?? ''
         this.nsImageElement.alt = Nanosplash.APP_NAME
 
-        this.nsRootElement.style.fontSize = ns.fontSize
-        this.nsSpinnerElement.style.display = ns.showSpinner ? 'flex' : 'none'
+        this.nsRootElement.style.fontSize = ns.getFontSize()
+        this.nsSpinnerElement.style.display = ns.spinnerIsVisible() ? 'flex' : 'none'
 
         this.assembleNSComponent()
         this.setImgSrc(imgSrc)
@@ -169,7 +169,7 @@ export class SplashInstance implements IdentityInterface {
     }
 
     /**
-     * # Move with Regular Strategy
+     * # Move With Regular Strategy
      * Moves the Nanosplash root element to the target node's position and essentially wraps the target node with the
      * Nanosplash root element.
      * @param {Node} targetNode
@@ -206,7 +206,7 @@ export class SplashInstance implements IdentityInterface {
     {
         const fnNotSameInstance = (v: SplashInstance) => v.getId() !== this.getId()
         const fnDelete = (v: SplashInstance) => v.delete()
-        this.nsInstance.getSplashesWithDestinationNode(destinationNode).filter(fnNotSameInstance).forEach(fnDelete)
+        this.nsInstance.getFromDestinationNode(destinationNode).filter(fnNotSameInstance).forEach(fnDelete)
     }
 
     /**
@@ -227,7 +227,6 @@ export class SplashInstance implements IdentityInterface {
 
         // Assess whether the destination node is the Document body or not
         const targetIsBody = this.destinationNode === document.body
-
 
         if (targetIsBody) {
             this.moveWithFullscreenStrategy()

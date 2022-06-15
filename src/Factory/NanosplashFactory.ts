@@ -1,9 +1,22 @@
-import {ProgressFunction, ShowFunction, SplashJob, WhileFunction} from "../types";
-import {Nanosplash} from "../Core/Nanosplash";
+import Nanosplash from "../Core/Nanosplash";
 import {SplashInstance} from "../Core/SplashInstance";
 import {NanosplashRepository} from "../repositories/NanosplashRepository";
+import {ProgressFunction, ShowFunction, SplashJob, WhileFunction} from "../types";
 
+/**
+ * # Nanosplash Factory
+ * @author Isak K. Hauge
+ */
 export class NanosplashFactory {
+    /**
+     * # Ensure Instance
+     * Returns and modifies the splash instance, or creates a new one.
+     * @param {SplashInstance | null} splash Splash instance
+     * @param {Nanosplash} ns Nanosplash instance
+     * @param {string} text Splash text
+     * @param {string | undefined} imgSrc Splash image URL
+     * @private
+     */
     private static ensureInstance(
         splash: SplashInstance | null,
         ns: Nanosplash,
@@ -17,6 +30,12 @@ export class NanosplashFactory {
         return splash.setText(text).setImgSrc(splash.getImgSrc() ?? imgSrc)
     }
 
+    /**
+     * # Create Show Function
+     * @param ns
+     * @param splash
+     * @return {ShowFunction} A curried function made for a specific splash instance.
+     */
     public static createShowFunction(ns: Nanosplash, splash: SplashInstance | null): ShowFunction
     {
         return (text: string) => {
@@ -27,6 +46,12 @@ export class NanosplashFactory {
         }
     }
 
+    /**
+     * # Create Progress Function
+     * @param ns
+     * @param splash
+     * @return {ProgressFunction} A curried API function made for a specific splash instance.
+     */
     public static createProgressFunction(ns: Nanosplash, splash: SplashInstance | null): ProgressFunction
     {
         return (...jobs: SplashJob[]) => {
@@ -43,6 +68,12 @@ export class NanosplashFactory {
         }
     }
 
+    /**
+     * # Create While Function
+     * @param ns
+     * @param splash
+     * @return {ProgressFunction} A curried API function made for a specific splash instance.
+     */
     public static createWhileFunction(ns: Nanosplash, splash: SplashInstance): WhileFunction
     {
         return (asyncTask: Promise<any>) => {

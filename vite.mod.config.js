@@ -10,7 +10,7 @@ export default defineConfig({
 			formats: ['es', 'cjs'],
 		},
 		outDir: 'dist/module',
-		cssCodeSplit: true,
+		cssCodeSplit: false,
 		minify: 'terser',
 		terserOptions: {
 			parse: {
@@ -28,7 +28,10 @@ export default defineConfig({
 			mangle: {
 				toplevel: true,
 				// Reserved class names
-				reserved: [],
+				reserved: [
+					'Nanosplash',
+					'SplashInstance'
+				],
 				properties: {
 					reserved: [
 						'ns',
@@ -37,9 +40,12 @@ export default defineConfig({
 						'setText',
 						'getImgSrc',
 						'setImgSrc',
+						'showSpinner',
+						'setFontSize',
+						'getFontSize',
+						'spinnerIsVisible',
 						'moveTo',
 						'delete',
-						'img',
 						'show',
 						'inside',
 						'remove',
@@ -48,6 +54,8 @@ export default defineConfig({
 						'delete',
 						'hideAll',
 						'hide',
+						'getFromDestinationNode',
+						'getDestination'
 					],
 				}
 			},

@@ -112,3 +112,5 @@ dist-ssr
 .idea/
 
 demo.html
+dist/
+docs/

@@ -2,7 +2,7 @@ import {addClass, get, mk, move, setAttr} from "./dom";
 
 const resetDOM = () => document.body.innerHTML = ''
 
-test('Single DOM get function', () => {
+test('Get DOM element function', () => {
 	const element = document.createElement('div')
 	element.id = 'a'
 	element.classList.add('b')
@@ -48,9 +48,10 @@ test('Move Element from origin to destination', () => {
 })
 
 test('Make HTML Element', () => {
-	document.body.appendChild(mk('span'))
-	const span = document.body.children.item(0) as Node
-	expect(span instanceof HTMLSpanElement).toBe(true)
+	const span = mk('span')
+	document.body.appendChild(span)
+	const spanFromDom = document.body.children.item(0) as Node
+	expect(spanFromDom instanceof HTMLSpanElement).toBe(true)
 	resetDOM()
 })
 

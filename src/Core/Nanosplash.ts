@@ -1,20 +1,22 @@
 import '../style.sass'
+import {get} from "../utilities/dom";
 import {SplashInstance} from "./SplashInstance";
-import {InstanceIterationCallback, NanosplashOptions, SplashJob} from "../types";
 import {ShowInterface} from "../Interfaces/ShowInterface";
 import {NanosplashFactory} from "../Factory/NanosplashFactory";
 import {NanosplashInterface} from "../Interfaces/NanosplashInterface";
 import {ContextualAPIInterface} from "../Interfaces/ContextualAPIInterface";
+import {InstanceIterationCallback, NanosplashOptions, SplashJob} from "../types";
 
 /**
  * # Nanosplash
  * @author Isak K. Hauge <isakhauge@gmail.com>
  */
-export class Nanosplash implements NanosplashInterface {
+class Nanosplash implements NanosplashInterface {
     public static APP_NAME = 'Nanosplash'
-    public imgSrc: string | undefined
-    public showSpinner: boolean
-    public fontSize: string
+    private static SPINNER_DEFAULT_VISIBILITY = true
+    private imgSrc: string | undefined
+    private spinner: boolean
+    private fontSize: string
     public readonly instances: Map<string, SplashInstance>
 
     /**
@@ -22,10 +24,68 @@ export class Nanosplash implements NanosplashInterface {
      * @param {NanosplashOptions | undefined} options Nanosplash options object.
      */
     public constructor(options?: NanosplashOptions) {
-        this.imgSrc = options?.imgSrc ?? undefined
-        this.showSpinner = options?.spinner ?? false
+        this.imgSrc = options?.imgSrc
+        this.spinner = (options?.spinner === undefined)
+            ? Nanosplash.SPINNER_DEFAULT_VISIBILITY
+            : options.spinner
         this.fontSize = options?.fontSize ?? '18px'
         this.instances = new Map<string, SplashInstance>()
+    }
+
+    /**
+     * # Set Image Source
+     * Set the value as undefined to display no image.
+     * @param {string | undefined} value
+     * @return Nanosplash
+     */
+    public setImgSrc(value: string | undefined): Nanosplash {
+        this.imgSrc = value
+        return this
+    }
+
+    /**
+     * # Set Spinner
+     * Control spinner visibility.
+     * @param {boolean} value
+     * @return Nanosplash
+     */
+    public showSpinner(value: boolean): Nanosplash {
+        this.spinner = value
+        return this
+    }
+
+    /**
+     * # Set Font Size
+     * @param {string} value Use CSS compatible values.
+     * @return Nanosplash
+     */
+    public setFontSize(value: string): Nanosplash {
+        this.fontSize = value
+        return this
+    }
+
+    /**
+     * # Get Image Source
+     * @return string | undefined
+     */
+    public getImgSrc(): string | undefined {
+        return this.imgSrc
+    }
+
+    /**
+     * # Spinner Is Visible
+     * @return boolean
+     */
+    public spinnerIsVisible(): boolean {
+        return this.spinner
+    }
+
+    /**
+     * # Get Font Size
+     * @return string
+     */
+    public getFontSize(): string {
+        return this.fontSize
     }
 
     /**
@@ -65,11 +125,6 @@ export class Nanosplash implements NanosplashInterface {
         const n = this.instances.size
         const instances = Array.from(this.instances.values())
         for (let i = n - 1; i >= 0; i--) {
-            console.log({
-                size: n,
-                lastIdx: n - 1,
-                currentIdx: i
-            })
             const instance = instances[i]
             const id = instance.getId()
             if (!callback(id, instance, i)) {
@@ -97,18 +152,49 @@ export class Nanosplash implements NanosplashInterface {
 
     /**
      * # Hide
-     * Delete specific Splash instance or the latest one.
-     * @param id
+     * Delete specific Splash instance or the latest one. There are three different ways of using this function.
+     *
+     * ## Use SplashInstance IDs
+     * Every new splash instance is given a unique, randomized ID. This ID is easily retrieved by using the getId
+     * method.
+     * <br>
+     * <code>
+     *     const splashInstance = ns.show('Loading');<br>
+     *     ns.hide(splashInstance.getId());
+     * </code>
+     * <br>
+     *
+     * ## Use CSS Selector
+     * Pass the selector referring to the element in which the splash instance resides.
+     * <br>
+     * <code>
+     *     ns.show('Loading').inside('#my-div');<br>
+     *     ns.hide('#my-div');
+     * </code>
+     * <br>
+     *
+     * ## Pass no argument
+     * When calling the hide method without passing arguments, it will delete the latest splash instance added to the
+     * DOM, in other words, in a LIFO fashion.<br>
+     * <code>
+     *     ns.show('Loading');<br>
+     *     ns.hide();
+     * </code>
+     * <br>
+     * @param idOrSelector This can either be a SplashInstance ID or a CSS selector referring to the element in which
+     * the instance is residing.
      */
-    public hide(id?: string): void {
-        if (id) {
-            const splashInstance = this.instances.get(id)
+    public hide(idOrSelector?: string): void {
+        if (idOrSelector) {
+            const splashInstance = this.instances.get(idOrSelector)
             if (splashInstance) {
                 splashInstance.delete()
             } else {
-                throw new Error(
-                    `Could not find element with id: ${id}`
-                )
+                Array.from(this.instances.values())
+                    .filter((splashInstance: SplashInstance) => {
+                        return splashInstance.getDestination() === get<HTMLElement>(idOrSelector)
+                    })
+                    .forEach((splashInstance: SplashInstance) => splashInstance.delete())
             }
         } else {
             const n = this.instances.size
@@ -123,13 +209,15 @@ export class Nanosplash implements NanosplashInterface {
     }
 
     /**
-     * # Get Splashes With Destination Node
+     * # Get From Destination Node
      * Returns Splash instances having the given destination node.
      * @param {HTMLElement} node
      */
-    public getSplashesWithDestinationNode(node: HTMLElement): SplashInstance[]
+    public getFromDestinationNode(node: HTMLElement): SplashInstance[]
     {
         const fnSameDestinationNode = (v: SplashInstance) => v.getDestination() === node
         return Array.from(this.instances.values()).filter(fnSameDestinationNode)
     }
 }
+
+export default Nanosplash

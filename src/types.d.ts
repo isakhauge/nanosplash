@@ -1,7 +1,8 @@
-import {Nanosplash} from "./Core/Nanosplash";
+import Nanosplash from "./Core/Nanosplash";
 import {SplashInstance} from "./Core/SplashInstance";
 import {ShowInterface} from "./Interfaces/ShowInterface";
 import {ContextualAPIInterface} from "./Interfaces/ContextualAPIInterface";
+import {NanosplashInterface} from "./Interfaces/NanosplashInterface";
 
 declare global {
 	interface Window {
@@ -11,8 +12,8 @@ declare global {
 	}
 }
 
-type Destination = Node | string
-type SplashJob = [Promise<any>, string]
+export type Destination = Node | string
+export type SplashJob = [Promise<any>, string]
 
 /**
  * @internal
@@ -24,17 +25,17 @@ export type ElementTag = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMa
  */
 type CSSProperty = keyof CSSStyleDeclaration
 
-type ShowFunction = (text: string) => ContextualAPIInterface
-type ProgressFunction = (...[]: SplashJob[]) => ContextualAPIInterface
-type WhileFunction = (asyncTask: Promise<any>) => ShowInterface
-type StrategyObject = {
+export type ShowFunction = (text: string) => ContextualAPIInterface
+export type ProgressFunction = (...[]: SplashJob[]) => ContextualAPIInterface
+export type WhileFunction = (asyncTask: Promise<any>) => ShowInterface
+export type StrategyObject = {
     show: ShowFunction,
     progress: ProgressFunction,
     while: WhileFunction
 }
-type ImgFunction = (src: string) => StrategyObject
-type InsideFunction = (selector: string) => ContextualAPIInterface
-type ContextualAPIObject = {
+
+export type InsideFunction = (selector: string) => ContextualAPIInterface
+export type ContextualAPIObject = {
 	getId: () => string,
 	inside?: InsideFunction,
 	remove: () => void
@@ -44,10 +45,13 @@ type ContextualAPIObject = {
 	getImgSrc: () => string | undefined,
 	setImgSrc: (src?: string) => SplashInstance
 }
-type InstanceIterationCallback = (id: string, splashInstance: SplashInstance, i: number) => boolean
 
-type NanosplashOptions = {
+export type InstanceIterationCallback = (id: string, splashInstance: SplashInstance, i: number) => boolean
+
+export type NanosplashOptions = {
 	imgSrc?: string,
 	spinner?: boolean,
 	fontSize?: string
 }
+
+export default Nanosplash

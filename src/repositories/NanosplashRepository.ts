@@ -3,6 +3,11 @@ import {SplashInstance} from "../Core/SplashInstance";
 import {ContextualAPIObject, Destination} from "../types";
 
 export class NanosplashRepository {
+    /**
+     * # Destination To Node
+     * Converts a Destination type into an HTMLElement.
+     * @param {Destination} destination Either a node or a CSS selector.
+     */
     public static destinationToNode(destination: Destination): HTMLElement
     {
         if (typeof destination === 'string') {
@@ -17,6 +22,11 @@ export class NanosplashRepository {
         throw new Error('Destination argument must string or Node')
     }
 
+    /**
+     * # Create Contextual API Object
+     * Creates an object containing props that adhere to the ns API.
+     * @param {SplashInstance} splash
+     */
     public static createContextualApiObject(splash: SplashInstance): ContextualAPIObject
     {
         const ctx = {
@@ -37,6 +47,10 @@ export class NanosplashRepository {
         }
     }
 
+    /**
+     * # Create Nanosplash Spinner Element
+     * Returns a DIV element wrapping an SVG element.
+     */
     public static createNanosplashSpinnerElement(): HTMLDivElement
     {
         const div = mk('div') as HTMLDivElement
