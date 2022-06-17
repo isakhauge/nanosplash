@@ -106,20 +106,22 @@
 		<footer>
 			<script type="module" src="/src/main.ts"></script>
 			<script>
-				document.getElementById('demo').onclick = function () {
-					const wait = ms => new Promise(r => setTimeout(r, ms))
-					window.ns.progress(
-						[wait(2000), 'Loading data from API'],
-						[wait(4000), 'Restructuring'],
-						[wait(6000), 'Indexing'],
-						[wait(8000), 'Give this repo a star']
-					)
-				}
-				document.getElementById('copy').onclick = function () {
-					const text = document.querySelector('[data-copy]').innerText
-					navigator.clipboard.writeText(text)
-					alert('Copied to clipboard!')
-				}
+				window.addEventListener('load',  () => {
+					document.getElementById('demo').onclick = function () {
+						const wait = ms => new Promise(r => setTimeout(r, ms))
+						window.ns.progress(
+								[wait(2000), 'Loading data from API'],
+								[wait(4000), 'Restructuring'],
+								[wait(6000), 'Indexing'],
+								[wait(8000), 'Give this repo a star']
+						)
+					}
+					document.getElementById('copy').onclick = function () {
+						const text = document.querySelector('[data-copy]').innerText
+						navigator.clipboard.writeText(text)
+						alert('Copied to clipboard!')
+					}
+				})
 			</script>
 		</footer>
 		<style>

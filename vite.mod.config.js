@@ -14,12 +14,12 @@ export default defineConfig({
 		minify: 'terser',
 		terserOptions: {
 			parse: {
-				bare_returns: true,
+				bare_returns: false,
 			},
 			compress: {
 				keep_fargs: false,
 				keep_fnames: false,
-				keep_classnames: false,
+				keep_classnames: true,
 				module: true,
 				passes: 3,
 				toplevel: true,
@@ -28,10 +28,7 @@ export default defineConfig({
 			mangle: {
 				toplevel: true,
 				// Reserved class names
-				reserved: [
-					'Nanosplash',
-					'SplashInstance'
-				],
+				reserved: [],
 				properties: {
 					reserved: [
 						'ns',
@@ -59,14 +56,8 @@ export default defineConfig({
 					],
 				}
 			},
-			format: {
-				// wrap_iife: true
-			},
-			sourceMap: {
-				// source map options
-			},
 			ecma: 2015, // specify one of: 5, 2015, 2016, etc.
-			keep_classnames: false,
+			keep_classnames: true,
 			keep_fnames: false,
 			ie8: false,
 			module: true,
