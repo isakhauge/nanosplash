@@ -24,10 +24,13 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      
+
       # Checkout branch
       - name: Checkout
-        run: git checkout production
+        run: |
+          git checkout production
+          git fetch
+          git pull origin
 
       - name: Install npm packages
         run: yarn install
