@@ -1,4 +1,5 @@
-import {addClass, get, mk, move, setAttr} from "./dom";
+import {test} from "vitest"
+import {addClass, get, mk, move, setAttr} from "../utilities/dom"
 
 const resetDOM = () => document.body.innerHTML = ''
 
