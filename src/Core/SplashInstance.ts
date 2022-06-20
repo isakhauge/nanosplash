@@ -2,7 +2,7 @@ import {Destination} from "../types";
 import Nanosplash from "./Nanosplash";
 import {addClass, mk, move, setAttr} from "../Utilities/dom";
 import {IdentityInterface} from "../Interfaces/IdentityInterface";
-import {NanosplashRepository} from "../Repository/NanosplashRepository";
+import {NanosplashRepository} from "../Repositories/NanosplashRepository";
 
 /**
  * SplashInstance
