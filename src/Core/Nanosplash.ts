@@ -4,14 +4,12 @@ import {SplashInstance} from "./SplashInstance";
 import {ShowInterface} from "../Interfaces/ShowInterface";
 import {NanosplashFactory} from "../Factory/NanosplashFactory";
 import {NanosplashInterface} from "../Interfaces/NanosplashInterface";
-import {ContextualAPIInterface} from "../Interfaces/ContextualAPIInterface";
 import {
+    ContextualAPIObject,
     Destination,
     InstanceIterationCallback,
     NanosplashOptions,
-    ProgressFunction,
-    ShowFunction,
-    SplashJob, WhileFunction
+    SplashJob,
 } from "../types";
 
 /**
@@ -21,8 +19,6 @@ import {
 class Nanosplash implements NanosplashInterface {
     public static APP_NAME = 'Nanosplash'
     private static SPINNER_DEFAULT_VISIBILITY = true
-    private static THROW_EXCEPTIONS = false
-    private throwExceptions: boolean
     private imgSrc: string | undefined
     private spinner: boolean
     private fontSize: string
@@ -33,9 +29,6 @@ class Nanosplash implements NanosplashInterface {
      * @param {NanosplashOptions | undefined} options Nanosplash options object.
      */
     public constructor(options?: NanosplashOptions) {
-        this.throwExceptions = (options?.debug === undefined)
-            ? Nanosplash.THROW_EXCEPTIONS
-            : options.debug
         this.imgSrc = options?.imgSrc
         this.spinner = (options?.spinner === undefined)
             ? Nanosplash.SPINNER_DEFAULT_VISIBILITY
@@ -104,25 +97,23 @@ class Nanosplash implements NanosplashInterface {
      * # Show
      * @param {string} text
      */
-    public show(text: string): ShowFunction {
+    public show(text: string): ContextualAPIObject {
         return NanosplashFactory.createShowFunction(this, new SplashInstance(this, text, this.imgSrc))(text)
     }
 
     /**
      * # Progress
      * @param {SplashJob[]} jobs An array or list of Splash jobs.
-     * @return ContextualAPIInterface
      */
-    public progress(...jobs: SplashJob[]): ProgressFunction {
+    public progress(...jobs: SplashJob[]): ContextualAPIObject {
         return NanosplashFactory.createProgressFunction(this, new SplashInstance(this, '', this.imgSrc))(...jobs)
     }
 
     /**
      * # While
      * @param {Promise<any>} asyncTask An asynchronous function or Promise.
-     * @return ContextualAPIInterface
      */
-    public while(asyncTask: Promise<any>): WhileFunction {
+    public while(asyncTask: Promise<any>): ShowInterface {
         return NanosplashFactory.createWhileFunction(this, new SplashInstance(this, '', this.imgSrc))(asyncTask)
     }
 

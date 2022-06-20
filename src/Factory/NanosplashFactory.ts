@@ -1,7 +1,8 @@
 import Nanosplash from "../Core/Nanosplash";
 import {SplashInstance} from "../Core/SplashInstance";
 import {NanosplashRepository} from "../repositories/NanosplashRepository";
-import {ProgressFunction, ShowFunction, SplashJob, WhileFunction} from "../types";
+import {ContextualAPIObject, ProgressFunction, ShowFunction, SplashJob, WhileFunction} from "../types";
+import {ShowInterface} from "../Interfaces/ShowInterface";
 
 /**
  * # Nanosplash Factory
@@ -38,7 +39,7 @@ export class NanosplashFactory {
      */
     public static createShowFunction(ns: Nanosplash, splash: SplashInstance | null): ShowFunction
     {
-        return (text: string) => {
+        return (text: string): ContextualAPIObject => {
             splash = NanosplashFactory.ensureInstance(splash, ns, text)
             ns.instances.set(splash.getId(), splash)
             splash.moveTo(document.body)
@@ -76,7 +77,7 @@ export class NanosplashFactory {
      */
     public static createWhileFunction(ns: Nanosplash, splash: SplashInstance): WhileFunction
     {
-        return (asyncTask: Promise<any>) => {
+        return (asyncTask: Promise<any>): ShowInterface => {
             splash = NanosplashFactory.ensureInstance(splash, ns, '')
             return {
                 show(text: string) {
