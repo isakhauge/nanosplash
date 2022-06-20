@@ -11,6 +11,8 @@ import {
     NanosplashOptions,
     SplashJob,
 } from "../types";
+import Exception from "../Exceptions/Exception";
+import IllegalArgumentException from "../Exceptions/IllegalArgumentException";
 
 /**
  * # Nanosplash
@@ -193,37 +195,50 @@ class Nanosplash implements NanosplashInterface {
      * the instance is residing.
      */
     public hide(ref?: Destination): void {
-        if (ref) {
-            const isString = typeof ref === 'string'
-            const isNode = ref instanceof Node
-            const deleteInstancesWhereDestination = (destination: Destination) => {
-                Array.from(this.instances.values())
-                    .filter((v: SplashInstance) => v.getDestination() === destination)
-                    .forEach((v: SplashInstance) => v.delete())
-            }
+        try {
+            if (ref) {
+                const isString = typeof ref === 'string'
+                const isNode = ref instanceof Node
+                const deleteInstancesWhereDestination = (destination: Destination) => {
+                    Array.from(this.instances.values())
+                        .filter((v: SplashInstance) => v.getDestination() === destination)
+                        .forEach((v: SplashInstance) => v.delete())
+                }
 
-            if (isString) {
-                const splashInstance = this.instances.get(ref)
-                if (splashInstance) {
-                    splashInstance.delete()
-                } else {
-                    const element = get<HTMLElement>(ref)
-                    if (element) {
-                        deleteInstancesWhereDestination(element)
+                if (isString) {
+                    const splashInstance = this.instances.get(ref)
+                    if (splashInstance) {
+                        splashInstance.delete()
+                        return
+                    } else {
+                        const element = get<HTMLElement>(ref)
+                        if (element) {
+                            deleteInstancesWhereDestination(element)
+                        }
+                        throw new Exception(`The CSS selector (${ref}) points to a non-existing DOM element.`)
                     }
+                } else if (isNode) {
+                    deleteInstancesWhereDestination(ref)
+                } else {
+                    throw new IllegalArgumentException(
+                        'The ref argument must be either a string or Node',
+                        ref
+                    )
                 }
-            } else if (isNode) {
-                deleteInstancesWhereDestination(ref)
+            } else {
+                const n = this.instances.size
+                this.lifoIterate((_: string, splashInstance: SplashInstance, i: number) => {
+                    const remove = i === n - 1
+                    if (remove) {
+                        splashInstance.delete()
+                    }
+                    return remove
+                })
             }
-        } else {
-            const n = this.instances.size
-            this.lifoIterate((_: string, splashInstance: SplashInstance, i: number) => {
-                const remove = i === n - 1
-                if (remove) {
-                    splashInstance.delete()
-                }
-                return remove
-            })
+        } catch (e) {
+            if (this.debug) {
+                console.warn(e)
+            }
         }
     }
 

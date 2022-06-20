@@ -239,6 +239,7 @@ export class SplashInstance implements IdentityInterface {
             // Assemble the Nanosplash component
             this.assembleNSComponent()
         } catch (e) {
+            this.delete()
             if (this.nsInstance.debug) {
                 console.warn(e)
             }
