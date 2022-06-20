@@ -1,11 +1,16 @@
 import '../style.sass'
-import {get} from "../utilities/dom";
+import {get} from "../Utilities/dom";
 import {SplashInstance} from "./SplashInstance";
 import {ShowInterface} from "../Interfaces/ShowInterface";
 import {NanosplashFactory} from "../Factory/NanosplashFactory";
 import {NanosplashInterface} from "../Interfaces/NanosplashInterface";
-import {ContextualAPIInterface} from "../Interfaces/ContextualAPIInterface";
-import {InstanceIterationCallback, NanosplashOptions, SplashJob} from "../types";
+import {
+    ContextualAPIObject,
+    Destination,
+    InstanceIterationCallback,
+    NanosplashOptions,
+    SplashJob,
+} from "../types";
 
 /**
  * # Nanosplash
@@ -92,23 +97,21 @@ class Nanosplash implements NanosplashInterface {
      * # Show
      * @param {string} text
      */
-    public show(text: string): ContextualAPIInterface {
+    public show(text: string): ContextualAPIObject {
         return NanosplashFactory.createShowFunction(this, new SplashInstance(this, text, this.imgSrc))(text)
     }
 
     /**
      * # Progress
      * @param {SplashJob[]} jobs An array or list of Splash jobs.
-     * @return ContextualAPIInterface
      */
-    public progress(...jobs: SplashJob[]): ContextualAPIInterface {
+    public progress(...jobs: SplashJob[]): ContextualAPIObject {
         return NanosplashFactory.createProgressFunction(this, new SplashInstance(this, '', this.imgSrc))(...jobs)
     }
 
     /**
      * # While
      * @param {Promise<any>} asyncTask An asynchronous function or Promise.
-     * @return ContextualAPIInterface
      */
     public while(asyncTask: Promise<any>): ShowInterface {
         return NanosplashFactory.createWhileFunction(this, new SplashInstance(this, '', this.imgSrc))(asyncTask)
@@ -181,20 +184,31 @@ class Nanosplash implements NanosplashInterface {
      *     ns.hide();
      * </code>
      * <br>
-     * @param idOrSelector This can either be a SplashInstance ID or a CSS selector referring to the element in which
+     * @param ref This can either be a SplashInstance ID or a CSS selector referring to the element in which
      * the instance is residing.
      */
-    public hide(idOrSelector?: string): void {
-        if (idOrSelector) {
-            const splashInstance = this.instances.get(idOrSelector)
-            if (splashInstance) {
-                splashInstance.delete()
-            } else {
+    public hide(ref?: Destination): void {
+        if (ref) {
+            const isString = typeof ref === 'string'
+            const isNode = ref instanceof Node
+            const deleteInstancesWhereDestination = (destination: Destination) => {
                 Array.from(this.instances.values())
-                    .filter((splashInstance: SplashInstance) => {
-                        return splashInstance.getDestination() === get<HTMLElement>(idOrSelector)
-                    })
-                    .forEach((splashInstance: SplashInstance) => splashInstance.delete())
+                    .filter((v: SplashInstance) => v.getDestination() === destination)
+                    .forEach((v: SplashInstance) => v.delete())
+            }
+
+            if (isString) {
+                const splashInstance = this.instances.get(ref)
+                if (splashInstance) {
+                    splashInstance.delete()
+                } else {
+                    const element = get<HTMLElement>(ref)
+                    if (element) {
+                        deleteInstancesWhereDestination(element)
+                    }
+                }
+            } else if (isNode) {
+                deleteInstancesWhereDestination(ref)
             }
         } else {
             const n = this.instances.size

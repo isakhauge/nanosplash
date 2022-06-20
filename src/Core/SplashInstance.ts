@@ -1,8 +1,8 @@
 import {Destination} from "../types";
 import Nanosplash from "./Nanosplash";
-import {addClass, mk, move, setAttr} from "../utilities/dom";
+import {addClass, mk, move, setAttr} from "../Utilities/dom";
 import {IdentityInterface} from "../Interfaces/IdentityInterface";
-import {NanosplashRepository} from "../repositories/NanosplashRepository";
+import {NanosplashRepository} from "../Repository/NanosplashRepository";
 
 /**
  * SplashInstance
@@ -216,27 +216,31 @@ export class SplashInstance implements IdentityInterface {
      */
     public moveTo(destination: Destination): void
     {
-        // Clean up and restore previous location if any.
-        this.cleanAndRestore()
+        try {
+            // Clean up and restore previous location if any.
+            this.cleanAndRestore()
 
-        // Convert the destination into a DOM Node
-        this.destinationNode = NanosplashRepository.destinationToNode(destination)
+            // Convert the destination into a DOM Node
+            this.destinationNode = NanosplashRepository.destinationToNode(destination)
 
-        // Replace splash instances having the same destination node
-        this.replaceSplashInstancesHavingSameDestination(this.destinationNode)
+            // Replace splash instances having the same destination node
+            this.replaceSplashInstancesHavingSameDestination(this.destinationNode)
 
-        // Assess whether the destination node is the Document body or not
-        const targetIsBody = this.destinationNode === document.body
+            // Assess whether the destination node is the Document body or not
+            const targetIsBody = this.destinationNode === document.body
 
-        if (targetIsBody) {
-            this.moveWithFullscreenStrategy()
-        } else {
-            this.resetFullscreenAttributes()
-            this.moveWithRegularStrategy(this.destinationNode)
+            if (targetIsBody) {
+                this.moveWithFullscreenStrategy()
+            } else {
+                this.resetFullscreenAttributes()
+                this.moveWithRegularStrategy(this.destinationNode)
+            }
+
+            // Assemble the Nanosplash component
+            this.assembleNSComponent()
+        } catch (e) {
+            console.warn(e)
         }
-
-        // Assemble the Nanosplash component
-        this.assembleNSComponent()
     }
 
     /**

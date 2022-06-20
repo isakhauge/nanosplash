@@ -1,22 +1,3 @@
-var __defProp = Object.defineProperty;
-var __defProps = Object.defineProperties;
-var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
-var __getOwnPropSymbols = Object.getOwnPropertySymbols;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __propIsEnum = Object.prototype.propertyIsEnumerable;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __spreadValues = (a, b) => {
-  for (var prop in b || (b = {}))
-    if (__hasOwnProp.call(b, prop))
-      __defNormalProp(a, prop, b[prop]);
-  if (__getOwnPropSymbols)
-    for (var prop of __getOwnPropSymbols(b)) {
-      if (__propIsEnum.call(b, prop))
-        __defNormalProp(a, prop, b[prop]);
-    }
-  return a;
-};
-var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 var style = /* @__PURE__ */ (() => ".ns-blur,body .ns-fs~*{filter:blur(5px);overflow:hidden}.ns-wrapper{position:relative}.ns-fs{left:0;min-height:100vh;min-width:100%;position:fixed;top:0;z-index:2}.ns-window{align-items:center;background-color:#fffc;display:flex;height:100%;justify-content:center;left:0;position:absolute;top:0;width:100%;z-index:1}.ns-img{margin-bottom:2em;max-height:9rem;width:9rem}.ns-text-container{align-items:center}.ns-text,.ns-text-container{display:flex;justify-content:center}.ns-text{color:#5a6685}.ns-spinner{display:flex;height:1em;margin-left:1em;width:1em}.ns-spinner>svg{stroke-width:8;-webkit-animation:Rotate 2s linear infinite;animation:Rotate 2s linear infinite;height:inherit;position:relative;width:inherit}.ns-spinner .path{stroke:#5a6685;stroke-linecap:round;-webkit-animation:Dash 1.5s ease-in-out infinite;animation:Dash 1.5s ease-in-out infinite}@-webkit-keyframes Rotate{to{transform:rotate(1turn)}}@keyframes Rotate{to{transform:rotate(1turn)}}@-webkit-keyframes Dash{0%{stroke-dasharray:1,150;stroke-dashoffset:0}50%{stroke-dasharray:90,150;stroke-dashoffset:-35}to{stroke-dasharray:90,150;stroke-dashoffset:-124}}@keyframes Dash{0%{stroke-dasharray:1,150;stroke-dashoffset:0}50%{stroke-dasharray:90,150;stroke-dashoffset:-35}to{stroke-dasharray:90,150;stroke-dashoffset:-124}}\n")();
 function get(selector) {
   return document.querySelector(selector);
@@ -33,18 +14,42 @@ function addClass(node, ...classes) {
 function setAttr(node, attribute, value) {
   node.setAttribute(attribute, value);
 }
+class Exception extends Error {
+  constructor(message, cause) {
+    super(message);
+    this.name = this.constructor.name;
+    this.cause = cause;
+  }
+}
+class DestinationException extends Exception {
+  constructor(message, destination, cause) {
+    super(message);
+    this.destination = destination;
+    this.cause = cause;
+  }
+}
+class IllegalArgumentException extends Exception {
+  constructor(message, argument) {
+    super(message);
+    this.argument = argument;
+  }
+}
 class NanosplashRepository {
   static destinationToNode(destination) {
     if (typeof destination === "string") {
-      const element = get(destination);
-      if (!element) {
-        throw new Error(`No match with ${destination}`);
+      try {
+        const element = get(destination);
+        if (!element) {
+          throw new Exception(`No DOM match with ${destination}`);
+        }
+        return element;
+      } catch (e) {
+        throw new DestinationException(`Destination (${destination}) is either invalid or non-existing in DOM`, destination, e);
       }
-      return element;
     } else if (destination instanceof Node) {
       return destination;
     }
-    throw new Error("Destination argument must string or Node");
+    throw new IllegalArgumentException(`Destination (${destination}) must be either a Node or a CSS selector`, destination);
   }
   static createContextualApiObject(splash) {
     const ctx = {
@@ -56,12 +61,13 @@ class NanosplashRepository {
       getImgSrc: () => splash.getImgSrc(),
       setImgSrc: (src) => splash.setImgSrc(src)
     };
-    return __spreadProps(__spreadValues({}, ctx), {
+    return {
+      ...ctx,
       inside: (selector) => {
         splash.moveTo(selector);
         return ctx;
       }
-    });
+    };
   }
   static createNanosplashSpinnerElement() {
     const div = mk("div");
@@ -168,17 +174,21 @@ class SplashInstance {
     this.nsInstance.getFromDestinationNode(destinationNode).filter(fnNotSameInstance).forEach(fnDelete);
   }
   moveTo(destination) {
-    this.cleanAndRestore();
-    this.destinationNode = NanosplashRepository.destinationToNode(destination);
-    this.replaceSplashInstancesHavingSameDestination(this.destinationNode);
-    const targetIsBody = this.destinationNode === document.body;
-    if (targetIsBody) {
-      this.moveWithFullscreenStrategy();
-    } else {
-      this.resetFullscreenAttributes();
-      this.moveWithRegularStrategy(this.destinationNode);
+    try {
+      this.cleanAndRestore();
+      this.destinationNode = NanosplashRepository.destinationToNode(destination);
+      this.replaceSplashInstancesHavingSameDestination(this.destinationNode);
+      const targetIsBody = this.destinationNode === document.body;
+      if (targetIsBody) {
+        this.moveWithFullscreenStrategy();
+      } else {
+        this.resetFullscreenAttributes();
+        this.moveWithRegularStrategy(this.destinationNode);
+      }
+      this.assembleNSComponent();
+    } catch (e) {
+      console.warn(e);
     }
-    this.assembleNSComponent();
   }
   forEachWrappedNode(callback) {
     Array.from(this.nsWrapperElement.childNodes).forEach(callback);
@@ -304,15 +314,25 @@ const _Nanosplash = class {
   hideAll() {
     this.instances.forEach((instance) => instance.delete());
   }
-  hide(idOrSelector) {
-    if (idOrSelector) {
-      const splashInstance = this.instances.get(idOrSelector);
-      if (splashInstance) {
-        splashInstance.delete();
-      } else {
-        Array.from(this.instances.values()).filter((splashInstance2) => {
-          return splashInstance2.getDestination() === get(idOrSelector);
-        }).forEach((splashInstance2) => splashInstance2.delete());
+  hide(ref) {
+    if (ref) {
+      const isString = typeof ref === "string";
+      const isNode = ref instanceof Node;
+      const deleteInstancesWhereDestination = (destination) => {
+        Array.from(this.instances.values()).filter((v) => v.getDestination() === destination).forEach((v) => v.delete());
+      };
+      if (isString) {
+        const splashInstance = this.instances.get(ref);
+        if (splashInstance) {
+          splashInstance.delete();
+        } else {
+          const element = get(ref);
+          if (element) {
+            deleteInstancesWhereDestination(element);
+          }
+        }
+      } else if (isNode) {
+        deleteInstancesWhereDestination(ref);
       }
     } else {
       const n = this.instances.size;

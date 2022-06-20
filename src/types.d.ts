@@ -25,8 +25,8 @@ export type ElementTag = keyof HTMLElementTagNameMap | keyof SVGElementTagNameMa
  */
 type CSSProperty = keyof CSSStyleDeclaration
 
-export type ShowFunction = (text: string) => ContextualAPIInterface
-export type ProgressFunction = (...[]: SplashJob[]) => ContextualAPIInterface
+export type ShowFunction = (text: string) => ContextualAPIObject
+export type ProgressFunction = (...[]: SplashJob[]) => ContextualAPIObject
 export type WhileFunction = (asyncTask: Promise<any>) => ShowInterface
 export type StrategyObject = {
     show: ShowFunction,
@@ -35,6 +35,7 @@ export type StrategyObject = {
 }
 
 export type InsideFunction = (selector: string) => ContextualAPIInterface
+
 export type ContextualAPIObject = {
 	getId: () => string,
 	inside?: InsideFunction,
