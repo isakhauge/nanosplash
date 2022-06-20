@@ -1,42 +1,25 @@
-import {addClass, get, mk} from "../Utilities/dom";
+import {addClass, get, mk} from "../utilities/dom";
 import {SplashInstance} from "../Core/SplashInstance";
 import {ContextualAPIObject, Destination} from "../types";
-import DestinationException from "../Exceptions/DestinationException";
-import Exception from "../Exceptions/Exception";
-import IllegalArgumentException from "../Exceptions/IllegalArgumentException";
 
 export class NanosplashRepository {
     /**
      * # Destination To Node
      * Converts a Destination type into an HTMLElement.
      * @param {Destination} destination Either a node or a CSS selector.
-     * @throws DestinationException
-     * @throws IllegalArgumentException
      */
     public static destinationToNode(destination: Destination): HTMLElement
     {
         if (typeof destination === 'string') {
-            try {
-                const element = get<HTMLElement>(destination)
-                if (!element) {
-                    throw new Exception(`No DOM match with ${destination}`)
-                }
-                return element
-            } catch (e) {
-                throw new DestinationException(
-                    `Destination (${destination}) is either invalid or non-existing in DOM`,
-                    destination,
-                    e as Exception
-                )
+            const element = get<HTMLElement>(destination)
+            if (!element) {
+                throw new Error(`No match with ${destination}`)
             }
+            return element
         } else if (destination instanceof Node) {
             return destination as HTMLElement
         }
-
-        throw new IllegalArgumentException(
-            `Destination (${destination}) must be either a Node or a CSS selector`,
-            destination
-        )
+        throw new Error('Destination argument must string or Node')
     }
 
     /**
