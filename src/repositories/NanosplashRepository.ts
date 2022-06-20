@@ -1,4 +1,4 @@
-import {addClass, get, mk} from "../utilities/dom";
+import {addClass, get, mk} from "../Utilities/dom";
 import {SplashInstance} from "../Core/SplashInstance";
 import {ContextualAPIObject, Destination} from "../types";
 import DestinationException from "../Exceptions/DestinationException";

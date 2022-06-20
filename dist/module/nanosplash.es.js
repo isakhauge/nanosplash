@@ -1,5 +1,5 @@
 var style = /* @__PURE__ */ (() => ".ns-blur,body .ns-fs~*{filter:blur(5px);overflow:hidden}.ns-wrapper{position:relative}.ns-fs{left:0;min-height:100vh;min-width:100%;position:fixed;top:0;z-index:2}.ns-window{align-items:center;background-color:#fffc;display:flex;height:100%;justify-content:center;left:0;position:absolute;top:0;width:100%;z-index:1}.ns-img{margin-bottom:2em;max-height:9rem;width:9rem}.ns-text-container{align-items:center}.ns-text,.ns-text-container{display:flex;justify-content:center}.ns-text{color:#5a6685}.ns-spinner{display:flex;height:1em;margin-left:1em;width:1em}.ns-spinner>svg{stroke-width:8;-webkit-animation:Rotate 2s linear infinite;animation:Rotate 2s linear infinite;height:inherit;position:relative;width:inherit}.ns-spinner .path{stroke:#5a6685;stroke-linecap:round;-webkit-animation:Dash 1.5s ease-in-out infinite;animation:Dash 1.5s ease-in-out infinite}@-webkit-keyframes Rotate{to{transform:rotate(1turn)}}@keyframes Rotate{to{transform:rotate(1turn)}}@-webkit-keyframes Dash{0%{stroke-dasharray:1,150;stroke-dashoffset:0}50%{stroke-dasharray:90,150;stroke-dashoffset:-35}to{stroke-dasharray:90,150;stroke-dashoffset:-124}}@keyframes Dash{0%{stroke-dasharray:1,150;stroke-dashoffset:0}50%{stroke-dasharray:90,150;stroke-dashoffset:-35}to{stroke-dasharray:90,150;stroke-dashoffset:-124}}\n")();
-function get$1(selector) {
+function get(selector) {
   return document.querySelector(selector);
 }
 function move(source, destination, asFirstChild = false) {
@@ -7,19 +7,12 @@ function move(source, destination, asFirstChild = false) {
     destination.hasChildNodes() && asFirstChild ? destination.insertBefore(source, destination.firstChild) : destination.appendChild(source);
   }
 }
-const mk$1 = (tag) => document.createElement(tag);
-function addClass$1(node, ...classes) {
+const mk = (tag) => document.createElement(tag);
+function addClass(node, ...classes) {
   node.classList.add(...classes);
 }
 function setAttr(node, attribute, value) {
   node.setAttribute(attribute, value);
-}
-function get(selector) {
-  return document.querySelector(selector);
-}
-const mk = (tag) => document.createElement(tag);
-function addClass(node, ...classes) {
-  node.classList.add(...classes);
 }
 class Exception extends Error {
   constructor(message, cause) {
@@ -41,7 +34,7 @@ class IllegalArgumentException extends Exception {
     this.argument = argument;
   }
 }
-class NanosplashRepository$1 {
+class NanosplashRepository {
   static destinationToNode(destination) {
     if (typeof destination === "string") {
       try {
@@ -90,14 +83,14 @@ class NanosplashRepository$1 {
 class SplashInstance {
   constructor(ns, text, imgSrc) {
     var _a;
-    this.nsRootElement = mk$1("div");
-    this.nsTextElement = mk$1("div");
-    this.nsTextContainerElement = mk$1("div");
-    this.nsSpinnerElement = NanosplashRepository$1.createNanosplashSpinnerElement();
-    this.nsWindowElement = mk$1("div");
-    this.nsWrapperElement = mk$1("div");
-    this.nsContentElement = mk$1("div");
-    this.nsImageElement = mk$1("img");
+    this.nsRootElement = mk("div");
+    this.nsTextElement = mk("div");
+    this.nsTextContainerElement = mk("div");
+    this.nsSpinnerElement = NanosplashRepository.createNanosplashSpinnerElement();
+    this.nsWindowElement = mk("div");
+    this.nsWrapperElement = mk("div");
+    this.nsContentElement = mk("div");
+    this.nsImageElement = mk("img");
     this.id = Math.random().toString(36).substring(2);
     this.nsInstance = ns;
     this.nsTextElement.innerText = text;
@@ -110,14 +103,14 @@ class SplashInstance {
     this.setImgSrc(imgSrc);
   }
   assignCSSClasses() {
-    addClass$1(this.nsContentElement, "ns-container");
-    addClass$1(this.nsWrapperElement, "ns-blur");
-    addClass$1(this.nsImageElement, "ns-img");
-    addClass$1(this.nsTextElement, "ns-text");
-    addClass$1(this.nsTextContainerElement, "ns-text-container");
-    addClass$1(this.nsSpinnerElement, "ns-spinner");
-    addClass$1(this.nsWindowElement, "ns", "ns-window");
-    addClass$1(this.nsRootElement, "ns-wrapper");
+    addClass(this.nsContentElement, "ns-container");
+    addClass(this.nsWrapperElement, "ns-blur");
+    addClass(this.nsImageElement, "ns-img");
+    addClass(this.nsTextElement, "ns-text");
+    addClass(this.nsTextContainerElement, "ns-text-container");
+    addClass(this.nsSpinnerElement, "ns-spinner");
+    addClass(this.nsWindowElement, "ns", "ns-window");
+    addClass(this.nsRootElement, "ns-wrapper");
   }
   assembleElementStructure() {
     this.nsTextContainerElement.append(this.nsTextElement, this.nsSpinnerElement);
@@ -183,7 +176,7 @@ class SplashInstance {
   moveTo(destination) {
     try {
       this.cleanAndRestore();
-      this.destinationNode = NanosplashRepository$1.destinationToNode(destination);
+      this.destinationNode = NanosplashRepository.destinationToNode(destination);
       this.replaceSplashInstancesHavingSameDestination(this.destinationNode);
       const targetIsBody = this.destinationNode === document.body;
       if (targetIsBody) {
@@ -219,52 +212,6 @@ class SplashInstance {
     this.cleanAndRestore();
     this.removeElementsFromDOM();
     this.nsInstance.delete(this);
-  }
-}
-class NanosplashRepository {
-  static destinationToNode(destination) {
-    if (typeof destination === "string") {
-      try {
-        const element = get(destination);
-        if (!element) {
-          throw new Exception(`No DOM match with ${destination}`);
-        }
-        return element;
-      } catch (e) {
-        throw new DestinationException(`Destination (${destination}) is either invalid or non-existing in DOM`, destination, e);
-      }
-    } else if (destination instanceof Node) {
-      return destination;
-    }
-    throw new IllegalArgumentException(`Destination (${destination}) must be either a Node or a CSS selector`, destination);
-  }
-  static createContextualApiObject(splash) {
-    const ctx = {
-      getId: () => splash.getId(),
-      remove: () => splash.delete(),
-      moveTo: (selector) => splash.moveTo(selector),
-      getText: () => splash.getText(),
-      setText: (text) => splash.setText(text),
-      getImgSrc: () => splash.getImgSrc(),
-      setImgSrc: (src) => splash.setImgSrc(src)
-    };
-    return {
-      ...ctx,
-      inside: (selector) => {
-        splash.moveTo(selector);
-        return ctx;
-      }
-    };
-  }
-  static createNanosplashSpinnerElement() {
-    const div = mk("div");
-    addClass(div, "ns-spinner");
-    div.innerHTML = `
-            <svg viewBox="0 0 50 50">
-                <circle class="path" cx="25" cy="25" r="20" fill="none"></circle>
-            </svg>
-        `;
-    return div;
   }
 }
 class NanosplashFactory {
@@ -379,7 +326,7 @@ const _Nanosplash = class {
         if (splashInstance) {
           splashInstance.delete();
         } else {
-          const element = get$1(ref);
+          const element = get(ref);
           if (element) {
             deleteInstancesWhereDestination(element);
           }

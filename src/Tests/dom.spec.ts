@@ -1,5 +1,5 @@
 import {test} from "vitest"
-import {addClass, get, mk, move, setAttr} from "../utilities/dom"
+import {addClass, get, mk, move, setAttr} from "../Utilities/dom"
 
 const resetDOM = () => document.body.innerHTML = ''
 
