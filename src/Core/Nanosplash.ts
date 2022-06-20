@@ -19,6 +19,8 @@ import {
 class Nanosplash implements NanosplashInterface {
     public static APP_NAME = 'Nanosplash'
     private static SPINNER_DEFAULT_VISIBILITY = true
+    private static DEBUG = true
+    public debug: boolean
     private imgSrc: string | undefined
     private spinner: boolean
     private fontSize: string
@@ -29,6 +31,9 @@ class Nanosplash implements NanosplashInterface {
      * @param {NanosplashOptions | undefined} options Nanosplash options object.
      */
     public constructor(options?: NanosplashOptions) {
+        this.debug = ((options?.debug === undefined)
+            ? Nanosplash.DEBUG
+            : options.spinner) as boolean
         this.imgSrc = options?.imgSrc
         this.spinner = (options?.spinner === undefined)
             ? Nanosplash.SPINNER_DEFAULT_VISIBILITY

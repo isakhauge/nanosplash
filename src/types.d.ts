@@ -52,7 +52,8 @@ export type InstanceIterationCallback = (id: string, splashInstance: SplashInsta
 export type NanosplashOptions = {
 	imgSrc?: string,
 	spinner?: boolean,
-	fontSize?: string
+	fontSize?: string,
+	debug?: boolean
 }
 
 export default Nanosplash
