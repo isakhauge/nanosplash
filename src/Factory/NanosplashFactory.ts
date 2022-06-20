@@ -1,6 +1,6 @@
 import Nanosplash from "../Core/Nanosplash";
 import {SplashInstance} from "../Core/SplashInstance";
-import {NanosplashRepository} from "../repositories/NanosplashRepository";
+import {NanosplashRepository} from "../Repositories/NanosplashRepository";
 import {ContextualAPIObject, ProgressFunction, ShowFunction, SplashJob, WhileFunction} from "../types";
 import {ShowInterface} from "../Interfaces/ShowInterface";
 
