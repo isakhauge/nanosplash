@@ -205,7 +205,9 @@ class SplashInstance {
       }
       this.assembleNSComponent();
     } catch (e) {
-      console.warn(e);
+      if (this.nsInstance.debug) {
+        console.warn(e);
+      }
     }
   }
   forEachWrappedNode(callback) {
@@ -280,6 +282,7 @@ class NanosplashFactory {
 const _Nanosplash = class {
   constructor(options) {
     var _a;
+    this.debug = (options == null ? void 0 : options.debug) === void 0 ? _Nanosplash.DEBUG : options.spinner;
     this.imgSrc = options == null ? void 0 : options.imgSrc;
     this.spinner = (options == null ? void 0 : options.spinner) === void 0 ? _Nanosplash.SPINNER_DEFAULT_VISIBILITY : options.spinner;
     this.fontSize = (_a = options == null ? void 0 : options.fontSize) != null ? _a : "18px";
@@ -371,4 +374,5 @@ const _Nanosplash = class {
 let Nanosplash = _Nanosplash;
 Nanosplash.APP_NAME = "Nanosplash";
 Nanosplash.SPINNER_DEFAULT_VISIBILITY = true;
+Nanosplash.DEBUG = true;
 export { Nanosplash as default };
