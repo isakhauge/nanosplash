@@ -35,7 +35,7 @@ class Nanosplash implements NanosplashInterface {
     public constructor(options?: NanosplashOptions) {
         this.debug = ((options?.debug === undefined)
             ? Nanosplash.DEBUG
-            : options.spinner) as boolean
+            : options.debug) as boolean
         this.imgSrc = options?.imgSrc
         this.spinner = (options?.spinner === undefined)
             ? Nanosplash.SPINNER_DEFAULT_VISIBILITY
