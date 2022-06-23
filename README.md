@@ -20,8 +20,6 @@
 <script src="https://unpkg.com/nanosplash/dist/iife/nanosplash.iife.js"></script>
 ```
 ```js
-// Install Nanosplash in the browser
-window.installNanosplash()
 // Display your first Nanosplash
 window.ns.show('Hello world')
 ```
