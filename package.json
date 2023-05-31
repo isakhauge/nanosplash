@@ -1,74 +1,25 @@
 {
   "name": "nanosplash",
-  "description": "The simple, tiny loading screen",
-  "version": "2.5.2",
-  "author": {
-    "name": "Isak K. Hauge",
-    "email": "isakhauge@gmail.com",
-    "url": "https://no.linkedin.com/in/isakhauge"
-  },
-  "keywords": [
-    "loading",
-    "loader",
-    "screen",
-    "splash",
-    "nano",
-    "nanosplash",
-    "small",
-    "tiny",
-    "es",
-    "esm",
-    "ts",
-    "typescript",
-    "iife",
-    "cdn",
-    "vite"
-  ],
-  "homepage": "https://isakhauge.github.io/nanosplash",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/isakhauge/nanosplash.git"
-  },
-  "license": "MIT",
-  "main": "./dist/module/nanosplash.es.js",
-  "module": "./dist/module/nanosplash.es.js",
-  "source": "./src/Nanosplash.ts",
-  "unpkg": "./dist/iife/nanosplash.iife.js",
-  "style": "./dist/module/style.css",
-  "exports": {
-    ".": {
-      "import": "./dist/module/nanosplash.es.js",
-      "require": "./dist/module/nanosplash.cjs.js",
-      "default": "./dist/module/nanosplash.es.js"
-    }
-  },
-  "types": "./src/types.d.ts",
+  "private": true,
+  "version": "3.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "vite --host",
-    "build.iife": "vite build -c vite.iife.config.js",
-    "build.mod": "vite build -c vite.mod.config.js",
-    "build.site": "vite build -c vite.site.config.js",
-    "build": "tsc && yarn build.iife && yarn build.mod && yarn build.site && yarn doc",
-    "doc": "typedoc --readme none --excludePrivate --excludeInternal --out docs/typedoc --entryPoints src/Core/Nanosplash.ts src/types.d.ts",
-    "doc.watch": "yarn doc --watch",
-    "serve": "vite preview",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "test": "vitest",
+    "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@types/jest": "^28.1.1",
-    "@types/jsdom": "^16.2.14",
-    "autoprefixer": "^10.4.7",
-    "c8": "^7.11.3",
-    "cssnano": "^5.1.12",
-    "jsdom": "^20.0.0",
-    "postcss": "^8.4.14",
-    "sass": "^1.52.3",
-    "ts-jest": "^28.0.5",
-    "ts-node": "^10.8.1",
-    "typedoc": "^0.22.17",
-    "typescript": "^4.7.4",
-    "vite": "^2.9.12",
-    "vitest": "^0.15.1"
+    "@types/jsdom": "^21.1.1",
+    "@vitest/coverage-c8": "^0.31.2",
+    "@vitest/ui": "^0.31.1",
+    "jsdom": "^22.1.0",
+    "sass": "^1.62.1",
+    "terser": "^5.17.6",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.9",
+    "vitest": "^0.31.1"
   }
 }

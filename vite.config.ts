@@ -1,16 +1,23 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vite'
+import type { BuildOptions } from 'esbuild'
 
-export default defineConfig({
-    test: {
-        globals: true,
-        environment: 'jsdom',
-        coverage: {
-            reporter: ['text', 'html'],
-            exclude: [
-                'node_modules/',
-                'dist/',
-                'docs/',
-            ],
-        },
-    }
+export default defineConfig(({ command, mode, ssrBuild }) => {
+	if (command === 'serve') {
+		return {
+			// dev specific config
+		}
+	} else {
+		// command === 'build'
+		return {
+			build: {
+				lib: {
+					entry: './src/main.ts',
+					name: 'Nanosplash',
+					formats: ['iife'],
+					fileName: 'ns',
+				},
+				cssCodeSplit: true,
+			},
+		}
+	}
 })

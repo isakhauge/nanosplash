@@ -1,7 +1,0 @@
-{
-  "src/main.ts": {
-    "file": "nanosplash.iife.js",
-    "src": "src/main.ts",
-    "isEntry": true
-  }
-}
