@@ -1,13 +1,8 @@
-// @ts-strict
-
-import type { GUIDString } from '../types/Alias'
-
-export const mk = (tag: keyof HTMLElementTagNameMap) =>
-	document.createElement(tag)
+import { GUIDString } from '../types/Alias'
 
 /**
  * # GUID
- * @returns A GUID string
+ * @returns {GUIDString} A GUID string.
  */
 export function guid(): GUIDString {
 	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {

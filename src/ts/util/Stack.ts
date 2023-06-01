@@ -3,6 +3,7 @@
 /**
  * A stack data structure.
  * @template T The type of item stored in the stack.
+ * @author Isak K. Hauge <isakhauge@icloud.com>
  */
 class Stack<T> {
 	private _items: T[]

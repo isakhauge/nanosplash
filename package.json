@@ -13,13 +13,13 @@
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.1",
-    "@vitest/coverage-c8": "^0.31.2",
-    "@vitest/ui": "^0.31.1",
+    "@vitest/coverage-c8": "^0.31.4",
+    "@vitest/ui": "^0.31.4",
     "jsdom": "^22.1.0",
     "sass": "^1.62.1",
-    "terser": "^5.17.6",
+    "terser": "^5.17.7",
     "typescript": "^5.0.4",
     "vite": "^4.3.9",
-    "vitest": "^0.31.1"
+    "vitest": "^0.31.4"
   }
 }

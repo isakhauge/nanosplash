@@ -15,5 +15,8 @@
     "noImplicitReturns": true,
     "skipLibCheck": true
   },
-  "include": ["src", "tests/NanosplashRepository.spec.ts", "tests/NanosplashService.spec.ts", "tests/Nanosplash.spec.ts", "tests/Stack.spec.ts", "tests/Utilities.spec.ts"]
+  "include": [
+    "src",
+    "tests"
+  ]
 }

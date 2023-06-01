@@ -1,14 +1,22 @@
 // @ts-strict
 
+import '../../../sass/ns.sass'
+
 import {
 	createElement,
 	hideElement,
 	showElement,
 } from './repositories/NanosplashRepository'
 import type { NanosplashInterface } from './interfaces/NanosplashInterface'
-import { guid } from '../../util/Utilities'
 import type { GUIDString } from '../../types/Alias'
+import { guid } from '../../util/Guid'
 
+/**
+ * # Nanosplash
+ * Nanosplash is a small splash screen that can be used to indicate that a
+ * process is running.
+ * @author Isak K. Hauge <isakhauge@icloud.com>
+ */
 class Nanosplash implements NanosplashInterface {
 	public static readonly nsClassName = 'ns'
 	public static readonly nsHostClassName = Nanosplash.nsClassName + '-host'

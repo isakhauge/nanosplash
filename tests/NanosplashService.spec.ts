@@ -62,7 +62,6 @@ describe('NanosplashService', () => {
 	})
 
 	it('Should be able to show a Nanosplash over a given element', () => {
-		const nss = NanosplashService.getInstance()
 		const text = 'Hello World!'
 		const destination = document.createElement('div')
 		destination.id = 'test-id'
@@ -76,15 +75,30 @@ describe('NanosplashService', () => {
 	})
 
 	it('Should be able to hide a Nanosplash', () => {
-		const nss = NanosplashService.getInstance()
 		const nsId = nss.show()
 		nss.hide()
 		const ns = getById(nsId)
 		expect(ns?.getNSElement()).toBeUndefined()
 	})
 
+	it('Should be able to hide all Nanosplashes', () => {
+		const div = (id: string) => {
+			const d = document.createElement('div')
+			d.id = id
+			return d
+		}
+		document.body.append(div('a'), div('b'), div('c'))
+		nss.hideAll()
+		expect(nss.nsStack.items.length).toBe(0)
+		nss.showInside('#a', 'A')
+		nss.showInside('#b', 'B')
+		nss.showInside('#c', 'C')
+		expect(nss.nsStack.items.length).toBe(3)
+		nss.hideAll()
+		expect(nss.nsStack.items.length).toBe(0)
+	})
+
 	it('Should be able to hide a Nanosplash based on its ID', () => {
-		const nss = NanosplashService.getInstance()
 		const nsId = nss.show()
 		nss.hideId(nsId)
 		const ns = getById(nsId)
@@ -92,7 +106,6 @@ describe('NanosplashService', () => {
 	})
 
 	it('Should be able to hide a Nanosplash residing inside a given element', () => {
-		const nss = NanosplashService.getInstance()
 		const destination = document.createElement('div')
 		destination.id = 'test-id'
 		document.body.appendChild(destination)

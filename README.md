@@ -4,6 +4,8 @@
 
 ## Get started
 
+Always get the latest version.
+
 ```html
 <script src="https://unpkg.com/nanosplash/dist/ns.iife.js">
 ```

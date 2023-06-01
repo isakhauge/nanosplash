@@ -19,6 +19,7 @@ import { NanosplashAPI } from '../interfaces/NanosplashAPI'
  * It's a singleton class and it's instance resides in the Window object and
  * serves the public API of the Nanosplash library.
  * @see Nanosplash
+ * @author Isak K. Hauge <isakhauge@icloud.com>
  */
 class NanosplashService implements NanosplashAPI {
 	private static readonly WindowAccessorKey = 'ns'
@@ -123,8 +124,8 @@ class NanosplashService implements NanosplashAPI {
 
 	/**
 	 * # Stack Delete At
-	 * Remove Nanosplash instance from the stack by its index.
-	 * @param index	Index of Nanosplash instance in the stack.
+	 * Remove Nanosplash instance from the stack.
+	 * @param ns Nanosplash instance.
 	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
 	 */
 	private stackDelete(ns: Nanosplash): GUIDString | null {
@@ -181,6 +182,16 @@ class NanosplashService implements NanosplashAPI {
 		}
 
 		return null
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public hideAll(): void {
+		this.nsStack.items.forEach((ns: Nanosplash) => {
+			this.cleanAndRemove(ns)
+		})
+		this.nsStack.clear()
 	}
 
 	/**

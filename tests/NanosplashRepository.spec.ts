@@ -3,7 +3,6 @@
 import { JSDOM } from 'jsdom'
 import { beforeEach, describe, expect, it } from 'vitest'
 import Nanosplash from '../src/ts/core/Nanosplash/Nanosplash'
-import { mk } from '../src/ts/util/Utilities'
 import {
 	createElement,
 	injectAsFirstChild,
@@ -76,7 +75,7 @@ describe('NanosplashRepository', () => {
 	})
 
 	it('Should be able to alter the class of a Nanosplash host', () => {
-		const div = mk('div')
+		const div = document.createElement('div')
 		setNSHostClass(div, 'add')
 		expect(div.classList.contains(Nanosplash.nsHostClassName)).toBe(true)
 		setNSHostClass(div, 'remove')

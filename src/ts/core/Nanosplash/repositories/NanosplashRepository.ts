@@ -1,5 +1,13 @@
 // @ts-strict
 
+/**
+ * # Nanosplash Repository
+ * A repository of functions that are used by the Nanosplash classes.
+ * @see Nanosplash
+ * @see NanosplashService
+ * @author Isak K. Hauge <isakhauge@icloud.com>
+ */
+
 import { GUIDString } from '../../../types/Alias'
 import type { Destination, DestinationNode } from '../../../types/Nanosplash'
 import Nanosplash from '../Nanosplash'
@@ -30,11 +38,11 @@ export function injectAsFirstChild(
 	node: Element,
 	destinationNode: Element
 ): void {
-	const destinationNodeHasChildren = destinationNode.childNodes.length > 0
+	const destinationNodeHasChildren = destinationNode.children.length > 0
 	if (destinationNodeHasChildren) {
-		destinationNode.insertBefore(node, destinationNode.childNodes.item(0))
+		destinationNode.insertBefore(node, destinationNode.children.item(0))
 	} else {
-		destinationNode.appendChild(node)
+		destinationNode.append(node)
 	}
 }
 

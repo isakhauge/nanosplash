@@ -21,10 +21,16 @@ export interface NanosplashAPI {
 
 	/**
 	 * # Hide
-	 * Remove the last Nanosplash instance from the stack.
+	 * Hide the last created Nanosplash.
 	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
 	 */
 	hide(): GUIDString | null
+
+	/**
+	 * # Hide All
+	 * Hide all Nanosplashes.
+	 */
+	hideAll(): void
 
 	/**
 	 * # Hide ID
