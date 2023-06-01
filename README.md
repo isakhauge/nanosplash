@@ -43,3 +43,9 @@ Hide loading screen inside another element.
 ```js
 ns.hideInside('#my-table')
 ```
+
+Hide all loading screens.
+
+```js
+ns.hideAll()
+```
