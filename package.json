@@ -1,7 +1,7 @@
 {
   "name": "nanosplash",
   "description": "The tiny loading screen for web artisans",
-  "private": true,
+  "private": false,
   "version": "3.0.0",
   "type": "module",
   "author": {
