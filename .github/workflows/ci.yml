@@ -24,11 +24,20 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Build
+      - name: Build (Vite)
         run: yarn build
 
-      - name: Test
+      - name: Test (Vitest)
         run: yarn test
 
-      - name: Coverage
+      - name: Generate Code Coverage (Vitest)
         run: yarn coverage
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git checkout -b production
+          git add .
+          git commit -m "Build and test updates"
+          git push origin production
