@@ -5,60 +5,67 @@
  * @template T The type of item stored in the stack.
  */
 class Stack<T> {
-	public items: T[]
+	private _items: T[]
 
 	/**
 	 * Constructs a new stack.
 	 */
 	constructor() {
-		this.items = []
+		this._items = []
+	}
+
+	/**
+	 * Returns the items in the stack.
+	 */
+	public get items(): T[] {
+		return this._items
 	}
 
 	/**
 	 * Adds an item to the top of the stack.
 	 * @param item The item to add to the stack.
 	 */
-	push(item: T): void {
-		this.items.push(item)
+	public push(item: T): void {
+		this._items.push(item)
 	}
 
 	/**
 	 * Removes and returns the item at the top of the stack.
 	 * @returns The item at the top of the stack, or undefined if the stack is empty.
 	 */
-	pop(): T | undefined {
-		return this.items.pop()
+	public pop(): T | undefined {
+		return this._items.pop()
 	}
 
 	/**
 	 * Returns the item at the top of the stack without removing it.
 	 * @returns The item at the top of the stack, or undefined if the stack is empty.
 	 */
-	peek(): T | undefined {
-		return this.items[this.items.length - 1]
+	public peek(): T | undefined {
+		return this._items[this._items.length - 1]
 	}
 
 	/**
 	 * Returns true if the stack is empty, false otherwise.
 	 * @returns True if the stack is empty, false otherwise.
 	 */
-	isEmpty(): boolean {
-		return this.items.length === 0
+	public isEmpty(): boolean {
+		return this._items.length === 0
 	}
 
 	/**
 	 * Returns the number of items in the stack.
 	 * @returns The number of items in the stack.
 	 */
-	size(): number {
-		return this.items.length
+	public size(): number {
+		return this._items.length
 	}
 
 	/**
 	 * Removes all items from the stack.
 	 */
-	clear(): void {
-		this.items = []
+	public clear(): void {
+		this._items = []
 	}
 }
 

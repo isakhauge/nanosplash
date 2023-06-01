@@ -1,6 +1,10 @@
 // @ts-strict
 
-import NanosplashRepository from './repositories/NanosplashRepository'
+import {
+	createElement,
+	hideElement,
+	showElement,
+} from './repositories/NanosplashRepository'
 import type { NanosplashInterface } from './interfaces/NanosplashInterface'
 import { guid } from '../../util/Utilities'
 import type { GUIDString } from '../../types/Alias'
@@ -13,7 +17,7 @@ class Nanosplash implements NanosplashInterface {
 	private element?: HTMLDivElement
 
 	public constructor() {
-		this.element = NanosplashRepository.createElement()
+		this.element = createElement()
 		this.element.id = this.id = guid()
 	}
 
@@ -51,7 +55,7 @@ class Nanosplash implements NanosplashInterface {
 	 * @inheritDoc
 	 */
 	public hideText(): Nanosplash {
-		NanosplashRepository.hideElement(this.getNSTextElement())
+		hideElement(this.getNSTextElement())
 		return this
 	}
 
@@ -68,7 +72,7 @@ class Nanosplash implements NanosplashInterface {
 	 * @inheritDoc
 	 */
 	public showText(): Nanosplash {
-		NanosplashRepository.showElement(this.getNSTextElement())
+		showElement(this.getNSTextElement())
 		return this
 	}
 

@@ -2,23 +2,63 @@
 
 import Nanosplash from '../Nanosplash'
 import Stack from '../../../util/Stack'
-import NanosplashRepository from '../repositories/NanosplashRepository'
+import {
+	cleanNSParentOf,
+	getRecycledNS,
+	move,
+	nodeFrom,
+} from '../repositories/NanosplashRepository'
 import type { Destination, DestinationNode } from '../../../types/Nanosplash'
 import type { GUIDString } from '../../../types/Alias'
+import { FindCallback } from '../../../types/NanosplashService'
+import { NanosplashAPI } from '../interfaces/NanosplashAPI'
 
-class NanosplashService {
-	private static readonly WindowAccessorKey = 'ns2'
+/**
+ * # Nanosplash Service
+ * A service class that handles Nanosplash instances.
+ * It's a singleton class and it's instance resides in the Window object and
+ * serves the public API of the Nanosplash library.
+ * @see Nanosplash
+ */
+class NanosplashService implements NanosplashAPI {
+	private static readonly WindowAccessorKey = 'ns'
 	private static instance: NanosplashService
 
 	public readonly nsStack: Stack<Nanosplash>
 
+	/**
+	 * # Constructor
+	 * Private constructor to prevent multiple instances.
+	 * @private
+	 */
 	private constructor() {
 		this.nsStack = new Stack<Nanosplash>()
 	}
 
 	/**
+	 * # Find Index
+	 * Find Nanosplash stack index by callback.
+	 * @param callback Callback function that returns a boolean.
+	 * @returns {number} Index of Nanosplash instance in the stack or -1.
+	 */
+	private findIndex(callback: FindCallback): number | -1 {
+		return this.nsStack.items.findIndex(callback)
+	}
+
+	/**
+	 * # Find
+	 * Find Nanosplash in the stack by callback.
+	 * @param callback Callback function that returns a boolean.
+	 * @returns {Nanosplash | undefined} Nanosplash instance or undefined
+	 */
+	private find(callback: FindCallback): Nanosplash | undefined {
+		return this.nsStack.items.find(callback)
+	}
+
+	/**
 	 * # Get Instance
 	 * Singleton instance accessor
+	 * @returns {NanosplashService} NanosplashService instance
 	 */
 	public static getInstance(): NanosplashService {
 		if (!NanosplashService.instance) {
@@ -30,7 +70,9 @@ class NanosplashService {
 	/**
 	 * # Assign To Window
 	 * Assign Nanosplash service instance to Window object.
-	 * @private
+	 * The NanosplashService instance can be accessed in the window object
+	 * using the key window accessor key.
+	 * @see WindowAccessorKey
 	 */
 	private static assignToWindow(): void {
 		Object.defineProperty(window, NanosplashService.WindowAccessorKey, {
@@ -55,79 +97,86 @@ class NanosplashService {
 	}
 
 	/**
-	 * # Create Nanosplash Instance
-	 * Return new Nanosplash instance.
-	 * @param text Text to display
-	 * @private
+	 * # Create Nanosplash
+	 * Return new Nanosplash instance and push it to the stack.
+	 * @param text Text to display.
+	 * @returns {Nanosplash} Nanosplash instance.
 	 */
-	private static createNSInstance(text?: string): Nanosplash {
+	private createNS(text?: string): Nanosplash {
 		const ns = new Nanosplash()
-		const nss = NanosplashService.getInstance()
 		ns.setText(text || '')
-		nss.nsStack.push(ns)
+		this.nsStack.push(ns)
 		return ns
 	}
 
 	/**
-	 * # Get Nanosplash Instance
-	 * Reuse existing instance inside target element if it exists.
-	 * @param destinationNode Target element
+	 * # Clean And Remove
+	 * Remove Nanosplash from DOM and clean its parent.
+	 * @param ns Nanosplash instance.
+	 * @returns {GUIDString} Nanosplash ID.
 	 */
-	public static getNSInstance(destinationNode: DestinationNode): Nanosplash {
-		const firstChild: Element | null = <Element>destinationNode.firstChild
-		const hasChild: boolean = firstChild !== null
-		const destinationAlreadyHasNS: boolean =
-			hasChild && NanosplashRepository.elementIsNS(firstChild)
-
-		if (destinationAlreadyHasNS) {
-			firstChild.remove() // Remove from DOM
-			const id: GUIDString = firstChild.id
-			return <Nanosplash>NanosplashService.fromStackId(id)
-		}
-
-		return NanosplashService.createNSInstance()
-	}
-
-	/**
-	 * # From Stack ID
-	 * Return Nanosplash instance from the stack by its ID.
-	 * @param id Nanosplash ID
-	 */
-	public static fromStackId(id: GUIDString): Nanosplash | undefined {
-		const nss = NanosplashService.getInstance()
-		return nss.nsStack.items.find((ns: Nanosplash) => ns.getId() === id)
-	}
-
-	/**
-	 * # Show
-	 * Present a Nanosplash in the browser window displaying the given text.
-	 * @param text Text to display
-	 * @returns {GUIDString} GUID of Nanosplash instance
-	 */
-	public show(text?: string): GUIDString {
-		const ns = NanosplashService.getNSInstance(document.body)
-		ns.setText(text || '')
-		NanosplashRepository.move(ns.getNSElement(), document.body)
+	private cleanAndRemove(ns: Nanosplash): GUIDString {
+		cleanNSParentOf(ns)
+		ns.remove()
 		return ns.getId()
 	}
 
 	/**
-	 * # Show Inside
-	 * Present a Nanosplash over the given element displaying the given text.
-	 * @param destination Target element
-	 * @param text Text to display
-	 * @returns {GUIDString} GUID of Nanosplash instance
+	 * # Stack Delete At
+	 * Remove Nanosplash instance from the stack by its index.
+	 * @param index	Index of Nanosplash instance in the stack.
+	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
+	 */
+	private stackDelete(ns: Nanosplash): GUIDString | null {
+		let index = this.findIndex((o: Nanosplash) => o.getId() === ns.getId())
+		if (index < 0) return null
+		this.nsStack.items.splice(index, 1)
+		return ns.getId()
+	}
+
+	/**
+	 * # Delete NS
+	 * Remove Nanosplash instance from both the stack and the DOM.
+	 * @param callback Callback function.
+	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
+	 */
+	private deleteNS(callback: FindCallback): GUIDString | null {
+		const ns = this.find(callback)
+		if (ns) {
+			this.cleanAndRemove(ns)
+			return this.stackDelete(ns)
+		}
+		return null
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public show(text?: string): GUIDString {
+		let ns = getRecycledNS(document.body)
+		if (!ns) {
+			ns = this.createNS()
+			move(ns.getNSElement(), document.body)
+		}
+		ns.setText(text || '')
+		return ns.getId()
+	}
+
+	/**
+	 * @inheritDoc
 	 */
 	public showInside(
 		destination: Destination,
 		text?: string
 	): GUIDString | null {
-		const destinationNode: DestinationNode | null =
-			NanosplashRepository.nodeFrom(destination)
+		const destinationNode: DestinationNode | null = nodeFrom(destination)
 		if (destinationNode) {
-			const ns: Nanosplash = NanosplashService.getNSInstance(destinationNode)
+			let ns = getRecycledNS(destinationNode)
+			if (!ns) {
+				ns = this.createNS()
+			}
 			ns.setText(text || '')
-			NanosplashRepository.move(ns.getNSElement(), <Element>destinationNode)
+			move(ns.getNSElement(), <Element>destinationNode)
 			return ns.getId()
 		}
 
@@ -135,101 +184,27 @@ class NanosplashService {
 	}
 
 	/**
-	 * # Clean And Remove
-	 * Remove Nanosplash from DOM and clean its parent.
-	 * @param ns Nanosplash instance
-	 */
-	private static cleanAndRemove(ns: Nanosplash): void {
-		NanosplashRepository.cleanNSParentOf(ns)
-		ns.remove()
-	}
-
-	/**
-	 * # Hide
-	 * Remove the last Nanosplash instance from the stack.
-	 * @returns {GUIDString} GUID of Nanosplash instance
+	 * @inheritDoc
 	 */
 	public hide(): GUIDString | null {
-		let id: GUIDString | null = null
-		const nss = NanosplashService.getInstance()
-		let ns = nss.nsStack.pop()
-		if (ns) {
-			id = ns.getId()
-			NanosplashService.cleanAndRemove(ns)
-			ns = undefined
-		}
-		return id
+		const ns = this.nsStack.pop()
+		return ns ? this.cleanAndRemove(ns) : null
 	}
 
 	/**
-	 * # Stack At
-	 * Return Nanosplash instance from the stack by its index.
-	 * @param index Index of Nanosplash instance
-	 * @returns Nanosplash instance or undefined
+	 * @inheritDoc
 	 */
-	private static stackAt(index: number): Nanosplash | undefined {
-		const nss = NanosplashService.getInstance()
-		return nss.nsStack.items.at(index)
+	public hideId(id: GUIDString): GUIDString | null {
+		return this.deleteNS((ns: Nanosplash) => ns.getId() === id)
 	}
 
 	/**
-	 * # Stack Delete At
-	 * Remove Nanosplash instance from the stack by its index.
-	 * @param index	Index of Nanosplash instance in the stack
-	 */
-	private stackDeleteAt(index: number): GUIDString | null {
-		const ns = NanosplashService.stackAt(index)
-		if (!ns) return null
-		const nss = NanosplashService.getInstance()
-		nss.nsStack.items.splice(index, 1)
-		const id: GUIDString = ns.getId()
-		ns.remove()
-		return id
-	}
-
-	/**
-	 * # Hide ID
-	 * Hide Nanosplash by its ID.
-	 * @param id Nanosplash ID
-	 */
-	public hideId(id: GUIDString): void {
-		const nss = NanosplashService.getInstance()
-		const index = nss.nsStack.items.findIndex(
-			(ns: Nanosplash) => '' + ns.getId() === id
-		)
-		if (index > -1) {
-			const ns = NanosplashService.stackAt(index)
-			if (ns) {
-				NanosplashService.cleanAndRemove(ns)
-			}
-			this.stackDeleteAt(index)
-		}
-	}
-
-	/**
-	 * # Hide Inside
-	 * Hide Nanosplash inside the given element if it exists.
-	 * @param destination Target element
+	 * @inheritDoc
 	 */
 	public hideInside(destination: Destination): GUIDString | null {
-		let id: GUIDString | null = null
-		const node = NanosplashRepository.nodeFrom(destination)
-		if (!node) {
-			return id
-		}
-		const nss = NanosplashService.getInstance()
-		const index = nss.nsStack.items.findIndex(
-			(ns: Nanosplash) => ns.getNSElement().parentElement === node
-		)
-		if (index > -1) {
-			const ns = NanosplashService.stackAt(index)
-			if (ns) {
-				id = ns.getId()
-				NanosplashService.cleanAndRemove(ns)
-			}
-			this.stackDeleteAt(index)
-		}
-		return id
+		const node = nodeFrom(destination)
+		const cb = (ns: Nanosplash) => ns.getNSElement().parentElement === node
+		return node ? this.deleteNS(cb) : null
 	}
 }
 
