@@ -44,5 +44,5 @@ jobs:
       - name: Commit and push changes
         run: |
           git add .
-          git commit -m "Build, test, and coverage report"
-          git push origin production
+          git commit --allow-empty -m "Build, test, and coverage report"
+          git push
