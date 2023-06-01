@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1685648231587" clover="3.2.0">
-  <project timestamp="1685648231587" name="All files">
+<coverage generated="1685649392505" clover="3.2.0">
+  <project timestamp="1685649392505" name="All files">
     <metrics statements="583" coveredstatements="574" conditionals="82" coveredconditionals="74" methods="51" coveredmethods="51" elements="716" coveredelements="699" complexity="0" loc="583" ncloc="583" packages="4" files="5" classes="5"/>
     <package name="core.Nanosplash">
       <metrics statements="97" coveredstatements="97" conditionals="14" coveredconditionals="13" methods="11" coveredmethods="11"/>
