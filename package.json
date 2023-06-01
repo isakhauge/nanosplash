@@ -1,8 +1,50 @@
 {
   "name": "nanosplash",
+  "description": "The tiny loading screen for web artisans",
   "private": true,
   "version": "3.0.0",
   "type": "module",
+  "author": {
+    "name": "Isak K. Hauge",
+    "email": "isakhauge@icloud.com",
+    "url": "https://no.linkedin.com/in/isakhauge"
+  },
+  "keywords": [
+    "loading",
+    "loader",
+    "screen",
+    "splash",
+    "nano",
+    "nanosplash",
+    "small",
+    "tiny",
+    "es",
+    "esm",
+    "ts",
+    "typescript",
+    "iife",
+    "cdn",
+    "vite"
+  ],
+  "homepage": "https://isakhauge.github.io/nanosplash",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/isakhauge/nanosplash.git"
+  },
+  "license": "MIT",
+  "main": "./dist/ns.js",
+  "module": "./dist/ns.es.js",
+  "source": "./src/Nanosplash.ts",
+  "unpkg": "./dist/ns.iife.js",
+  "style": "./dist/main.css",
+  "exports": {
+    ".": {
+      "import": "./dist/ns.es.js",
+      "require": "./dist/ns.cjs.js",
+      "default": "./dist/ns.es.js"
+    }
+  },
+  "types": "./src/ts/types",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

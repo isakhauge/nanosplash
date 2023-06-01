@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite'
-import type { BuildOptions } from 'esbuild'
 
 export default defineConfig(({ command, mode, ssrBuild }) => {
 	if (command === 'serve') {
@@ -13,8 +12,10 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
 				lib: {
 					entry: './src/main.ts',
 					name: 'Nanosplash',
-					formats: ['iife'],
-					fileName: 'ns',
+					formats: ['iife', 'es', 'cjs'],
+					fileName: module => {
+						return `ns.${module}.js`
+					},
 				},
 				cssCodeSplit: true,
 			},
