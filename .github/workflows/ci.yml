@@ -33,16 +33,13 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build (Vite)
-        run: yarn build
+        run: yarn build:all
 
       - name: Test (Vitest)
         run: yarn test
 
       - name: Generate Code Coverage (Vitest)
         run: yarn coverage
-
-      - name: Build Demo Page (Vite)
-        run: yarn build:demo
 
       - name: Commit and push changes
         run: |

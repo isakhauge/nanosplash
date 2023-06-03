@@ -10,16 +10,16 @@ function g() {
 function S(e, t) {
   t.children.length > 0 ? t.insertBefore(e, t.children.item(0)) : t.append(e);
 }
-function d(e, t) {
-  e == null || e.classList[t](o.HostCSSClassName);
+function o(e, t) {
+  e == null || e.classList[t](d.HostCSSClassName);
 }
 function N(e) {
-  d(e.getNSElement().parentElement, "remove");
-}
-function w(e) {
-  e.style.display = "flex";
+  o(e.getNSElement().parentElement, "remove");
 }
 function p(e) {
+  e.style.display = "flex";
+}
+function w(e) {
   e.style.display = "none";
 }
 function a(e) {
@@ -42,7 +42,7 @@ function v(e) {
   return (t = e == null ? void 0 : e.classList) == null ? void 0 : t.contains("ns");
 }
 function h(e, t) {
-  d(e.parentElement, "remove"), d(t, "add"), S(e, t);
+  o(e.parentElement, "remove"), o(t, "add"), S(e, t);
 }
 function u(e) {
   const t = e.firstElementChild;
@@ -52,13 +52,13 @@ function u(e) {
   }
   return null;
 }
-function y() {
+function E() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (e) => {
     const t = Math.random() * 16 | 0;
     return (e === "x" ? t : t & 3 | 8).toString(16);
   });
 }
-class o {
+class d {
   /**
    * # Constructor
    * Creates a new Nanosplash instance.
@@ -74,7 +74,7 @@ class o {
      * The root element of the Nanosplash component.
      */
     r(this, "element");
-    this.element = g(), this.element.id = this.id = y();
+    this.element = g(), this.element.id = this.id = E();
   }
   /**
    * # Get NS Content Element
@@ -106,7 +106,7 @@ class o {
    * @inheritDoc
    */
   hideText() {
-    return p(this.getNSTextElement()), this;
+    return w(this.getNSTextElement()), this;
   }
   /**
    * @inheritDoc
@@ -118,7 +118,7 @@ class o {
    * @inheritDoc
    */
   showText() {
-    return w(this.getNSTextElement()), this;
+    return p(this.getNSTextElement()), this;
   }
   /**
    * @inheritDoc
@@ -132,13 +132,13 @@ class o {
  * # CSS Class Name
  * The main CSS class name of the root element of a Nanosplash component.
  */
-r(o, "CSSClassName", "ns"), /**
+r(d, "CSSClassName", "ns"), /**
  * # Host CSS Class Name
  * The CSS class name of the host element of a Nanosplash component.
  * The host element is the element that the Nanosplash is attached to.
  */
-r(o, "HostCSSClassName", "ns-host");
-class E {
+r(d, "HostCSSClassName", "ns-host");
+class y {
   /**
    * Constructs a new stack.
    */
@@ -209,7 +209,7 @@ const s = class {
      * @see Nanosplash
      */
     r(this, "nsStack");
-    this.nsStack = new E();
+    this.nsStack = new y();
   }
   /**
    * # Find Index
@@ -266,7 +266,7 @@ const s = class {
    * @returns {Nanosplash} Nanosplash instance.
    */
   createNS(t) {
-    const n = new o();
+    const n = new d();
     return n.setText(t || ""), this.nsStack.push(n), n;
   }
   /**
@@ -355,8 +355,6 @@ r(l, "WindowAccessorKey", "ns"), /**
  * Singleton instance of NanosplashService.
  */
 r(l, "instance");
-try {
-  l.start();
-} catch (e) {
-  console.warn(e);
-}
+export {
+  l as default
+};

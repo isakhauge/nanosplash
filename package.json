@@ -32,23 +32,26 @@
     "url": "https://github.com/isakhauge/nanosplash.git"
   },
   "license": "MIT",
-  "main": "./dist/ns.js",
-  "module": "./dist/ns.js",
-  "source": "./src/Nanosplash.ts",
-  "unpkg": "./dist/ns.iife.js",
-  "style": "./dist/main.css",
+  "main": "./dist/es/ns.js",
+  "module": "./dist/es/ns.js",
+  "source": "./src/main.ts",
+  "unpkg": "./dist/iife/ns.iife.js",
+  "style": "./dist/es/style.css",
   "exports": {
     ".": {
-      "import": "./dist/ns.js",
-      "require": "./dist/ns.cjs",
-      "default": "./dist/ns.js"
+      "import": "./dist/es/ns.js",
+      "require": "./dist/cjs/ns.cjs",
+      "default": "./dist/es/ns.js"
     }
   },
   "types": "./src/vite-env.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build -m production",
-    "build:demo": "tsc && vite build -m demo",
+    "build": "tsc && vite build -m production --c vite.es.config.ts",
+    "build:cjs": "tsc && vite build -m production --c vite.cjs.config.ts",
+    "build:iife": "tsc && vite build -m production --c vite.iife.config.ts",
+    "build:demo": "tsc && vite build -m production --c vite.demo.config.ts",
+    "build:all": "yarn build && yarn build:cjs && yarn build:iife && yarn build:demo",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -61,7 +64,7 @@
     "jsdom": "^22.1.0",
     "sass": "^1.62.1",
     "terser": "^5.17.7",
-    "typescript": "^5.0.4",
+    "typescript": "^5.1.3",
     "vite": "^4.3.9",
     "vitest": "^0.31.4"
   }

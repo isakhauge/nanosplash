@@ -14,7 +14,9 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "skipLibCheck": true,
-    "types": ["vite/client"],
+    "types": [
+      "vite/client",
+    ],
   },
   "include": [
     "src/**/*.ts",
