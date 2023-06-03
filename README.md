@@ -73,5 +73,29 @@ This method displays a loading screen inside another element and returns a GUID 
 The `Reference` type is a union type of `string | Element | () => Element`.
 
 ```ts
-ns.showInside(ref: Reference, text?: string): GUIDString
+ns.showInside(ref: Reference, text?: string): GUIDString | null
+```
+
+### Hide
+
+```ts
+ns.hide(): GUIDString | null
+```
+
+### Hide by ID
+
+```ts
+ns.hideId(guid: GUIDString): GUIDString | null
+```
+
+### Hide inside
+
+```ts
+ns.hideInside(ref: Reference): GUIDString | null
+```
+
+### Hide all
+
+```ts
+ns.hideAll(): void
 ```

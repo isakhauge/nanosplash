@@ -15,9 +15,9 @@ const regularBuild = {
 }
 
 const demoBuild = {
-	base: 'demo',
+	base: 'pages',
 	build: {
-		outDir: 'demo',
+		outDir: 'pages',
 		rollupOptions: {
 			input: 'index.html',
 			output: {
