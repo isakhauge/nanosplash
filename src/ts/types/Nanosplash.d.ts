@@ -1,15 +1,12 @@
-export type DestinationSelector = string
+import type NanosplashService from '../core/Nanosplash/NanosplashService'
 
-export type DestinationNode = Node | Element | HTMLElement
+export type CSSSelector = string
 
-export type DestinationCallback = () =>
-	| DestinationNode
-	| Promise<DestinationNode>
+export type ElementCallback = () =>
+	| DestinationElement
+	| Promise<DestinationElement>
 
-export type Destination =
-	| DestinationSelector
-	| DestinationNode
-	| DestinationCallback
+export type Reference = CSSSelector | Element | ElementCallback
 
 declare global {
 	interface Window {

@@ -2,14 +2,10 @@
 
 import '../../../sass/ns.sass'
 
-import {
-	createElement,
-	hideElement,
-	showElement,
-} from './repositories/NanosplashRepository'
+import { createElement, hideElement, showElement } from './DOMUtilities'
 import type { NanosplashInterface } from './interfaces/NanosplashInterface'
 import type { GUIDString } from '../../types/Alias'
-import { guid } from '../../util/Guid'
+import { generateGUID } from '../../util/Guid'
 
 /**
  * # Nanosplash
@@ -18,29 +14,38 @@ import { guid } from '../../util/Guid'
  * @author Isak K. Hauge <isakhauge@icloud.com>
  */
 class Nanosplash implements NanosplashInterface {
-	public static readonly nsClassName = 'ns'
-	public static readonly nsHostClassName = Nanosplash.nsClassName + '-host'
+	/**
+	 * # CSS Class Name
+	 * The main CSS class name of the root element of a Nanosplash component.
+	 */
+	public static readonly CSSClassName = 'ns'
 
+	/**
+	 * # Host CSS Class Name
+	 * The CSS class name of the host element of a Nanosplash component.
+	 * The host element is the element that the Nanosplash is attached to.
+	 */
+	public static readonly HostCSSClassName = 'ns-host'
+
+	/**
+	 * # ID
+	 * Each Nanosplash instance is given a unique GUID.
+	 */
 	private readonly id: GUIDString
+
+	/**
+	 * # Element
+	 * The root element of the Nanosplash component.
+	 */
 	private element?: HTMLDivElement
 
+	/**
+	 * # Constructor
+	 * Creates a new Nanosplash instance.
+	 */
 	public constructor() {
 		this.element = createElement()
-		this.element.id = this.id = guid()
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public getId(): GUIDString {
-		return this.id
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public getNSElement(): HTMLDivElement {
-		return <HTMLDivElement>this.element
+		this.element.id = this.id = generateGUID()
 	}
 
 	/**
@@ -57,6 +62,20 @@ class Nanosplash implements NanosplashInterface {
 	 */
 	public getNSTextElement(): HTMLDivElement {
 		return <HTMLDivElement>this.getNSContentElement().firstElementChild
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public getId(): GUIDString {
+		return this.id
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public getNSElement(): HTMLDivElement {
+		return <HTMLDivElement>this.element
 	}
 
 	/**

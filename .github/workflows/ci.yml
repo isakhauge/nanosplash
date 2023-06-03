@@ -41,6 +41,9 @@ jobs:
       - name: Generate Code Coverage (Vitest)
         run: yarn coverage
 
+      - name: Build Demo Page (Vite)
+        run: yarn coverage
+
       - name: Commit and push changes
         run: |
           git add .

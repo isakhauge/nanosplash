@@ -27,7 +27,7 @@ class Stack<T> {
 	 * @param item The item to add to the stack.
 	 */
 	public push(item: T): void {
-		this._items.push(item)
+		this.items.push(item)
 	}
 
 	/**
@@ -35,7 +35,7 @@ class Stack<T> {
 	 * @returns The item at the top of the stack, or undefined if the stack is empty.
 	 */
 	public pop(): T | undefined {
-		return this._items.pop()
+		return this.items.pop()
 	}
 
 	/**
@@ -43,7 +43,7 @@ class Stack<T> {
 	 * @returns The item at the top of the stack, or undefined if the stack is empty.
 	 */
 	public peek(): T | undefined {
-		return this._items[this._items.length - 1]
+		return this.items[this.size() - 1]
 	}
 
 	/**
@@ -51,7 +51,7 @@ class Stack<T> {
 	 * @returns True if the stack is empty, false otherwise.
 	 */
 	public isEmpty(): boolean {
-		return this._items.length === 0
+		return this.size() === 0
 	}
 
 	/**
@@ -59,7 +59,7 @@ class Stack<T> {
 	 * @returns The number of items in the stack.
 	 */
 	public size(): number {
-		return this._items.length
+		return this.items.length
 	}
 
 	/**

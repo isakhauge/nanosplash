@@ -1,20 +1,20 @@
 // @ts-strict
 
 /**
- * # Nanosplash Repository
- * A repository of functions that are used by the Nanosplash classes.
+ * # DOM Utilities
+ * A collection of functions that are used by the Nanosplash classes.
  * @see Nanosplash
  * @see NanosplashService
  * @author Isak K. Hauge <isakhauge@icloud.com>
  */
 
-import { GUIDString } from '../../../types/Alias'
-import type { Destination, DestinationNode } from '../../../types/Nanosplash'
-import Nanosplash from '../Nanosplash'
-import NanosplashService from '../services/NanosplashService'
+import { GUIDString } from '../../types/Alias'
+import type { Reference } from '../../types/Nanosplash'
+import Nanosplash from './Nanosplash'
+import NanosplashService from './NanosplashService'
 
 /**
- * # Create
+ * # Create Element
  * Return the main Nanosplash element.
  */
 export function createElement(): HTMLDivElement {
@@ -26,23 +26,23 @@ export function createElement(): HTMLDivElement {
 
 /**
  * # Inject	as First Child
- * Insert the `node` into the `destinationNode` as its first child.
- * @param node Node to inject.
- * @param destinationNode Node in which the first node is to be injected.
- * @see https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes
+ * Insert element into the target element as its first child.
+ * @param element Element to inject.
+ * @param targetElement Element in which the first element is to be injected.
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Document/children
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Node/insertBefore
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild
  * @see https://developer.mozilla.org/docs/Web/API/NodeList/item
  */
 export function injectAsFirstChild(
-	node: Element,
-	destinationNode: Element
+	element: Element,
+	targetElement: Element
 ): void {
-	const destinationNodeHasChildren = destinationNode.children.length > 0
-	if (destinationNodeHasChildren) {
-		destinationNode.insertBefore(node, destinationNode.children.item(0))
+	const targetHasChild = targetElement.children.length > 0
+	if (targetHasChild) {
+		targetElement.insertBefore(element, targetElement.children.item(0))
 	} else {
-		destinationNode.append(node)
+		targetElement.append(element)
 	}
 }
 
@@ -51,31 +51,32 @@ export function injectAsFirstChild(
  * Add or remove the `nsHostClassName` class to the `element`.
  * @param element Element to which the `nsHostClassName` class will be added or removed.
  * @param action Action to perform ('add' or 'remove').
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/classList
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/add
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/remove
  */
 export function setNSHostClass(
 	element: Element | null,
 	action: 'add' | 'remove'
 ): void {
-	element?.classList[action](Nanosplash.nsHostClassName)
+	element?.classList[action](Nanosplash.HostCSSClassName)
 }
 
 /**
- * # Prepare Parent
+ * # Prepare Parent Of
  * Add the `nsHostClassName` class to the parent of the `ns` element.
  * @param ns Nanosplash instance.
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/parentElement
- * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/add
  */
 export function prepareParentOf(ns: Nanosplash): void {
 	setNSHostClass(ns.getNSElement().parentElement, 'add')
 }
 
 /**
- * # Clean Parent
+ * # Clean NS Parent Of
  * Remove the `nsHostClassName` class from the parent of the `ns` element.
  * @param ns Nanosplash instance.
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/parentElement
- * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/remove
  */
 export function cleanNSParentOf(ns: Nanosplash): void {
 	setNSHostClass(ns.getNSElement().parentElement, 'remove')
@@ -102,23 +103,23 @@ export function hideElement(element: HTMLElement): void {
 }
 
 /**
- * # Node From
- * Convert the `destination` to a HTMLElement, Element, Node or null.
- * @param destination Destination of the node.
- * @returns Node from the `destination`.
+ * # Element From
+ * Convert the element reference to an element.
+ * @param ref Reference to an element.
+ * @returns { Element | null } Element or null.
  * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Element
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Node
  */
-export function nodeFrom(destination: Destination): DestinationNode | null {
-	let elem: HTMLElement | null
+export function elementFrom(ref: Reference): Element | null {
+	let elem: Element | null
 
-	if (typeof destination === 'string') {
-		elem = document.querySelector(destination)
-	} else if (destination instanceof Node) {
-		return destination
-	} else if (typeof destination === 'function') {
-		elem = <HTMLElement>destination()
+	if (typeof ref === 'string') {
+		elem = document.querySelector(ref)
+	} else if (ref instanceof Element) {
+		return ref
+	} else if (typeof ref === 'function') {
+		elem = <Element>ref()
 		if (!(elem instanceof Node)) {
 			return null
 		}
@@ -131,7 +132,7 @@ export function nodeFrom(destination: Destination): DestinationNode | null {
 
 /**
  * # Element Is NS
- * Check if the element is Nanosplash element.
+ * Check if the element is a Nanosplash element.
  * This is determined by the presence of the `ns` class on the element.
  * @param element Element to check.
  * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/contains
@@ -144,31 +145,28 @@ export function elementIsNS(element: Element): boolean {
  * # Move
  * Move an Element to another Element.
  * @param element Element to move
- * @param destinationElement Target element
+ * @param targetElement Target element
  */
-export function move(element: Element, destinationElement: Element): void {
+export function move(element: Element, targetElement: Element): void {
 	// Clean the current NS host element.
 	setNSHostClass(element.parentElement, 'remove')
 	// Assign new NS host element.
-	setNSHostClass(destinationElement, 'add')
-	injectAsFirstChild(element, destinationElement)
+	setNSHostClass(targetElement, 'add')
+	injectAsFirstChild(element, targetElement)
 }
 
 /**
  * # Get Recycled NS
- * Return the Nanosplash instance inside the `destination` if it exists.
- * @param destination Destination of the Nanosplash instance.
+ * Return the Nanosplash instance inside the target element if it exists.
+ * @param targetElement Element wherein the Nanosplash instance is to reside.
  * @returns { Nanosplash | null } Nanosplash instance or null.
- * @see https://developer.mozilla.org/en-US/docs/Web/API/Node/firstChild
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Document/firstElementChild
  */
-export function getRecycledNS(destination: Destination): Nanosplash | null {
-	const destinationNode = nodeFrom(destination)
-	if (!destinationNode) return null
-	const firstChild = <Element>destinationNode.firstChild
+export function getRecycledNS(targetElement: Element): Nanosplash | null {
+	const firstChild = targetElement.firstElementChild
 	const hasChild = firstChild !== null
-	const destinationAlreadyHasNS = hasChild && elementIsNS(firstChild)
-
-	if (destinationAlreadyHasNS) {
+	const targetAlreadyHasNS = hasChild && elementIsNS(firstChild)
+	if (targetAlreadyHasNS) {
 		const id: GUIDString = firstChild.id
 		const nss = NanosplashService.getInstance()
 		return nss.nsStack.items.find((ns: Nanosplash) => ns.getId() === id) ?? null

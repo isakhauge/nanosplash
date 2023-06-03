@@ -1,6 +1,6 @@
 // @ts-strict
 
-import NanosplashService from './ts/core/Nanosplash/services/NanosplashService'
+import NanosplashService from './ts/core/Nanosplash/NanosplashService'
 try {
 	NanosplashService.start()
 } catch (e) {

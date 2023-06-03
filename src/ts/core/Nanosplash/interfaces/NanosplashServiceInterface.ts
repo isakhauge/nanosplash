@@ -1,7 +1,7 @@
 import { GUIDString } from '../../../types/Alias'
-import { Destination } from '../../../types/Nanosplash'
+import { Reference } from '../../../types/Nanosplash'
 
-export interface NanosplashAPI {
+export interface NanosplashServiceInterface {
 	/**
 	 * # Show
 	 * Present a Nanosplash in the browser window displaying the given text.
@@ -13,11 +13,11 @@ export interface NanosplashAPI {
 	/**
 	 * # Show Inside
 	 * Present a Nanosplash over the given element displaying the given text.
-	 * @param destination Target element.
+	 * @param ref Reference an element.
 	 * @param text Text to display.
 	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
 	 */
-	showInside(destination: Destination, text?: string): GUIDString | null
+	showInside(ref: Reference, text?: string): GUIDString | null
 
 	/**
 	 * # Hide
@@ -43,8 +43,8 @@ export interface NanosplashAPI {
 	/**
 	 * # Hide Inside
 	 * Hide Nanosplash inside the given element if it exists.
-	 * @param destination Target element.
+	 * @param ref Reference an element.
 	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
 	 */
-	hideInside(destination: Destination): GUIDString | null
+	hideInside(ref: Reference): GUIDString | null
 }

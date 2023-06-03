@@ -20,7 +20,7 @@ describe('Nanosplash', () => {
 
 		expect(element).not.toBeUndefined()
 		expect(element.id).toBe(ns.getId())
-		expect(element.classList.contains(Nanosplash.nsClassName)).toBe(true)
+		expect(element.classList.contains(Nanosplash.CSSClassName)).toBe(true)
 
 		const contentElement = ns.getNSContentElement()
 		expect(contentElement).not.toBeUndefined()

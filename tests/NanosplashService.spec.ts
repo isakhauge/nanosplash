@@ -2,10 +2,10 @@
 
 import { JSDOM } from 'jsdom'
 import { beforeEach, describe, expect, it } from 'vitest'
-import NanosplashService from '../src/ts/core/Nanosplash/services/NanosplashService'
+import NanosplashService from '../src/ts/core/Nanosplash/NanosplashService'
 import Nanosplash from '../src/ts/core/Nanosplash/Nanosplash'
 import { GUIDString } from '../src/ts/types/Alias'
-import { getRecycledNS } from '../src/ts/core/Nanosplash/repositories/NanosplashRepository'
+import { getRecycledNS } from '../src/ts/core/Nanosplash/DOMUtilities'
 
 describe('NanosplashService', () => {
 	const nss = NanosplashService.getInstance()

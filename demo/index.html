@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Nanosplash 3</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script type="module" crossorigin src="/demo/index.51848898.js"></script>
+		<link rel="stylesheet" href="/demo/index.2f705073.css">
+	</head>
+	<body>
+	<div
+		id="main"
+		class="bg-slate-50 h-screen flex flex-col justify-center items-center">
+		<div class="text-slate-700 text-5xl">Nanosplash</div>
+		<div class="text-slate-400 text-xl mt-5">Demo of v3.0.0</div>
+		<div class="mt-20 mb-10 text-lg font-mono text-slate-500">ns.showInside(<span class="text-slate-700 font-bold">selectorOrElement</span>, <span class="text-slate-700 font-bold">text</span>)</div>
+		<div class="flex gap-x-3">
+			<input id="code" type="text" class="appearance-none w-[500px] box-content flex p-4 bg-slate-700 font-mono text-white rounded shadow-xl" placeholder="Write JS code here">
+			<button id="run" type="button" class="p-4 bg-slate-500 text-white rounded shadow-xl">Run code</button>
+		</div>
+		<div
+			id="wrapper"
+			class="relative mt-20 flex gap-x-5 justify-center items-center bg-slate-200 p-20 border border-4 border-black/10 rounded shadow-xl">
+			<div class="absolute top-2 left-2 font-mono text-slate-500 px-1 bg-white rounded">Element ID: #wrapper</div>
+			<div
+				id="a"
+				class="relative bg-slate-400 p-20 border border-4 border-black/10 rounded shadow-2xl">
+				<div class="absolute top-2 left-2 font-mono text-slate-500 px-1 bg-white rounded">Element ID: #a</div>
+				<div class="text-white text-2xl font-medium">This is element A</div>
+			</div>
+			<div
+				id="b"
+				class="relative bg-slate-400 p-20 border border-4 border-black/10 rounded shadow-2xl">
+				<div class="absolute top-2 left-2 font-mono text-slate-500 px-1 bg-white rounded">Element ID: #b</div>
+				<div class="text-white text-2xl font-medium">This is element B</div>
+			</div>
+			<div
+				id="c"
+				class="relative bg-slate-400 p-20 border border-4 border-black/10 rounded shadow-2xl">
+				<div class="absolute top-2 left-2 font-mono text-slate-500 px-1 bg-white rounded">Element ID: #c</div>
+				<div class="text-white text-2xl font-medium">This is element C</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		const ref = id => document.getElementById(id)
+		const code = ref('code')
+		const run = ref('run')
+		run.onclick = () => eval(code.value)
+	</script>
+	</body>
+</html>

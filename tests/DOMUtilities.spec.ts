@@ -12,9 +12,9 @@ import {
 	hideElement,
 	setNSHostClass,
 	move,
-} from '../src/ts/core/Nanosplash/repositories/NanosplashRepository'
+} from '../src/ts/core/Nanosplash/DOMUtilities'
 
-describe('NanosplashRepository', () => {
+describe('DOMUtilities', () => {
 	// Reset the DOM before each test
 	beforeEach(() => {
 		const dom = new JSDOM()
@@ -22,7 +22,7 @@ describe('NanosplashRepository', () => {
 		globalThis.window = dom.window
 		globalThis.document = dom.window.document
 		globalThis.DOMParser = dom.window.DOMParser
-		globalThis.Node = dom.window.Node
+		globalThis.Element = dom.window.Element
 	})
 
 	it('Should be able to create a Nanosplash component', () => {
@@ -50,16 +50,16 @@ describe('NanosplashRepository', () => {
 		const parent = document.createElement('div')
 		parent.appendChild(ns.getNSElement())
 		prepareParentOf(ns)
-		expect(parent.classList.contains(Nanosplash.nsHostClassName)).toBe(true)
+		expect(parent.classList.contains(Nanosplash.HostCSSClassName)).toBe(true)
 	})
 
 	it('Should be able to clean the parent of a Nanosplash component', () => {
 		const ns = new Nanosplash()
 		const parent = document.createElement('div')
 		parent.appendChild(ns.getNSElement())
-		parent.classList.add(Nanosplash.nsHostClassName)
+		parent.classList.add(Nanosplash.CSSClassName)
 		cleanNSParentOf(ns)
-		expect(parent.classList.contains(Nanosplash.nsHostClassName)).toBe(false)
+		expect(parent.classList.contains(Nanosplash.HostCSSClassName)).toBe(false)
 	})
 
 	it('Should be able to show an element', () => {
@@ -77,9 +77,9 @@ describe('NanosplashRepository', () => {
 	it('Should be able to alter the class of a Nanosplash host', () => {
 		const div = document.createElement('div')
 		setNSHostClass(div, 'add')
-		expect(div.classList.contains(Nanosplash.nsHostClassName)).toBe(true)
+		expect(div.classList.contains(Nanosplash.HostCSSClassName)).toBe(true)
 		setNSHostClass(div, 'remove')
-		expect(div.classList.contains(Nanosplash.nsHostClassName)).toBe(false)
+		expect(div.classList.contains(Nanosplash.HostCSSClassName)).toBe(false)
 	})
 
 	it('Should be able to move a Nanosplash component', () => {

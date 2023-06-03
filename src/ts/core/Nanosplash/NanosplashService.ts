@@ -1,17 +1,17 @@
 // @ts-strict
 
-import Nanosplash from '../Nanosplash'
-import Stack from '../../../util/Stack'
+import Nanosplash from './Nanosplash'
+import Stack from '../../util/Stack'
 import {
 	cleanNSParentOf,
 	getRecycledNS,
 	move,
-	nodeFrom,
-} from '../repositories/NanosplashRepository'
-import type { Destination, DestinationNode } from '../../../types/Nanosplash'
-import type { GUIDString } from '../../../types/Alias'
-import { FindCallback } from '../../../types/NanosplashService'
-import { NanosplashAPI } from '../interfaces/NanosplashAPI'
+	elementFrom,
+} from './DOMUtilities'
+import type { Reference } from '../../types/Nanosplash'
+import type { GUIDString } from '../../types/Alias'
+import { FindCallback } from '../../types/NanosplashService'
+import { NanosplashServiceInterface } from './interfaces/NanosplashServiceInterface'
 
 /**
  * # Nanosplash Service
@@ -21,10 +21,26 @@ import { NanosplashAPI } from '../interfaces/NanosplashAPI'
  * @see Nanosplash
  * @author Isak K. Hauge <isakhauge@icloud.com>
  */
-class NanosplashService implements NanosplashAPI {
+class NanosplashService implements NanosplashServiceInterface {
+	/**
+	 * # Window Accessor Key
+	 * Key to access NanosplashService instance in the Window object.
+	 */
 	private static readonly WindowAccessorKey = 'ns'
+
+	/**
+	 * # Instance
+	 * Singleton instance of NanosplashService.
+	 */
 	private static instance: NanosplashService
 
+	/**
+	 * # Nanosplash Stack
+	 * For each Nanosplash instance created, it's pushed to the stack.
+	 * When a Nanosplash instance is removed, it's removed from the stack.
+	 * @see Stack
+	 * @see Nanosplash
+	 */
 	public readonly nsStack: Stack<Nanosplash>
 
 	/**
@@ -70,7 +86,7 @@ class NanosplashService implements NanosplashAPI {
 
 	/**
 	 * # Assign To Window
-	 * Assign Nanosplash service instance to Window object.
+	 * Assign a NanosplashService instance to the Window object.
 	 * The NanosplashService instance can be accessed in the window object
 	 * using the key window accessor key.
 	 * @see WindowAccessorKey
@@ -84,7 +100,7 @@ class NanosplashService implements NanosplashAPI {
 
 	/**
 	 * # Start
-	 * Initialize Nanosplash Service instance in Window when it's loaded.
+	 * Initialize and attach a NanosplashService instance in the Window object.
 	 */
 	public static start(): void {
 		NanosplashService.assignToWindow()
@@ -123,7 +139,7 @@ class NanosplashService implements NanosplashAPI {
 	}
 
 	/**
-	 * # Stack Delete At
+	 * # Stack Delete
 	 * Remove Nanosplash instance from the stack.
 	 * @param ns Nanosplash instance.
 	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
@@ -166,11 +182,8 @@ class NanosplashService implements NanosplashAPI {
 	/**
 	 * @inheritDoc
 	 */
-	public showInside(
-		destination: Destination,
-		text?: string
-	): GUIDString | null {
-		const destinationNode: DestinationNode | null = nodeFrom(destination)
+	public showInside(ref: Reference, text?: string): GUIDString | null {
+		const destinationNode: Element | null = elementFrom(ref)
 		if (destinationNode) {
 			let ns = getRecycledNS(destinationNode)
 			if (!ns) {
@@ -212,8 +225,8 @@ class NanosplashService implements NanosplashAPI {
 	/**
 	 * @inheritDoc
 	 */
-	public hideInside(destination: Destination): GUIDString | null {
-		const node = nodeFrom(destination)
+	public hideInside(ref: Reference): GUIDString | null {
+		const node = elementFrom(ref)
 		const cb = (ns: Nanosplash) => ns.getNSElement().parentElement === node
 		return node ? this.deleteNS(cb) : null
 	}
