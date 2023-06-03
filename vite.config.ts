@@ -15,7 +15,7 @@ const regularBuild = {
 }
 
 const demoBuild = {
-	base: 'docs',
+	//base: 'docs',
 	build: {
 		outDir: 'docs',
 		rollupOptions: {
