@@ -15,7 +15,7 @@ const regularBuild = {
 }
 
 const demoBuild = {
-	//base: 'docs',
+	base: 'nanosplash',
 	build: {
 		outDir: 'docs',
 		rollupOptions: {
