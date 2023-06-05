@@ -1,6 +1,6 @@
 // @ts-strict
 
-import { NanosplashInterface, GUIDString } from 'nanosplash'
+import { GUIDString } from 'nanosplash'
 import '../../../sass/ns.sass'
 import { generateGUID } from '../../util/Guid'
 import { createElement, hideElement, showElement } from './DOMUtilities'
@@ -11,7 +11,7 @@ import { createElement, hideElement, showElement } from './DOMUtilities'
  * process is running.
  * @author Isak K. Hauge <isakhauge@icloud.com>
  */
-export class Nanosplash implements NanosplashInterface {
+export class Nanosplash {
 	/**
 	 * # CSS Class Name
 	 * The main CSS class name of the root element of a Nanosplash component.
@@ -63,29 +63,24 @@ export class Nanosplash implements NanosplashInterface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * # Get ID
+	 * Return Nanosplash instance GUID.
 	 */
 	public getId(): GUIDString {
 		return this.id
 	}
 
 	/**
-	 * @inheritDoc
+	 * # Get NS Element
+	 * Return Nanosplash instance HTMLDivElement.
 	 */
 	public getNSElement(): HTMLDivElement {
 		return <HTMLDivElement>this.element
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	public hideText(): Nanosplash {
-		hideElement(this.getNSTextElement())
-		return this
-	}
-
-	/**
-	 * @inheritDoc
+	 * # Set Text
+	 * @param text The text that will be visible inside the splash.
 	 */
 	public setText(text: string): Nanosplash {
 		this.getNSTextElement().innerText = text
@@ -94,7 +89,8 @@ export class Nanosplash implements NanosplashInterface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * # Show Text
+	 * Display text element.
 	 */
 	public showText(): Nanosplash {
 		showElement(this.getNSTextElement())
@@ -102,7 +98,17 @@ export class Nanosplash implements NanosplashInterface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * # Hide Text
+	 * Hide the text element.
+	 */
+	public hideText(): Nanosplash {
+		hideElement(this.getNSTextElement())
+		return this
+	}
+
+	/**
+	 * # Remove
+	 * Delete all
 	 */
 	public remove(): void {
 		if (!this.element) return

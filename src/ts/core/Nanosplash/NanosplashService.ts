@@ -1,11 +1,6 @@
 // @ts-strict
 
-import {
-	FindCallback,
-	GUIDString,
-	NanosplashServiceInterface,
-	Reference,
-} from 'nanosplash'
+import { FindCallback, GUIDString, Reference } from 'nanosplash'
 import Stack from '../../util/Stack'
 import {
 	cleanNSParentOf,
@@ -23,7 +18,7 @@ import { Nanosplash } from './Nanosplash'
  * @see Nanosplash
  * @author Isak K. Hauge <isakhauge@icloud.com>
  */
-export class NanosplashService implements NanosplashServiceInterface {
+export class NanosplashService {
 	/**
 	 * # Window Accessor Key
 	 * Key to access NanosplashService instance in the Window object.
@@ -169,7 +164,10 @@ export class NanosplashService implements NanosplashServiceInterface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * # Show
+	 * Present a Nanosplash in the browser window displaying the given text.
+	 * @param text Text to display.
+	 * @returns {GUIDString} Nanosplash ID.
 	 */
 	public show(text?: string): GUIDString {
 		let ns = getRecycledNS(document.body)
@@ -182,7 +180,11 @@ export class NanosplashService implements NanosplashServiceInterface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * # Show Inside
+	 * Present a Nanosplash over the given element displaying the given text.
+	 * @param ref Reference an element.
+	 * @param text Text to display.
+	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
 	 */
 	public showInside(ref: Reference, text?: string): GUIDString | null {
 		const destinationNode: Element | null = elementFrom(ref)
@@ -200,7 +202,18 @@ export class NanosplashService implements NanosplashServiceInterface {
 	}
 
 	/**
-	 * @inheritDoc
+	 * # Hide
+	 * Hide the last created Nanosplash.
+	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
+	 */
+	public hide(): GUIDString | null {
+		const ns = this.nsStack.pop()
+		return ns ? this.cleanAndRemove(ns) : null
+	}
+
+	/**
+	 * # Hide All
+	 * Hide all Nanosplashes.
 	 */
 	public hideAll(): void {
 		this.nsStack.items.forEach((ns: Nanosplash) => {
@@ -210,22 +223,20 @@ export class NanosplashService implements NanosplashServiceInterface {
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	public hide(): GUIDString | null {
-		const ns = this.nsStack.pop()
-		return ns ? this.cleanAndRemove(ns) : null
-	}
-
-	/**
-	 * @inheritDoc
+	 * # Hide ID
+	 * Hide Nanosplash by its ID.
+	 * @param id Nanosplash ID.
+	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
 	 */
 	public hideId(id: GUIDString): GUIDString | null {
 		return this.deleteNS((ns: Nanosplash) => ns.getId() === id)
 	}
 
 	/**
-	 * @inheritDoc
+	 * # Hide Inside
+	 * Hide Nanosplash inside the given element if it exists.
+	 * @param ref Reference an element.
+	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
 	 */
 	public hideInside(ref: Reference): GUIDString | null {
 		const node = elementFrom(ref)
