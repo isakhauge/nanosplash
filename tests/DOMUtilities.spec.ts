@@ -2,7 +2,6 @@
 
 import { JSDOM } from 'jsdom'
 import { beforeEach, describe, expect, it } from 'vitest'
-import Nanosplash from '../src/ts/core/Nanosplash/Nanosplash'
 import {
 	createElement,
 	injectAsFirstChild,
@@ -13,6 +12,7 @@ import {
 	setNSHostClass,
 	move,
 } from '../src/ts/core/Nanosplash/DOMUtilities'
+import { Nanosplash } from '../src/ts/core/Nanosplash/Nanosplash'
 
 describe('DOMUtilities', () => {
 	// Reset the DOM before each test

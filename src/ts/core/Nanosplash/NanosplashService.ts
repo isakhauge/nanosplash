@@ -1,6 +1,11 @@
 // @ts-strict
 
-import Nanosplash from './Nanosplash'
+import {
+	FindCallback,
+	GUIDString,
+	NanosplashServiceInterface,
+	Reference,
+} from 'nanosplash'
 import Stack from '../../util/Stack'
 import {
 	cleanNSParentOf,
@@ -8,10 +13,7 @@ import {
 	move,
 	elementFrom,
 } from './DOMUtilities'
-import type { Reference } from '../../types/Nanosplash'
-import type { GUIDString } from '../../types/Alias'
-import { FindCallback } from '../../types/NanosplashService'
-import { NanosplashServiceInterface } from './interfaces/NanosplashServiceInterface'
+import { Nanosplash } from './Nanosplash'
 
 /**
  * # Nanosplash Service
@@ -21,7 +23,7 @@ import { NanosplashServiceInterface } from './interfaces/NanosplashServiceInterf
  * @see Nanosplash
  * @author Isak K. Hauge <isakhauge@icloud.com>
  */
-class NanosplashService implements NanosplashServiceInterface {
+export class NanosplashService implements NanosplashServiceInterface {
 	/**
 	 * # Window Accessor Key
 	 * Key to access NanosplashService instance in the Window object.

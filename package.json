@@ -39,9 +39,18 @@
   "style": "./dist/es/style.css",
   "exports": {
     ".": {
-      "import": "./dist/es/ns.js",
-      "require": "./dist/cjs/ns.cjs",
-      "default": "./dist/es/ns.js"
+      "types": {
+        "require": "./src/vite-env.d.ts",
+        "default": "./src/vite-env.d.ts"
+      },
+      "browser": {
+        "require": "./dist/cjs/ns.cjs",
+        "default": "./dist/es/ns.js"
+      },
+      "default": {
+        "require": "./dist/cjs/ns.cjs",
+        "default": "./dist/es/ns.js"
+      }
     }
   },
   "types": "./src/vite-env.d.ts",

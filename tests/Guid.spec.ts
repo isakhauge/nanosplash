@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import Nanosplash from '../src/ts/core/Nanosplash/Nanosplash'
 import { JSDOM } from 'jsdom'
+import { Nanosplash } from '../src/ts/core/Nanosplash/Nanosplash'
 
 describe('Guid', () => {
 	// Reset the DOM before each test

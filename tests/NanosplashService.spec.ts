@@ -1,15 +1,14 @@
 // @ts-strict
 
 import { JSDOM } from 'jsdom'
-import { beforeEach, describe, expect, it } from 'vitest'
-import NanosplashService from '../src/ts/core/Nanosplash/NanosplashService'
-import Nanosplash from '../src/ts/core/Nanosplash/Nanosplash'
-import { GUIDString } from '../src/ts/types/Alias'
+import { beforeEach, expect, describe, it } from 'vitest'
 import { getRecycledNS } from '../src/ts/core/Nanosplash/DOMUtilities'
+import { Nanosplash } from '../src/ts/core/Nanosplash/Nanosplash'
+import NanosplashService from '../src/ts/core/Nanosplash/NanosplashService'
 
 describe('NanosplashService', () => {
 	const nss = NanosplashService.getInstance()
-	const getById = (id: GUIDString): Nanosplash | undefined =>
+	const getById = (id: string): Nanosplash | undefined =>
 		nss.nsStack.items.find((ns: Nanosplash) => ns.getId() === id)
 
 	// Reset the DOM before each test
@@ -34,7 +33,7 @@ describe('NanosplashService', () => {
 
 	it('Should be able to start the service', () => {
 		NanosplashService.start()
-		expect(window.ns).toBeInstanceOf(NanosplashService)
+		expect(nss).toBeInstanceOf(NanosplashService)
 	})
 
 	it('Should be able to retrieve an existing Nanosplash instance from a destination node', () => {

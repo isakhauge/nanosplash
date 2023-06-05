@@ -1,5 +1,9 @@
 // @ts-strict
 
+import { Reference, GUIDString } from 'nanosplash'
+import { Nanosplash } from './Nanosplash'
+import NanosplashService from './NanosplashService'
+
 /**
  * # DOM Utilities
  * A collection of functions that are used by the Nanosplash classes.
@@ -7,11 +11,6 @@
  * @see NanosplashService
  * @author Isak K. Hauge <isakhauge@icloud.com>
  */
-
-import { GUIDString } from '../../types/Alias'
-import type { Reference } from '../../types/Nanosplash'
-import Nanosplash from './Nanosplash'
-import NanosplashService from './NanosplashService'
 
 /**
  * # Create Element

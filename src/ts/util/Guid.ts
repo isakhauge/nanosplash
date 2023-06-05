@@ -1,4 +1,4 @@
-import { GUIDString } from '../types/Alias'
+import { GUIDString } from 'nanosplash'
 
 /**
  * # Generate GUID
