@@ -5,48 +5,93 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Nanosplash 3</title>
 		<script src="https://cdn.tailwindcss.com"></script>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 	</head>
-	<body>
-	<div
-		id="main"
-		class="bg-slate-50 h-screen flex flex-col justify-center items-center p-5 box-content overflow-hidden">
-		<div class="text-slate-700 text-4xl md:text-4xl xl:text-5xl">Nanosplash</div>
-		<div class="text-slate-400 text-sm md:text-lg xl:text-xl mt-2 xl:mt-5">Demo of v3.0.0</div>
-		<div class="mt-10 md:mt-16 xl:mt-20 mb-10 text-sm md:text-lg xl:text-lg font-mono text-slate-500">ns.showInside(<span class="text-slate-700 font-bold">selectorOrElement</span>, <span class="text-slate-700 font-bold">text</span>)</div>
-		<div class="flex gap-x-3 w-full max-w-[500px] justify-center">
-			<input id="code" type="text" class="appearance-none flex-grow box-content flex p-4 bg-slate-700 font-mono text-white rounded shadow-xl" placeholder="Write JS code here">
-			<button id="run" type="button" class="p-4 bg-slate-500 text-white rounded shadow-xl">Run code</button>
-		</div>
+	<body class="bg-slate-50 min-w-full min-h-screen">
 		<div
-			id="wrapper"
-			class="relative mt-14 xl:mt-20 flex flex-col md:flex-row gap-y-5 md:gap-y-0 md:gap-x-5 justify-center items-center bg-slate-200 p-10 md:p-10 xl:p-20 border border-4 border-black/10 rounded shadow-xl">
-			<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 px-1 bg-white rounded">Element ID: #wrapper</div>
-			<div
-				id="a"
-				class="relative bg-slate-400 p-8 md:p-10 xl:p-20 border border-4 border-black/10 rounded shadow-2xl">
-				<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 px-1 bg-white rounded">Element ID: #a</div>
-				<div class="text-white text-base md:text-xl xl:text-2xl font-medium">This is element A</div>
+			id="main"
+			class="min-h-screen flex flex-col justify-center items-center p-5 overflow-hidden">
+			<div class="text-slate-700 text-4xl md:text-4xl xl:text-5xl mb-5 drop-shadow-md">Nanosplash</div>
+			<div class="my-5 flex max-w-sm justify-center flex-wrap gap-x-1 gap-y-1 drop-shadow-md">
+				<img loading="lazy" src="https://badgen.net/npm/v/nanosplash" alt="Version">
+				<img loading="lazy" src="https://badgen.net/npm/license/nanosplash" alt="License">
+				<img loading="lazy" src="https://badgen.net/npm/types/nanosplash" alt="Types">
+				<img loading="lazy" src="https://badgen.net/bundlephobia/minzip/nanosplash" alt="Minzipped size">
+				<img loading="lazy" src="https://badgen.net/bundlephobia/dependency-count/nanosplash" alt="Dependency count">
+				<img loading="lazy" src="https://badgen.net/bundlephobia/tree-shaking/nanosplash" alt="Tree shaking">
+			</div>
+			<div class="mt-5 flex gap-x-3 w-full max-w-[500px] justify-center">
+				<button id="run" type="button" class="animate-bounce p-2 bg-slate-700 text-white rounded shadow-xl flex items-center gap-x-2 ease-out duration-300 shadow-md hover:shadow-2xl hover:translate-y-[-2px] border-4 border-slate-700 hover:border-white/30">
+					<span class="material-symbols-outlined">magic_button</span>
+					Run demo
+				</button>
+				<a id="doc" href="https://github.com/isakhauge/nanosplash" type="button" class="p-2 bg-pink-500 text-white rounded flex items-center gap-x-2 ease-out duration-300 shadow-md hover:shadow-2xl hover:translate-y-[-2px] border-4 border-pink-500 hover:border-white/30">
+					<span class="material-symbols-outlined">menu_book</span>
+					Documentation
+				</a>
 			</div>
 			<div
-				id="b"
-				class="relative bg-slate-400 p-8 md:p-10 xl:p-20 border border-4 border-black/10 rounded shadow-2xl">
-				<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 px-1 bg-white rounded">Element ID: #b</div>
-				<div class="text-white text-base md:text-xl xl:text-2xl font-medium">This is element B</div>
-			</div>
-			<div
-				id="c"
-				class="relative bg-slate-400 p-8 md:p-10 xl:p-20 border border-4 border-black/10 rounded shadow-2xl">
-				<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 px-1 bg-white rounded">Element ID: #c</div>
-				<div class="text-white text-base md:text-xl xl:text-2xl font-medium">This is element C</div>
+				id="wrapper"
+				class="relative mt-14 xl:mt-20 flex flex-col md:flex-row gap-y-5 md:gap-y-0 md:gap-x-5 justify-center items-center bg-slate-200 p-10 md:p-10 xl:p-20 border border-4 border-black/10 rounded shadow-xl">
+				<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 px-1 bg-white rounded">#wrapper</div>
+				<div
+					id="a"
+					class="relative bg-slate-400 p-8 md:p-10 xl:p-20 border border-4 border-black/10 rounded shadow-2xl">
+					<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 px-1 bg-white rounded">#a</div>
+					<div class="text-white text-base md:text-xl xl:text-2xl font-medium">Element A</div>
+				</div>
+				<div
+					id="b"
+					class="relative bg-slate-400 p-8 md:p-10 xl:p-20 border border-4 border-black/10 rounded shadow-2xl">
+					<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 px-1 bg-white rounded">#b</div>
+					<div class="text-white text-base md:text-xl xl:text-2xl font-medium">Element B</div>
+				</div>
+				<div
+					id="c"
+					class="relative bg-slate-400 p-8 md:p-10 xl:p-20 border border-4 border-black/10 rounded shadow-2xl">
+					<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 px-1 bg-white rounded">#c</div>
+					<div class="text-white text-base md:text-xl xl:text-2xl font-medium">Element C</div>
+				</div>
 			</div>
 		</div>
-	</div>
-	<script type="module" src="src/main.ts"></script>
-	<script>
-		const ref = id => document.getElementById(id)
-		const code = ref('code')
-		const run = ref('run')
-		run.onclick = () => eval(code.value)
-	</script>
+		<script type="module" src="src/main.ts"></script>
+		<script>
+			const wait = (ms) => new Promise(r => setTimeout(r, ms))
+			const ref = (selector) => document.querySelector(selector)
+			const run = ref('#run')
+			run.onclick = async () => {
+				console.log('Running demo')
+				const sec = (n) => n * 1000
+				ns.show('Nanosplash')
+				await wait(sec(2))
+				ns.show('The tiny loading screen for web artisans')
+				await wait(sec(2))
+				ns.hide()
+				ns.showInside('#wrapper', 'Display it over specific elements')
+				await wait(sec(2.25))
+				ns.hide()
+				ns.showInside('#a', 'Like this')
+				await wait(sec(0.5))
+				ns.showInside('#b', 'This')
+				await wait(sec(0.5))
+				ns.showInside('#c', 'Or this')
+				await wait(sec(1))
+				ns.showInside('#wrapper', 'Cool or what?')
+				ns.hideAll()
+				ns.show('Only 1.5kb minified and gzipped')
+				await wait(sec(1.5))
+				ns.show('No dependencies')
+				await wait(sec(1.5))
+				ns.show('98% test coverage')
+				await wait(sec(1.5))
+				ns.show('Super simple API')
+				await wait(sec(1.5))
+				ns.show('Minimalistic')
+				await wait(sec(1.5))
+				ns.show('It\'s Nanosplash')
+				await wait(sec(2.5))
+				ns.hide()
+			}
+		</script>
 	</body>
 </html>
