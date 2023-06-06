@@ -96,37 +96,43 @@ class d {
     return this.getNSContentElement().firstElementChild;
   }
   /**
-   * @inheritDoc
+   * # Get ID
+   * Return Nanosplash instance GUID.
    */
   getId() {
     return this.id;
   }
   /**
-   * @inheritDoc
+   * # Get NS Element
+   * Return Nanosplash instance HTMLDivElement.
    */
   getNSElement() {
     return this.element;
   }
   /**
-   * @inheritDoc
-   */
-  hideText() {
-    return E(this.getNSTextElement()), this;
-  }
-  /**
-   * @inheritDoc
+   * # Set Text
+   * @param text The text that will be visible inside the splash.
    */
   setText(t) {
     return this.getNSTextElement().innerText = t, t.length > 0 ? this.showText() : this.hideText(), this;
   }
   /**
-   * @inheritDoc
+   * # Show Text
+   * Display text element.
    */
   showText() {
     return v(this.getNSTextElement()), this;
   }
   /**
-   * @inheritDoc
+   * # Hide Text
+   * Hide the text element.
+   */
+  hideText() {
+    return E(this.getNSTextElement()), this;
+  }
+  /**
+   * # Remove
+   * Delete all
    */
   remove() {
     var t;
@@ -299,14 +305,21 @@ const s = class {
     return n ? (this.cleanAndRemove(n), this.stackDelete(n)) : null;
   }
   /**
-   * @inheritDoc
+   * # Show
+   * Present a Nanosplash in the browser window displaying the given text.
+   * @param text Text to display.
+   * @returns {GUIDString} Nanosplash ID.
    */
   show(t) {
     let n = u(document.body);
     return n || (n = this.createNS(), h(n.getNSElement(), document.body)), n.setText(t || ""), n.getId();
   }
   /**
-   * @inheritDoc
+   * # Show Inside
+   * Present a Nanosplash over the given element displaying the given text.
+   * @param ref Reference an element.
+   * @param text Text to display.
+   * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
    */
   showInside(t, n) {
     const c = a(t);
@@ -317,7 +330,17 @@ const s = class {
     return null;
   }
   /**
-   * @inheritDoc
+   * # Hide
+   * Hide the last created Nanosplash.
+   * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
+   */
+  hide() {
+    const t = this.nsStack.pop();
+    return t ? this.cleanAndRemove(t) : null;
+  }
+  /**
+   * # Hide All
+   * Hide all Nanosplashes.
    */
   hideAll() {
     this.nsStack.items.forEach((t) => {
@@ -325,20 +348,19 @@ const s = class {
     }), this.nsStack.clear();
   }
   /**
-   * @inheritDoc
-   */
-  hide() {
-    const t = this.nsStack.pop();
-    return t ? this.cleanAndRemove(t) : null;
-  }
-  /**
-   * @inheritDoc
+   * # Hide ID
+   * Hide Nanosplash by its ID.
+   * @param id Nanosplash ID.
+   * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
    */
   hideId(t) {
     return this.deleteNS((n) => n.getId() === t);
   }
   /**
-   * @inheritDoc
+   * # Hide Inside
+   * Hide Nanosplash inside the given element if it exists.
+   * @param ref Reference an element.
+   * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
    */
   hideInside(t) {
     const n = a(t), c = (i) => i.getNSElement().parentElement === n;
