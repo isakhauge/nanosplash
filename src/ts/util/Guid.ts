@@ -1,3 +1,5 @@
+// @ts-strict
+
 import { GUIDString } from 'nanosplash'
 
 /**
