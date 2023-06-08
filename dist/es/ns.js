@@ -1,12 +1,12 @@
-var x = Object.defineProperty;
-var f = (e, t, n) => t in e ? x(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n }) : e[t] = n;
-var r = (e, t, n) => (f(e, typeof t != "symbol" ? t + "" : t, n), n);
+var m = Object.defineProperty;
+var f = (e, t, s) => t in e ? m(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s;
+var i = (e, t, s) => (f(e, typeof t != "symbol" ? t + "" : t, s), s);
 class g {
   /**
    * Constructs a new stack.
    */
   constructor() {
-    r(this, "_items");
+    i(this, "_items");
     this._items = [];
   }
   /**
@@ -73,12 +73,12 @@ class d {
      * # ID
      * Each Nanosplash instance is given a unique GUID.
      */
-    r(this, "id");
+    i(this, "id");
     /**
      * # Element
      * The root element of the Nanosplash component.
      */
-    r(this, "element");
+    i(this, "element");
     this.element = N(), this.element.id = this.id = S();
   }
   /**
@@ -136,22 +136,22 @@ class d {
    */
   remove() {
     var t;
-    this.element && ((t = this.element.parentElement) == null || t.removeChild(this.element), delete this.element);
+    return this.element && ((t = this.element.parentElement) == null || t.removeChild(this.element), delete this.element), this;
   }
 }
 /**
  * # CSS Class Name
  * The main CSS class name of the root element of a Nanosplash component.
  */
-r(d, "CSSClassName", "ns"), /**
+i(d, "NSClass", "ns"), /**
  * # Host CSS Class Name
  * The CSS class name of the host element of a Nanosplash component.
  * The host element is the element that the Nanosplash is attached to.
  */
-r(d, "HostCSSClassName", "ns-host");
+i(d, "NSHostClass", "nsh");
 function N() {
   return new DOMParser().parseFromString(
-    '<div class=ns><div class=ns-content><div class=ns-text></div><div class=ns-spinner><svg viewBox="0 0 50 50"><circle class=path cx=25 cy=25 r=20 fill=none></circle></svg></div></div></div>',
+    '<div class=ns><div class=nsc><div class=nst></div><div class=nss><svg viewBox="0 0 50 50"><circle class=path cx=25 cy=25 r=20 fill=none></circle></svg></div></div></div>',
     "text/html"
   ).body.firstChild;
 }
@@ -159,7 +159,7 @@ function p(e, t) {
   t.children.length > 0 ? t.insertBefore(e, t.children.item(0)) : t.append(e);
 }
 function o(e, t) {
-  e == null || e.classList[t](d.HostCSSClassName);
+  e == null || e.classList[t](d.NSHostClass);
 }
 function w(e) {
   o(e.getNSElement().parentElement, "remove");
@@ -171,36 +171,24 @@ function E(e) {
   e.style.display = "none";
 }
 function a(e) {
-  let t;
-  if (typeof e == "string")
-    t = document.querySelector(e);
-  else {
-    if (e instanceof Element)
-      return e;
-    if (typeof e == "function") {
-      if (t = e(), !(t instanceof Node))
-        return null;
-    } else
-      t = null;
-  }
-  return t;
+  return e instanceof Element ? e : document.querySelector(e || "");
 }
-function y(e) {
+function I(e) {
   var t;
-  return (t = e == null ? void 0 : e.classList) == null ? void 0 : t.contains("ns");
+  return ((t = e == null ? void 0 : e.classList) == null ? void 0 : t.contains(d.NSClass)) ?? !1;
 }
 function h(e, t) {
   o(e.parentElement, "remove"), o(t, "add"), p(e, t);
 }
 function u(e) {
   const t = e.firstElementChild;
-  if (t !== null && y(t)) {
-    const i = t.id;
-    return l.getInstance().nsStack.items.find((m) => m.getId() === i) ?? null;
+  if (t !== null && I(t)) {
+    const c = t.id;
+    return l.getInstance().nsStack.items.find((x) => x.getId() === c) ?? null;
   }
   return null;
 }
-const s = class {
+const n = class {
   /**
    * # Constructor
    * Private constructor to prevent multiple instances.
@@ -212,9 +200,9 @@ const s = class {
      * For each Nanosplash instance created, it's pushed to the stack.
      * When a Nanosplash instance is removed, it's removed from the stack.
      * @see Stack
-     * @see Nanosplash
+     * @see Splash
      */
-    r(this, "nsStack");
+    i(this, "nsStack");
     this.nsStack = new g();
   }
   /**
@@ -230,7 +218,7 @@ const s = class {
    * # Find
    * Find Nanosplash in the stack by callback.
    * @param callback Callback function that returns a boolean.
-   * @returns {Nanosplash | undefined} Nanosplash instance or undefined
+   * @returns {Splash | undefined} Nanosplash instance or undefined
    */
   find(t) {
     return this.nsStack.items.find(t);
@@ -238,10 +226,10 @@ const s = class {
   /**
    * # Get Instance
    * Singleton instance accessor
-   * @returns {NanosplashService} NanosplashService instance
+   * @returns {Service} NanosplashService instance
    */
   static getInstance() {
-    return s.instance || (s.instance = new s()), s.instance;
+    return n.instance || (n.instance = new n()), n.instance;
   }
   /**
    * # Assign To Window
@@ -251,29 +239,29 @@ const s = class {
    * @see WindowAccessorKey
    */
   static assignToWindow() {
-    Object.defineProperty(window, s.WindowAccessorKey, {
-      value: s.getInstance(),
+    Object.defineProperty(window, n.WindowAccessorKey, {
+      value: n.getInstance(),
       writable: !1
     });
   }
   /**
    * # Start
-   * Initialize and attach a NanosplashService instance in the Window object.
+   * Initialize and attach a Nanosplash Service instance to the Window object.
    */
   static start() {
-    s.assignToWindow(), window.addEventListener("load", () => {
-      window[s.WindowAccessorKey] instanceof s || s.assignToWindow();
+    n.assignToWindow(), window.addEventListener("load", () => {
+      window[n.WindowAccessorKey] instanceof n || n.assignToWindow();
     });
   }
   /**
    * # Create Nanosplash
    * Return new Nanosplash instance and push it to the stack.
    * @param text Text to display.
-   * @returns {Nanosplash} Nanosplash instance.
+   * @returns {Splash} Nanosplash instance.
    */
   createNS(t) {
-    const n = new d();
-    return n.setText(t || ""), this.nsStack.push(n), n;
+    const s = new d();
+    return s.setText(t || ""), this.nsStack.push(s), s;
   }
   /**
    * # Clean And Remove
@@ -282,7 +270,7 @@ const s = class {
    * @returns {GUIDString} Nanosplash ID.
    */
   cleanAndRemove(t) {
-    return w(t), t.remove(), t.getId();
+    return w(t), t.remove().getId();
   }
   /**
    * # Stack Delete
@@ -291,8 +279,8 @@ const s = class {
    * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
    */
   stackDelete(t) {
-    let n = this.findIndex((c) => c.getId() === t.getId());
-    return n < 0 ? null : (this.nsStack.items.splice(n, 1), t.getId());
+    let s = this.findIndex((r) => r.getId() === t.getId());
+    return s < 0 ? null : (this.nsStack.items.splice(s, 1), t.getId());
   }
   /**
    * # Delete NS
@@ -301,8 +289,8 @@ const s = class {
    * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
    */
   deleteNS(t) {
-    const n = this.find(t);
-    return n ? (this.cleanAndRemove(n), this.stackDelete(n)) : null;
+    const s = this.find(t);
+    return s ? (this.cleanAndRemove(s), this.stackDelete(s)) : null;
   }
   /**
    * # Show
@@ -311,8 +299,8 @@ const s = class {
    * @returns {GUIDString} Nanosplash ID.
    */
   show(t) {
-    let n = u(document.body);
-    return n || (n = this.createNS(), h(n.getNSElement(), document.body)), n.setText(t || ""), n.getId();
+    let s = u(document.body);
+    return s || (s = this.createNS(), h(s.getNSElement(), document.body)), s.setText(t || "").getId();
   }
   /**
    * # Show Inside
@@ -321,11 +309,11 @@ const s = class {
    * @param text Text to display.
    * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
    */
-  showInside(t, n) {
-    const c = a(t);
-    if (c) {
-      let i = u(c);
-      return i || (i = this.createNS()), i.setText(n || ""), h(i.getNSElement(), c), i.getId();
+  showInside(t, s) {
+    const r = a(t);
+    if (r) {
+      let c = u(r);
+      return c || (c = this.createNS()), h(c.getNSElement(), r), c.setText(s || "").getId();
     }
     return null;
   }
@@ -354,7 +342,7 @@ const s = class {
    * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
    */
   hideId(t) {
-    return this.deleteNS((n) => n.getId() === t);
+    return this.deleteNS((s) => s.getId() === t);
   }
   /**
    * # Hide Inside
@@ -363,21 +351,20 @@ const s = class {
    * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
    */
   hideInside(t) {
-    const n = a(t), c = (i) => i.getNSElement().parentElement === n;
-    return n ? this.deleteNS(c) : null;
+    const s = a(t), r = (c) => c.getNSElement().parentElement === s;
+    return s ? this.deleteNS(r) : null;
   }
 };
-let l = s;
+let l = n;
 /**
  * # Window Accessor Key
  * Key to access NanosplashService instance in the Window object.
  */
-r(l, "WindowAccessorKey", "ns"), /**
+i(l, "WindowAccessorKey", "ns"), /**
  * # Instance
  * Singleton instance of NanosplashService.
  */
-r(l, "instance");
+i(l, "instance");
 export {
-  l as NanosplashService,
-  l as default
+  l as Service
 };

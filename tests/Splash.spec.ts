@@ -2,9 +2,9 @@
 
 import { describe, it, expect, beforeEach } from 'vitest'
 import { JSDOM } from 'jsdom'
-import { Nanosplash } from '../src/ts/core/Nanosplash/Nanosplash'
+import { Splash } from '../src/ts/core/Nanosplash/Splash'
 
-describe('Nanosplash', () => {
+describe('Splash', () => {
 	// Reset the DOM before each test
 	beforeEach(() => {
 		const dom = new JSDOM()
@@ -14,13 +14,13 @@ describe('Nanosplash', () => {
 		globalThis.DOMParser = dom.window.DOMParser
 	})
 
-	it('Should be a valid Nanosplash', () => {
-		const ns = new Nanosplash()
+	it('Should be a valid Splash', () => {
+		const ns = new Splash()
 		const element = ns.getNSElement()
 
 		expect(element).not.toBeUndefined()
 		expect(element.id).toBe(ns.getId())
-		expect(element.classList.contains(Nanosplash.CSSClassName)).toBe(true)
+		expect(element.classList.contains(Splash.NSClass)).toBe(true)
 
 		const contentElement = ns.getNSContentElement()
 		expect(contentElement).not.toBeUndefined()
@@ -36,20 +36,20 @@ describe('Nanosplash', () => {
 	})
 
 	it('Should be able to set text', () => {
-		const ns = new Nanosplash()
+		const ns = new Splash()
 		const text = 'Hello World!'
 		ns.setText(text)
 		expect(ns.getNSTextElement().innerText).toBe(text)
 	})
 
 	it('Should be able to hide text', () => {
-		const ns = new Nanosplash()
+		const ns = new Splash()
 		ns.hideText()
 		expect(ns.getNSTextElement().style.display).toBe('none')
 	})
 
 	it('Should be able to show text', () => {
-		const ns = new Nanosplash()
+		const ns = new Splash()
 		ns.setText('Hello World!')
 		ns.hideText()
 		ns.showText()
@@ -57,7 +57,7 @@ describe('Nanosplash', () => {
 	})
 
 	it('Should be able to remove itself from DOM', () => {
-		const ns = new Nanosplash()
+		const ns = new Splash()
 		ns.remove()
 		expect(ns.getNSElement()).toBeUndefined()
 	})

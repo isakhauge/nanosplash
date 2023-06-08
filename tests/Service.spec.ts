@@ -3,13 +3,13 @@
 import { JSDOM } from 'jsdom'
 import { beforeEach, expect, describe, it } from 'vitest'
 import { getRecycledNS } from '../src/ts/core/Nanosplash/DOMUtilities'
-import { Nanosplash } from '../src/ts/core/Nanosplash/Nanosplash'
-import NanosplashService from '../src/ts/core/Nanosplash/NanosplashService'
+import { Service } from '../src/ts/core/Nanosplash/Service'
+import { Splash } from '../src/ts/core/Nanosplash/Splash'
 
 describe('NanosplashService', () => {
-	const nss = NanosplashService.getInstance()
-	const getById = (id: string): Nanosplash | undefined =>
-		nss.nsStack.items.find((ns: Nanosplash) => ns.getId() === id)
+	const nss = Service.getInstance()
+	const getById = (id: string): Splash | undefined =>
+		nss.nsStack.items.find((ns: Splash) => ns.getId() === id)
 
 	// Reset the DOM before each test
 	beforeEach(() => {
@@ -19,34 +19,35 @@ describe('NanosplashService', () => {
 		globalThis.document = dom.window.document
 		globalThis.DOMParser = dom.window.DOMParser
 		globalThis.Node = dom.window.Node
+		globalThis.Element = dom.window.Element
 	})
 
 	it('Should be able to create an instance', () => {
-		expect(nss).toBeInstanceOf(NanosplashService)
+		expect(nss).toBeInstanceOf(Service)
 	})
 
 	it('Should be able to get the same singleton instance', () => {
-		const nss1 = NanosplashService.getInstance()
-		const nss2 = NanosplashService.getInstance()
+		const nss1 = Service.getInstance()
+		const nss2 = Service.getInstance()
 		expect(nss1).toBe(nss2)
 	})
 
 	it('Should be able to start the service', () => {
-		NanosplashService.start()
-		expect(nss).toBeInstanceOf(NanosplashService)
+		Service.start()
+		expect(nss).toBeInstanceOf(Service)
 	})
 
 	it('Should be able to retrieve an existing Nanosplash instance from a destination node', () => {
 		const destinationNode = document.createElement('div')
 		document.body.appendChild(destinationNode)
 		destinationNode.id = 'test-id'
-		const nsInstance1 = getRecycledNS(destinationNode) as Nanosplash
+		const nsInstance1 = getRecycledNS(destinationNode) as Splash
 		expect(nsInstance1).toBeNull()
 		let nsId = nss.showInside('erroneous-selector', 'Hello World!')
 		expect(nsId).toBeNull()
 		nsId = nss.showInside('div[id="test-id"]', 'Hello World!')
 		const nsInstance2 = getRecycledNS(destinationNode)
-		expect(nsInstance2).toBeInstanceOf(Nanosplash)
+		expect(nsInstance2).toBeInstanceOf(Splash)
 		expect(nsInstance2?.getId()).toBe(nsId)
 	})
 

@@ -1,6 +1,6 @@
 # Nanosplash
 
-### Tiny loading screen for web artisans
+### The tiny loading screen for web artisans
 
 <br>
 
@@ -70,7 +70,7 @@ ns.show(text?: string): GUIDString
 
 This method displays a loading screen inside another element and returns a GUID string.
 
-The `Reference` type is a union type of `string | Element | () => Element`. The `string` type is a CSS selector string. The `Element` type is a DOM element. The `() => Element` type is a function that returns a DOM element.
+The `Reference` type is a union type of `string | Element`. The `string` type is a CSS selector string. The `Element` type is a DOM element.
 
 ```ts
 ns.showInside(ref: Reference, text?: string): GUIDString | null

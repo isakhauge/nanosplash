@@ -1,14 +1,14 @@
 // @ts-strict
 
-import { Reference, GUIDString } from 'nanosplash'
-import { Nanosplash } from './Nanosplash'
-import NanosplashService from './NanosplashService'
+import { Reference, GUIDString } from '../../../types/vite-env'
+import { Service } from './Service'
+import { Splash } from './Splash'
 
 /**
  * # DOM Utilities
  * A collection of functions that are used by the Nanosplash classes.
- * @see Nanosplash
- * @see NanosplashService
+ * @see Splash
+ * @see Service
  * @author Isak K. Hauge <isakhauge@icloud.com>
  */
 
@@ -18,7 +18,7 @@ import NanosplashService from './NanosplashService'
  */
 export function createElement(): HTMLDivElement {
 	return new DOMParser().parseFromString(
-		'<div class=ns><div class=ns-content><div class=ns-text></div><div class=ns-spinner><svg viewBox="0 0 50 50"><circle class=path cx=25 cy=25 r=20 fill=none></circle></svg></div></div></div>',
+		'<div class=ns><div class=nsc><div class=nst></div><div class=nss><svg viewBox="0 0 50 50"><circle class=path cx=25 cy=25 r=20 fill=none></circle></svg></div></div></div>',
 		'text/html'
 	).body.firstChild as HTMLDivElement
 }
@@ -58,7 +58,7 @@ export function setNSHostClass(
 	element: Element | null,
 	action: 'add' | 'remove'
 ): void {
-	element?.classList[action](Nanosplash.HostCSSClassName)
+	element?.classList[action](Splash.NSHostClass)
 }
 
 /**
@@ -67,7 +67,7 @@ export function setNSHostClass(
  * @param ns Nanosplash instance.
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/parentElement
  */
-export function prepareParentOf(ns: Nanosplash): void {
+export function prepareParentOf(ns: Splash): void {
 	setNSHostClass(ns.getNSElement().parentElement, 'add')
 }
 
@@ -77,7 +77,7 @@ export function prepareParentOf(ns: Nanosplash): void {
  * @param ns Nanosplash instance.
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/parentElement
  */
-export function cleanNSParentOf(ns: Nanosplash): void {
+export function cleanNSParentOf(ns: Splash): void {
 	setNSHostClass(ns.getNSElement().parentElement, 'remove')
 }
 
@@ -111,22 +111,7 @@ export function hideElement(element: HTMLElement): void {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Node
  */
 export function elementFrom(ref: Reference): Element | null {
-	let elem: Element | null
-
-	if (typeof ref === 'string') {
-		elem = document.querySelector(ref)
-	} else if (ref instanceof Element) {
-		return ref
-	} else if (typeof ref === 'function') {
-		elem = <Element>ref()
-		if (!(elem instanceof Node)) {
-			return null
-		}
-	} else {
-		elem = null
-	}
-
-	return elem
+	return ref instanceof Element ? ref : document.querySelector(ref || '')
 }
 
 /**
@@ -137,7 +122,7 @@ export function elementFrom(ref: Reference): Element | null {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMTokenList/contains
  */
 export function elementIsNS(element: Element): boolean {
-	return element?.classList?.contains('ns')
+	return element?.classList?.contains(Splash.NSClass) ?? false
 }
 
 /**
@@ -161,14 +146,14 @@ export function move(element: Element, targetElement: Element): void {
  * @returns { Nanosplash | null } Nanosplash instance or null.
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Document/firstElementChild
  */
-export function getRecycledNS(targetElement: Element): Nanosplash | null {
+export function getRecycledNS(targetElement: Element): Splash | null {
 	const firstChild = targetElement.firstElementChild
 	const hasChild = firstChild !== null
 	const targetAlreadyHasNS = hasChild && elementIsNS(firstChild)
 	if (targetAlreadyHasNS) {
 		const id: GUIDString = firstChild.id
-		const nss = NanosplashService.getInstance()
-		return nss.nsStack.items.find((ns: Nanosplash) => ns.getId() === id) ?? null
+		const nss = Service.getInstance()
+		return nss.nsStack.items.find((ns: Splash) => ns.getId() === id) ?? null
 	}
 
 	return null

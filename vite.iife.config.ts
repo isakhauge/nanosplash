@@ -4,7 +4,7 @@ export default defineConfig(() => ({
 	build: {
 		outDir: 'dist/iife',
 		lib: {
-			entry: './src/main.ts',
+			entry: './src/ts/main.ts',
 			name: 'Nanosplash',
 			formats: ['iife'],
 			fileName: 'ns',

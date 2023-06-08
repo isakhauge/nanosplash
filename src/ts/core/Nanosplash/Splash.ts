@@ -1,29 +1,27 @@
 // @ts-strict
 
-import { GUIDString } from 'nanosplash'
-import '../../../sass/ns.sass'
+import { GUIDString } from '../../../types/vite-env'
 import { generateGUID } from '../../util/Guid'
-import { createElement, hideElement, showElement } from './DOMUtilities'
+import { createElement, showElement, hideElement } from './DOMUtilities'
 
 /**
- * # Nanosplash
- * Nanosplash is a small splash screen that can be used to indicate that a
- * process is running.
+ * # Splash
+ * Small splash screen that can be used to indicate that a process
+ * is running.
  * @author Isak K. Hauge <isakhauge@icloud.com>
  */
-export class Nanosplash {
+export class Splash {
 	/**
 	 * # CSS Class Name
 	 * The main CSS class name of the root element of a Nanosplash component.
 	 */
-	public static readonly CSSClassName = 'ns'
-
+	public static readonly NSClass = 'ns'
 	/**
 	 * # Host CSS Class Name
 	 * The CSS class name of the host element of a Nanosplash component.
 	 * The host element is the element that the Nanosplash is attached to.
 	 */
-	public static readonly HostCSSClassName = 'ns-host'
+	public static readonly NSHostClass = 'nsh'
 
 	/**
 	 * # ID
@@ -82,7 +80,7 @@ export class Nanosplash {
 	 * # Set Text
 	 * @param text The text that will be visible inside the splash.
 	 */
-	public setText(text: string): Nanosplash {
+	public setText(text: string): Splash {
 		this.getNSTextElement().innerText = text
 		text.length > 0 ? this.showText() : this.hideText()
 		return this
@@ -92,7 +90,7 @@ export class Nanosplash {
 	 * # Show Text
 	 * Display text element.
 	 */
-	public showText(): Nanosplash {
+	public showText(): Splash {
 		showElement(this.getNSTextElement())
 		return this
 	}
@@ -101,7 +99,7 @@ export class Nanosplash {
 	 * # Hide Text
 	 * Hide the text element.
 	 */
-	public hideText(): Nanosplash {
+	public hideText(): Splash {
 		hideElement(this.getNSTextElement())
 		return this
 	}
@@ -110,9 +108,11 @@ export class Nanosplash {
 	 * # Remove
 	 * Delete all
 	 */
-	public remove(): void {
-		if (!this.element) return
-		this.element.parentElement?.removeChild(this.element)
-		delete this.element
+	public remove(): Splash {
+		if (this.element) {
+			this.element.parentElement?.removeChild(this.element)
+			delete this.element
+		}
+		return this
 	}
 }

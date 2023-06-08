@@ -4,7 +4,7 @@ export default defineConfig(() => ({
 	build: {
 		outDir: 'dist/es',
 		lib: {
-			entry: './src/ts/core/Nanosplash/NanosplashService.ts',
+			entry: './src/ts/core/Nanosplash/Service.ts',
 			name: 'Nanosplash',
 			formats: ['es'],
 			fileName: 'ns',

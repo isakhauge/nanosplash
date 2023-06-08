@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { JSDOM } from 'jsdom'
-import { Nanosplash } from '../src/ts/core/Nanosplash/Nanosplash'
+import { Splash } from '../src/ts/core/Nanosplash/Splash'
 
 describe('Guid', () => {
 	// Reset the DOM before each test
@@ -15,7 +15,7 @@ describe('Guid', () => {
 	it('Should generate a valid GUID', () => {
 		const guidRegex =
 			/^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$/
-		const value = new Nanosplash().getId()
+		const value = new Splash().getId()
 		expect(value).toMatch(guidRegex)
 	})
 })

@@ -11,54 +11,63 @@
 	justify-content: center
 	align-items: center
 
-.ns-host
-	--text-color: DarkSlateGray
-	--font-size: 20px
-	--proportional-size: calc(var(--font-size) * 0.9)
-	--font-family: 'Helvetica', 'Arial', sans-serif
-	--font-weight: 400
-	--background: rgba(255, 255, 255, 0.8)
-	--z-index: 999999999
-	--blur-filter: blur(10px)
+// Nanosplash host scoped varibles
+.nsh
+	--color: DarkSlateGray
+	--size: 20px
+	--relSize: calc(var(--size) * 0.9)
+	--font: 'Helvetica', 'Arial', sans-serif
+	--weight: 400
+	--bg: rgba(255, 255, 255, 0.8)
+	--zIdx: 999999999
+	--blur: blur(10px)
 
-.ns-host
+// Nanosplash host
+.nsh
 	position: relative
-	z-index: var(--z-index)
+	z-index: var(--zIdx)
 	&::before
 		@extend %maximize
 		@extend %upper-left
 		position: absolute
-		background-color: var(--background)
+		background-color: var(--bg)
 		content: ''
-		backdrop-filter: var(--blur-filter)
-		-webkit-backdrop-filter: var(--blur-filter)
-		z-index: calc(var(--z-index) + 1)
+		backdrop-filter: var(--blur)
+		-webkit-backdrop-filter: var(--blur)
+		z-index: calc(var(--zIdx) + 1)
+		border-radius: inherit
 
-body.ns-host
+// When Nanosplash host is the document body
+body.nsh
 	height: 100vh
 
+// Nanosplash (main element)
 .ns
 	@extend %maximize
 	@extend %upper-left
 	@extend %flex-center-xy
 	position: absolute
-	z-index: calc(var(--z-index) + 2)
+	z-index: calc(var(--zIdx) + 2)
 
-.ns-content
+// Nanosplash container
+.nsc
 	@extend %flex-center-xy
+	filter: drop-shadow(0 0 0.1rem #{ rgba(LightGray, 0.5) })
 
-.ns-text
-	color: var(--text-color)
-	font-size: var(--font-size)
-	font-family: var(--font-family)
-	font-weight: var(--font-weight)
-	margin-right: var(--proportional-size)
+// Nanosplash text
+.nst
+	color: var(--color)
+	font-size: var(--size)
+	font-family: var(--font)
+	font-weight: var(--weight)
+	margin-right: var(--relSize)
+	text-shadow: 0 0 0.06rem #{ rgba(DarkSlateGray, .25) }
 
-// Spinner node
-.ns-spinner
+// Nanosplash spinner
+.nss
 	display: block
-	width: var(--proportional-size)
-	height: var(--proportional-size)
+	width: var(--relSize)
+	height: var(--relSize)
 	& > svg
 		animation: Rotate 2s linear infinite
 		position: relative
@@ -66,7 +75,7 @@ body.ns-host
 		height: inherit
 		stroke-width: 8
 	& .path
-		stroke: var(--text-color)
+		stroke: var(--color)
 		stroke-linecap: round
 		animation: Dash 1.5s ease-in-out infinite
 

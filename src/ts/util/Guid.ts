@@ -1,6 +1,6 @@
 // @ts-strict
 
-import { GUIDString } from 'nanosplash'
+import { GUIDString } from '../../types/vite-env'
 
 /**
  * # Generate GUID

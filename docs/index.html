@@ -6,15 +6,17 @@
 		<title>Nanosplash 3</title>
 		<script src="https://cdn.tailwindcss.com"></script>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-		<script type="module" crossorigin src="/nanosplash/index.f013bf28.js"></script>
-		<link rel="stylesheet" href="/nanosplash/index.2f705073.css">
+		<script type="module" crossorigin src="/nanosplash/index.20dc0435.js"></script>
+		<link rel="stylesheet" href="/nanosplash/index.74dbd99e.css">
 	</head>
 	<body class="bg-slate-50 min-w-full min-h-screen">
 		<div
 			id="main"
 			class="min-h-screen flex flex-col justify-center items-center p-5 overflow-hidden">
-			<div class="text-slate-700 text-4xl md:text-4xl xl:text-5xl mb-5 drop-shadow-md">Nanosplash</div>
-			<div class="my-5 flex max-w-sm justify-center flex-wrap gap-x-1 gap-y-1 drop-shadow-md">
+			<div class="text-slate-700 font-medium text-4xl md:text-4xl xl:text-5xl drop-shadow-md tracking-wide">
+				Nanosplash
+			</div>
+			<div class="mt-5 md:mt-10 flex max-w-md justify-center flex-wrap gap-x-1 gap-y-1 drop-shadow-md">
 				<img loading="lazy" src="https://badgen.net/npm/v/nanosplash" alt="Version">
 				<img loading="lazy" src="https://badgen.net/npm/license/nanosplash" alt="License">
 				<img loading="lazy" src="https://badgen.net/npm/types/nanosplash" alt="Types">
@@ -22,37 +24,44 @@
 				<img loading="lazy" src="https://badgen.net/bundlephobia/dependency-count/nanosplash" alt="Dependency count">
 				<img loading="lazy" src="https://badgen.net/bundlephobia/tree-shaking/nanosplash" alt="Tree shaking">
 			</div>
-			<div class="mt-5 flex gap-x-3 w-full max-w-[500px] justify-center">
-				<button id="run" type="button" class="animate-bounce p-2 bg-slate-700 text-white rounded shadow-xl flex items-center gap-x-2 ease-out duration-300 shadow-md hover:shadow-2xl hover:translate-y-[-2px] border-4 border-slate-700 hover:border-white/30">
+			<div class="mt-5 md:mt-10 flex gap-x-3 w-full max-w-[500px] justify-center">
+				<button
+					id="run"
+					type="button"
+					class="py-2 px-3 bg-white text-slate-700 rounded-xl shadow flex items-center gap-x-2 ease-in-out duration-300 shadow-md hover:shadow-2xl hover:translate-y-[-2px] border border-[rgba(0,0,0,0.02)]">
 					<span class="material-symbols-outlined">magic_button</span>
 					Run demo
 				</button>
-				<a id="doc" href="https://github.com/isakhauge/nanosplash" type="button" class="p-2 bg-pink-500 text-white rounded flex items-center gap-x-2 ease-out duration-300 shadow-md hover:shadow-2xl hover:translate-y-[-2px] border-4 border-pink-500 hover:border-white/30">
+				<a
+					id="doc"
+					href="https://github.com/isakhauge/nanosplash"
+					type="button"
+					class="py-2 px-3 bg-white text-slate-700 rounded-xl shadow flex items-center gap-x-2 ease-in-out duration-300 shadow-md hover:shadow-2xl hover:translate-y-[-2px] border border-[rgba(0,0,0,0.02)]">
 					<span class="material-symbols-outlined">menu_book</span>
 					Documentation
 				</a>
 			</div>
 			<div
 				id="wrapper"
-				class="relative mt-14 xl:mt-20 flex flex-col md:flex-row gap-y-5 md:gap-y-0 md:gap-x-5 justify-center items-center bg-slate-200 p-10 md:p-10 xl:p-20 border border-4 border-black/10 rounded shadow-xl">
-				<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 px-1 bg-white rounded">#wrapper</div>
+				class="relative min-w-[300px] mt-5 md:mt-20 flex flex-col md:flex-row gap-y-5 md:gap-y-0 md:gap-x-5 justify-stretch items-stretch bg-white 00 p-10 md:p-10 xl:p-20 rounded-xl ease-in-out duration-500 shadow-md hover:shadow-2xl hover:translate-y-[-2px] border border-[rgba(0,0,0,0.02)]">
+				<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 cursor-default">#wrapper</div>
 				<div
 					id="a"
-					class="relative bg-slate-400 p-8 md:p-10 xl:p-20 border border-4 border-black/10 rounded shadow-2xl">
-					<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 px-1 bg-white rounded">#a</div>
-					<div class="text-white text-base md:text-xl xl:text-2xl font-medium">Element A</div>
+					class="relative bg-white p-8 md:p-10 xl:p-20 rounded-xl shadow-md ease-in-out duration-500 hover:shadow-2xl hover:translate-y-[-2px] border border-[rgba(0,0,0,0.02)]">
+					<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 cursor-default">#a</div>
+					<div class="text-slate-500 text-base md:text-xl xl:text-2xl font-medium cursor-default">Element A</div>
 				</div>
 				<div
 					id="b"
-					class="relative bg-slate-400 p-8 md:p-10 xl:p-20 border border-4 border-black/10 rounded shadow-2xl">
-					<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 px-1 bg-white rounded">#b</div>
-					<div class="text-white text-base md:text-xl xl:text-2xl font-medium">Element B</div>
+					class="relative bg-white p-8 md:p-10 xl:p-20 rounded-xl shadow-md ease-in-out duration-500 hover:shadow-2xl hover:translate-y-[-2px] border border-[rgba(0,0,0,0.02)]">
+					<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 cursor-default">#b</div>
+					<div class="text-slate-500 text-base md:text-xl xl:text-2xl font-medium cursor-default">Element B</div>
 				</div>
 				<div
 					id="c"
-					class="relative bg-slate-400 p-8 md:p-10 xl:p-20 border border-4 border-black/10 rounded shadow-2xl">
-					<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 px-1 bg-white rounded">#c</div>
-					<div class="text-white text-base md:text-xl xl:text-2xl font-medium">Element C</div>
+					class="relative bg-white p-8 md:p-10 xl:p-20 rounded-xl shadow-md ease-in-out duration-500 hover:shadow-2xl hover:translate-y-[-2px] border border-[rgba(0,0,0,0.02)]">
+					<div class="absolute top-2 left-2 font-mono text-xs md:text-sm xl:text-base text-slate-500 cursor-default">#c</div>
+					<div class="text-slate-500 text-base md:text-xl xl:text-2xl font-medium cursor-default">Element C</div>
 				</div>
 			</div>
 		</div>
@@ -66,10 +75,12 @@
 				const sec = (n) => n * 1000
 				ns.show('Nanosplash')
 				await wait(sec(2))
-				ns.show('Tiny loading screen for web artisans')
+				ns.show('Tiny loading screen')
+				await wait(sec(2))
+				ns.show('For web artisans')
 				await wait(sec(2))
 				ns.hide()
-				ns.showInside('#wrapper', 'Display in specific elements')
+				ns.showInside('#wrapper', 'Display over elements')
 				await wait(sec(2.25))
 				ns.hide()
 				ns.showInside('#a', 'Like this')
@@ -79,15 +90,13 @@
 				ns.showInside('#c', 'Or this')
 				await wait(sec(1))
 				ns.hideAll()
+				ns.show('Simple API')
+				await wait(sec(1.5))
 				ns.show('1.5kb minzipped')
 				await wait(sec(1.5))
 				ns.show('No dependencies')
 				await wait(sec(1.5))
-				ns.show('98% Test coverage')
-				await wait(sec(1.5))
-				ns.show('Simple API')
-				await wait(sec(1.5))
-				ns.show('Minimalistic')
+				ns.show('99% test coverage')
 				await wait(sec(1.5))
 				ns.show('Nanosplash')
 				await wait(sec(2))

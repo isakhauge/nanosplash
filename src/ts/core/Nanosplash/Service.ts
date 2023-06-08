@@ -1,6 +1,6 @@
 // @ts-strict
 
-import { FindCallback, GUIDString, Reference } from 'nanosplash'
+import { NSFinder, GUIDString, Reference } from '../../../types/vite-env'
 import Stack from '../../util/Stack'
 import {
 	cleanNSParentOf,
@@ -8,37 +8,39 @@ import {
 	move,
 	elementFrom,
 } from './DOMUtilities'
-import { Nanosplash } from './Nanosplash'
+import { Splash } from './Splash'
+
+import '../../../sass/ns.sass'
 
 /**
- * # Nanosplash Service
+ * # Service
  * A service class that handles Nanosplash instances.
  * It's a singleton class and it's instance resides in the Window object and
  * serves the public API of the Nanosplash library.
- * @see Nanosplash
+ * @see Splash
  * @author Isak K. Hauge <isakhauge@icloud.com>
  */
-export class NanosplashService {
+export class Service {
 	/**
 	 * # Window Accessor Key
 	 * Key to access NanosplashService instance in the Window object.
 	 */
-	private static readonly WindowAccessorKey = 'ns'
+	public static readonly WindowAccessorKey = 'ns'
 
 	/**
 	 * # Instance
 	 * Singleton instance of NanosplashService.
 	 */
-	private static instance: NanosplashService
+	private static instance: Service
 
 	/**
 	 * # Nanosplash Stack
 	 * For each Nanosplash instance created, it's pushed to the stack.
 	 * When a Nanosplash instance is removed, it's removed from the stack.
 	 * @see Stack
-	 * @see Nanosplash
+	 * @see Splash
 	 */
-	public readonly nsStack: Stack<Nanosplash>
+	public readonly nsStack: Stack<Splash>
 
 	/**
 	 * # Constructor
@@ -46,7 +48,7 @@ export class NanosplashService {
 	 * @private
 	 */
 	private constructor() {
-		this.nsStack = new Stack<Nanosplash>()
+		this.nsStack = new Stack<Splash>()
 	}
 
 	/**
@@ -55,7 +57,7 @@ export class NanosplashService {
 	 * @param callback Callback function that returns a boolean.
 	 * @returns {number} Index of Nanosplash instance in the stack or -1.
 	 */
-	private findIndex(callback: FindCallback): number | -1 {
+	private findIndex(callback: NSFinder): number | -1 {
 		return this.nsStack.items.findIndex(callback)
 	}
 
@@ -63,22 +65,22 @@ export class NanosplashService {
 	 * # Find
 	 * Find Nanosplash in the stack by callback.
 	 * @param callback Callback function that returns a boolean.
-	 * @returns {Nanosplash | undefined} Nanosplash instance or undefined
+	 * @returns {Splash | undefined} Nanosplash instance or undefined
 	 */
-	private find(callback: FindCallback): Nanosplash | undefined {
+	private find(callback: NSFinder): Splash | undefined {
 		return this.nsStack.items.find(callback)
 	}
 
 	/**
 	 * # Get Instance
 	 * Singleton instance accessor
-	 * @returns {NanosplashService} NanosplashService instance
+	 * @returns {Service} NanosplashService instance
 	 */
-	public static getInstance(): NanosplashService {
-		if (!NanosplashService.instance) {
-			NanosplashService.instance = new NanosplashService()
+	public static getInstance(): Service {
+		if (!Service.instance) {
+			Service.instance = new Service()
 		}
-		return NanosplashService.instance
+		return Service.instance
 	}
 
 	/**
@@ -89,23 +91,23 @@ export class NanosplashService {
 	 * @see WindowAccessorKey
 	 */
 	private static assignToWindow(): void {
-		Object.defineProperty(window, NanosplashService.WindowAccessorKey, {
-			value: NanosplashService.getInstance(),
+		Object.defineProperty(window, Service.WindowAccessorKey, {
+			value: Service.getInstance(),
 			writable: false,
 		})
 	}
 
 	/**
 	 * # Start
-	 * Initialize and attach a NanosplashService instance in the Window object.
+	 * Initialize and attach a Nanosplash Service instance to the Window object.
 	 */
 	public static start(): void {
-		NanosplashService.assignToWindow()
+		Service.assignToWindow()
 		window.addEventListener('load', () => {
-			const nss = window[NanosplashService.WindowAccessorKey]
-			const nssAssigned = nss instanceof NanosplashService
+			const nss = window[Service.WindowAccessorKey]
+			const nssAssigned = nss instanceof Service
 			if (!nssAssigned) {
-				NanosplashService.assignToWindow()
+				Service.assignToWindow()
 			}
 		})
 	}
@@ -114,10 +116,10 @@ export class NanosplashService {
 	 * # Create Nanosplash
 	 * Return new Nanosplash instance and push it to the stack.
 	 * @param text Text to display.
-	 * @returns {Nanosplash} Nanosplash instance.
+	 * @returns {Splash} Nanosplash instance.
 	 */
-	private createNS(text?: string): Nanosplash {
-		const ns = new Nanosplash()
+	private createNS(text?: string): Splash {
+		const ns = new Splash()
 		ns.setText(text || '')
 		this.nsStack.push(ns)
 		return ns
@@ -129,10 +131,9 @@ export class NanosplashService {
 	 * @param ns Nanosplash instance.
 	 * @returns {GUIDString} Nanosplash ID.
 	 */
-	private cleanAndRemove(ns: Nanosplash): GUIDString {
+	private cleanAndRemove(ns: Splash): GUIDString {
 		cleanNSParentOf(ns)
-		ns.remove()
-		return ns.getId()
+		return ns.remove().getId()
 	}
 
 	/**
@@ -141,8 +142,8 @@ export class NanosplashService {
 	 * @param ns Nanosplash instance.
 	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
 	 */
-	private stackDelete(ns: Nanosplash): GUIDString | null {
-		let index = this.findIndex((o: Nanosplash) => o.getId() === ns.getId())
+	private stackDelete(ns: Splash): GUIDString | null {
+		let index = this.findIndex((o: Splash) => o.getId() === ns.getId())
 		if (index < 0) return null
 		this.nsStack.items.splice(index, 1)
 		return ns.getId()
@@ -154,7 +155,7 @@ export class NanosplashService {
 	 * @param callback Callback function.
 	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
 	 */
-	private deleteNS(callback: FindCallback): GUIDString | null {
+	private deleteNS(callback: NSFinder): GUIDString | null {
 		const ns = this.find(callback)
 		if (ns) {
 			this.cleanAndRemove(ns)
@@ -175,8 +176,7 @@ export class NanosplashService {
 			ns = this.createNS()
 			move(ns.getNSElement(), document.body)
 		}
-		ns.setText(text || '')
-		return ns.getId()
+		return ns.setText(text || '').getId()
 	}
 
 	/**
@@ -193,9 +193,8 @@ export class NanosplashService {
 			if (!ns) {
 				ns = this.createNS()
 			}
-			ns.setText(text || '')
 			move(ns.getNSElement(), <Element>destinationNode)
-			return ns.getId()
+			return ns.setText(text || '').getId()
 		}
 
 		return null
@@ -216,7 +215,7 @@ export class NanosplashService {
 	 * Hide all Nanosplashes.
 	 */
 	public hideAll(): void {
-		this.nsStack.items.forEach((ns: Nanosplash) => {
+		this.nsStack.items.forEach((ns: Splash) => {
 			this.cleanAndRemove(ns)
 		})
 		this.nsStack.clear()
@@ -229,7 +228,7 @@ export class NanosplashService {
 	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
 	 */
 	public hideId(id: GUIDString): GUIDString | null {
-		return this.deleteNS((ns: Nanosplash) => ns.getId() === id)
+		return this.deleteNS((ns: Splash) => ns.getId() === id)
 	}
 
 	/**
@@ -240,9 +239,7 @@ export class NanosplashService {
 	 */
 	public hideInside(ref: Reference): GUIDString | null {
 		const node = elementFrom(ref)
-		const cb = (ns: Nanosplash) => ns.getNSElement().parentElement === node
+		const cb = (ns: Splash) => ns.getNSElement().parentElement === node
 		return node ? this.deleteNS(cb) : null
 	}
 }
-
-export default NanosplashService
