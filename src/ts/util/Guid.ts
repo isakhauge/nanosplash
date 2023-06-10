@@ -1,6 +1,6 @@
 // @ts-strict
 
-import { GUIDString } from '../../types/vite-env'
+import { GUIDString } from '../types/Types'
 
 /**
  * # Generate GUID

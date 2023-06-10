@@ -33,7 +33,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build (Vite)
-        run: yarn build:all
+        run: yarn build
 
       - name: Test (Vitest)
         run: yarn test

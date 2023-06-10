@@ -1,6 +1,6 @@
 // @ts-strict
 
-import { NSFinder, GUIDString, Reference } from '../../../types/vite-env'
+import { NSFinder, GUIDString, Reference } from '../../types/Types'
 import Stack from '../../util/Stack'
 import {
 	cleanNSParentOf,

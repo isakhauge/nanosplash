@@ -1,6 +1,6 @@
 // @ts-strict
 
-import { Reference, GUIDString } from '../../../types/vite-env'
+import { Reference, GUIDString } from '../../types/Types'
 import { Service } from './Service'
 import { Splash } from './Splash'
 

@@ -32,44 +32,53 @@
     "url": "https://github.com/isakhauge/nanosplash.git"
   },
   "license": "MIT",
-  "main": "./dist/es/ns.js",
-  "module": "./dist/es/ns.js",
+  "main": "./dist/latest/es/ns.js",
+  "module": "./dist/latest/es/ns.js",
   "source": "./src/main.ts",
-  "unpkg": "./dist/iife/ns.iife.js",
-  "style": "./dist/es/style.css",
+  "unpkg": "./dist/latest/iife/ns.iife.js",
+  "style": "./dist/latest/es/style.css",
   "exports": {
     ".": {
       "types": {
-        "require": "./src/vite-env.d.ts",
-        "default": "./src/vite-env.d.ts"
+        "require": "./dist/latest/cjs/ns.d.ts",
+        "default": "./dist/latest/es/ns.d.ts"
       },
       "browser": {
-        "require": "./dist/cjs/ns.cjs",
-        "default": "./dist/es/ns.js"
+        "require": "./dist/latest/cjs/ns.cjs",
+        "default": "./dist/latest/es/ns.js"
       },
       "default": {
-        "require": "./dist/cjs/ns.cjs",
-        "default": "./dist/es/ns.js"
+        "require": "./dist/latest/cjs/ns.cjs",
+        "default": "./dist/latest/es/ns.js"
       }
     }
   },
-  "types": "./src/vite-env.d.ts",
+  "types": "./dist/latest/es/ns.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build -m production --c vite.es.config.ts",
-    "build:cjs": "tsc && vite build -m production --c vite.cjs.config.ts",
-    "build:iife": "tsc && vite build -m production --c vite.iife.config.ts",
+    "build": "yarn build:all && yarn build:all:versioned && yarn build:demo",
+    "build:es": "tsc && cross-env entry=./src/ts/core/Nanosplash/Service.ts format=es yarn vite build -m production --c vite.config.ts",
+    "build:cjs": "tsc && cross-env entry=./src/ts/core/Nanosplash/Service.ts format=cjs yarn vite build -m production --c vite.config.ts",
+    "build:iife": "tsc && cross-env entry=./src/ts/main.ts format=iife yarn vite build -m production --c vite.config.ts",
+    "build:es:ver": "tsc && cross-env versioned=true entry=./src/ts/core/Nanosplash/Service.ts format=es yarn vite build -m production --c vite.config.ts",
+    "build:cjs:ver": "tsc && cross-env versioned=true entry=./src/ts/core/Nanosplash/Service.ts format=cjs yarn vite build -m production --c vite.config.ts",
+    "build:iife:ver": "tsc && cross-env versioned=true entry=./src/ts/main.ts format=iife yarn vite build -m production --c vite.config.ts",
+    "build:all": "yarn build:es && yarn build:cjs && yarn build:iife",
+    "build:all:versioned": "yarn build:es:ver && yarn build:cjs:ver && yarn build:iife:ver",
     "build:demo": "tsc && vite build -m production --c vite.demo.config.ts",
-    "build:all": "yarn build && yarn build:cjs && yarn build:iife && yarn build:demo",
+    "build:types": "tsc --emitDeclarationOnly -d --outFile ./dist/types/ns.d.ts ./src/ts/**/*.ts",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest --coverage"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.1",
+    "@types/node": "^20.2.6",
+    "@types/rollup": "^0.54.0",
     "@vitest/coverage-v8": "^0.32.0",
     "@vitest/ui": "^0.32.0",
+    "cross-env": "^7.0.3",
     "jsdom": "^22.1.0",
     "sass": "^1.63.2",
     "terser": "^5.17.7",

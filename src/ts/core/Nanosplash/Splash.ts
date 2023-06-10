@@ -1,6 +1,6 @@
 // @ts-strict
 
-import { GUIDString } from '../../../types/vite-env'
+import { GUIDString } from '../../types/Types'
 import { generateGUID } from '../../util/Guid'
 import { createElement, showElement, hideElement } from './DOMUtilities'
 
