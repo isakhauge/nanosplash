@@ -1,16 +1,16 @@
 // @ts-strict
 
-import { NSFinder, GUIDString, Reference } from '../../types/Types'
-import Stack from '../../util/Stack'
+import '../../sass/ns.sass'
+
+import { NSFinder, GUIDString, Reference } from '../types/Types'
 import {
 	cleanNSParentOf,
 	getRecycledNS,
 	move,
 	elementFrom,
 } from './DOMUtilities'
+import { ServiceInterface } from './ServiceInterface'
 import { Splash } from './Splash'
-
-import '../../../sass/ns.sass'
 
 /**
  * # Service
@@ -20,7 +20,7 @@ import '../../../sass/ns.sass'
  * @see Splash
  * @author Isak K. Hauge <isakhauge@icloud.com>
  */
-export class Service {
+export class Service implements ServiceInterface {
 	/**
 	 * # Window Accessor Key
 	 * Key to access NanosplashService instance in the Window object.
@@ -34,13 +34,9 @@ export class Service {
 	private static instance: Service
 
 	/**
-	 * # Nanosplash Stack
-	 * For each Nanosplash instance created, it's pushed to the stack.
-	 * When a Nanosplash instance is removed, it's removed from the stack.
-	 * @see Stack
-	 * @see Splash
+	 * @inheritdoc
 	 */
-	public readonly nsStack: Stack<Splash>
+	public nsStack: Splash[]
 
 	/**
 	 * # Constructor
@@ -48,7 +44,7 @@ export class Service {
 	 * @private
 	 */
 	private constructor() {
-		this.nsStack = new Stack<Splash>()
+		this.nsStack = []
 	}
 
 	/**
@@ -58,7 +54,7 @@ export class Service {
 	 * @returns {number} Index of Nanosplash instance in the stack or -1.
 	 */
 	private findIndex(callback: NSFinder): number | -1 {
-		return this.nsStack.items.findIndex(callback)
+		return this.nsStack.findIndex(callback)
 	}
 
 	/**
@@ -68,7 +64,7 @@ export class Service {
 	 * @returns {Splash | undefined} Nanosplash instance or undefined
 	 */
 	private find(callback: NSFinder): Splash | undefined {
-		return this.nsStack.items.find(callback)
+		return this.nsStack.find(callback)
 	}
 
 	/**
@@ -145,13 +141,13 @@ export class Service {
 	private stackDelete(ns: Splash): GUIDString | null {
 		let index = this.findIndex((o: Splash) => o.getId() === ns.getId())
 		if (index < 0) return null
-		this.nsStack.items.splice(index, 1)
+		this.nsStack.splice(index, 1)
 		return ns.getId()
 	}
 
 	/**
 	 * # Delete NS
-	 * Remove Nanosplash instance from both the stack and the DOM.
+	 * Remove Nanosplash instance from both the stack and the
 	 * @param callback Callback function.
 	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
 	 */
@@ -165,10 +161,7 @@ export class Service {
 	}
 
 	/**
-	 * # Show
-	 * Present a Nanosplash in the browser window displaying the given text.
-	 * @param text Text to display.
-	 * @returns {GUIDString} Nanosplash ID.
+	 * @inheritdoc
 	 */
 	public show(text?: string): GUIDString {
 		let ns = getRecycledNS(document.body)
@@ -180,11 +173,7 @@ export class Service {
 	}
 
 	/**
-	 * # Show Inside
-	 * Present a Nanosplash over the given element displaying the given text.
-	 * @param ref Reference an element.
-	 * @param text Text to display.
-	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
+	 * @inheritdoc
 	 */
 	public showInside(ref: Reference, text?: string): GUIDString | null {
 		const destinationNode: Element | null = elementFrom(ref)
@@ -201,9 +190,7 @@ export class Service {
 	}
 
 	/**
-	 * # Hide
-	 * Hide the last created Nanosplash.
-	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
+	 * @inheritdoc
 	 */
 	public hide(): GUIDString | null {
 		const ns = this.nsStack.pop()
@@ -211,31 +198,24 @@ export class Service {
 	}
 
 	/**
-	 * # Hide All
-	 * Hide all Nanosplashes.
+	 * @inheritdoc
 	 */
 	public hideAll(): void {
-		this.nsStack.items.forEach((ns: Splash) => {
+		this.nsStack.forEach((ns: Splash) => {
 			this.cleanAndRemove(ns)
 		})
-		this.nsStack.clear()
+		this.nsStack = []
 	}
 
 	/**
-	 * # Hide ID
-	 * Hide Nanosplash by its ID.
-	 * @param id Nanosplash ID.
-	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
+	 * @inheritdoc
 	 */
 	public hideId(id: GUIDString): GUIDString | null {
 		return this.deleteNS((ns: Splash) => ns.getId() === id)
 	}
 
 	/**
-	 * # Hide Inside
-	 * Hide Nanosplash inside the given element if it exists.
-	 * @param ref Reference an element.
-	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
+	 * @inheritdoc
 	 */
 	public hideInside(ref: Reference): GUIDString | null {
 		const node = elementFrom(ref)

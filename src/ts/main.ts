@@ -1,6 +1,6 @@
 // @ts-strict
 
-import { Service } from './core/Nanosplash/Service'
+import { Service } from './core/Service'
 
 try {
 	Service.start()

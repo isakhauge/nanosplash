@@ -2,14 +2,14 @@
 
 import { JSDOM } from 'jsdom'
 import { beforeEach, expect, describe, it } from 'vitest'
-import { getRecycledNS } from '../src/ts/core/Nanosplash/DOMUtilities'
-import { Service } from '../src/ts/core/Nanosplash/Service'
-import { Splash } from '../src/ts/core/Nanosplash/Splash'
+import { getRecycledNS } from '../src/ts/core/DOMUtilities'
+import { Service } from '../src/ts/core/Service'
+import { Splash } from '../src/ts/core/Splash'
 
 describe('NanosplashService', () => {
 	const nss = Service.getInstance()
 	const getById = (id: string): Splash | undefined =>
-		nss.nsStack.items.find((ns: Splash) => ns.getId() === id)
+		nss.nsStack.find((ns: Splash) => ns.getId() === id)
 
 	// Reset the DOM before each test
 	beforeEach(() => {
@@ -89,13 +89,13 @@ describe('NanosplashService', () => {
 		}
 		document.body.append(div('a'), div('b'), div('c'))
 		nss.hideAll()
-		expect(nss.nsStack.items.length).toBe(0)
+		expect(nss.nsStack.length).toBe(0)
 		nss.showInside('#a', 'A')
 		nss.showInside('#b', 'B')
 		nss.showInside('#c', 'C')
-		expect(nss.nsStack.items.length).toBe(3)
+		expect(nss.nsStack.length).toBe(3)
 		nss.hideAll()
-		expect(nss.nsStack.items.length).toBe(0)
+		expect(nss.nsStack.length).toBe(0)
 	})
 
 	it('Should be able to hide a Nanosplash based on its ID', () => {

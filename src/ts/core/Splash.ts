@@ -1,8 +1,8 @@
 // @ts-strict
 
-import { GUIDString } from '../../types/Types'
-import { generateGUID } from '../../util/Guid'
+import { GUIDString } from '../types/Types'
 import { createElement, showElement, hideElement } from './DOMUtilities'
+import { SplashInterface } from './SplashInterface'
 
 /**
  * # Splash
@@ -10,7 +10,7 @@ import { createElement, showElement, hideElement } from './DOMUtilities'
  * is running.
  * @author Isak K. Hauge <isakhauge@icloud.com>
  */
-export class Splash {
+export class Splash implements SplashInterface {
 	/**
 	 * # CSS Class Name
 	 * The main CSS class name of the root element of a Nanosplash component.
@@ -36,49 +36,56 @@ export class Splash {
 	private element?: HTMLDivElement
 
 	/**
+	 * # Generate GUID
+	 * @returns {GUIDString} A GUID string.
+	 */
+	private static generateGUID(): GUIDString {
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+			const r = (Math.random() * 16) | 0
+			const v = c === 'x' ? r : (r & 0x3) | 0x8
+			return v.toString(16)
+		})
+	}
+
+	/**
 	 * # Constructor
 	 * Creates a new Nanosplash instance.
 	 */
 	public constructor() {
 		this.element = createElement()
-		this.element.id = this.id = generateGUID()
+		this.element.id = this.id = Splash.generateGUID()
 	}
 
 	/**
-	 * # Get NS Content Element
-	 * Returns the content element of the Nanosplash.
+	 * @inheritdoc
 	 */
 	public getNSContentElement(): HTMLDivElement {
 		return <HTMLDivElement>this.getNSElement().firstElementChild
 	}
 
 	/**
-	 * # Get NS Text Element
-	 * Returns the text element of the Nanosplash.
+	 * @inheritdoc
 	 */
 	public getNSTextElement(): HTMLDivElement {
 		return <HTMLDivElement>this.getNSContentElement().firstElementChild
 	}
 
 	/**
-	 * # Get ID
-	 * Return Nanosplash instance GUID.
+	 * @inheritdoc
 	 */
 	public getId(): GUIDString {
 		return this.id
 	}
 
 	/**
-	 * # Get NS Element
-	 * Return Nanosplash instance HTMLDivElement.
+	 * @inheritdoc
 	 */
 	public getNSElement(): HTMLDivElement {
 		return <HTMLDivElement>this.element
 	}
 
 	/**
-	 * # Set Text
-	 * @param text The text that will be visible inside the splash.
+	 * @inheritdoc
 	 */
 	public setText(text: string): Splash {
 		this.getNSTextElement().innerText = text
@@ -87,8 +94,7 @@ export class Splash {
 	}
 
 	/**
-	 * # Show Text
-	 * Display text element.
+	 * @inheritdoc
 	 */
 	public showText(): Splash {
 		showElement(this.getNSTextElement())
@@ -96,8 +102,7 @@ export class Splash {
 	}
 
 	/**
-	 * # Hide Text
-	 * Hide the text element.
+	 * @inheritdoc
 	 */
 	public hideText(): Splash {
 		hideElement(this.getNSTextElement())
@@ -105,8 +110,7 @@ export class Splash {
 	}
 
 	/**
-	 * # Remove
-	 * Delete all
+	 * @inheritdoc
 	 */
 	public remove(): Splash {
 		if (this.element) {

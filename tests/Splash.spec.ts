@@ -2,7 +2,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest'
 import { JSDOM } from 'jsdom'
-import { Splash } from '../src/ts/core/Nanosplash/Splash'
+import { Splash } from '../src/ts/core/Splash'
 
 describe('Splash', () => {
 	// Reset the DOM before each test

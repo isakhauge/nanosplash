@@ -1,6 +1,6 @@
 // @ts-strict
 
-import { Reference, GUIDString } from '../../types/Types'
+import { Reference, GUIDString } from '../types/Types'
 import { Service } from './Service'
 import { Splash } from './Splash'
 
@@ -153,7 +153,7 @@ export function getRecycledNS(targetElement: Element): Splash | null {
 	if (targetAlreadyHasNS) {
 		const id: GUIDString = firstChild.id
 		const nss = Service.getInstance()
-		return nss.nsStack.items.find((ns: Splash) => ns.getId() === id) ?? null
+		return nss.nsStack.find((ns: Splash) => ns.getId() === id) ?? null
 	}
 
 	return null

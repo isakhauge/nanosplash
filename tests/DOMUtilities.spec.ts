@@ -14,9 +14,9 @@ import {
 	elementFrom,
 	elementIsNS,
 	getRecycledNS,
-} from '../src/ts/core/Nanosplash/DOMUtilities'
-import { Splash } from '../src/ts/core/Nanosplash/Splash'
-import { Service } from '../src/ts/core/Nanosplash/Service'
+} from '../src/ts/core/DOMUtilities'
+import { Splash } from '../src/ts/core/Splash'
+import { Service } from '../src/ts/core/Service'
 
 describe('DOMUtilities', () => {
 	// Reset the DOM before each test

@@ -1,16 +1,22 @@
 import { LibraryFormats, defineConfig } from 'vite'
 import { version } from './package.json'
-import DtsPlugin from './dtsPlugin'
+import { resolve } from 'path'
 
-//const { versioned, format, entry } = process.env as Record<string, string>
+const dist = 'dist'
 const versioned = process.env?.versioned ?? false
-const format = process.env.format as LibraryFormats
-const entry = process.env.entry as string
+const format = (process.env?.format ?? '') as LibraryFormats
+const entry = (process.env?.entry ?? '') as string
 
-const subFolder = versioned ? `/versioned/${version}` : '/latest'
-const outDir = `dist/${subFolder}/${format}`
+const outDirFolders = [dist]
+if (versioned) {
+	outDirFolders.push('versioned', version, format)
+} else {
+	outDirFolders.push('latest', format)
+}
 
-export default defineConfig(() => ({
+const outDir = resolve(__dirname, ...outDirFolders)
+
+export default defineConfig({
 	build: {
 		outDir,
 		lib: {
@@ -21,5 +27,4 @@ export default defineConfig(() => ({
 		},
 		cssCodeSplit: format === 'iife',
 	},
-	plugins: [DtsPlugin({ inDir: 'src/ts', outDir })],
-}))
+})
