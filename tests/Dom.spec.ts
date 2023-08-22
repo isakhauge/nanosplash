@@ -14,9 +14,10 @@ import {
 	elementFrom,
 	elementIsNS,
 	getRecycledNS,
-} from '../src/ts/core/DOMUtilities'
+} from '../src/ts/core/Dom'
 import { Splash } from '../src/ts/core/Splash'
 import { Service } from '../src/ts/core/Service'
+import { ClassListAction } from '../src/ts/types/Types'
 
 describe('DOMUtilities', () => {
 	// Reset the DOM before each test
@@ -111,9 +112,9 @@ describe('DOMUtilities', () => {
 
 	it('Should be able to alter the class of a Nanosplash host', () => {
 		const div = document.createElement('div')
-		setNSHostClass(div, 'add')
+		setNSHostClass(div, ClassListAction.Add)
 		expect(div.classList.contains(Splash.NSHostClass)).toBe(true)
-		setNSHostClass(div, 'remove')
+		setNSHostClass(div, ClassListAction.Remove)
 		expect(div.classList.contains(Splash.NSHostClass)).toBe(false)
 	})
 

@@ -2,7 +2,7 @@
 
 import { JSDOM } from 'jsdom'
 import { beforeEach, expect, describe, it } from 'vitest'
-import { getRecycledNS } from '../src/ts/core/DOMUtilities'
+import { getRecycledNS } from '../src/ts/core/Dom'
 import { Service } from '../src/ts/core/Service'
 import { Splash } from '../src/ts/core/Splash'
 
