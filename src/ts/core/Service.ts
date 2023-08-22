@@ -3,12 +3,7 @@
 import '../../sass/ns.sass'
 
 import { NSFinder, GUIDString, Reference } from '../types/Types'
-import {
-	cleanNSParentOf,
-	getRecycledNS,
-	move,
-	elementFrom,
-} from './DOMUtilities'
+import { cleanNSParentOf, getRecycledNS, move, elementFrom } from './Dom'
 import { ServiceInterface } from './ServiceInterface'
 import { Splash } from './Splash'
 
@@ -201,9 +196,7 @@ export class Service implements ServiceInterface {
 	 * @inheritdoc
 	 */
 	public hideAll(): void {
-		this.nsStack.forEach((ns: Splash) => {
-			this.cleanAndRemove(ns)
-		})
+		this.nsStack.forEach(this.cleanAndRemove)
 		this.nsStack = []
 	}
 

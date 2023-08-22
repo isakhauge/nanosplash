@@ -1,7 +1,7 @@
 // @ts-strict
 
 import { GUIDString } from '../types/Types'
-import { createElement, showElement, hideElement } from './DOMUtilities'
+import { createElement, showElement, hideElement } from './Dom'
 import { SplashInterface } from './SplashInterface'
 
 /**
@@ -16,6 +16,7 @@ export class Splash implements SplashInterface {
 	 * The main CSS class name of the root element of a Nanosplash component.
 	 */
 	public static readonly NSClass = 'ns'
+
 	/**
 	 * # Host CSS Class Name
 	 * The CSS class name of the host element of a Nanosplash component.

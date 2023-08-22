@@ -1,6 +1,6 @@
 // @ts-strict
 
-import { Reference, GUIDString } from '../types/Types'
+import { Reference, GUIDString, ClassListAction } from '../types/Types'
 import { Service } from './Service'
 import { Splash } from './Splash'
 
@@ -56,7 +56,7 @@ export function injectAsFirstChild(
  */
 export function setNSHostClass(
 	element: Element | null,
-	action: 'add' | 'remove'
+	action: ClassListAction
 ): void {
 	element?.classList[action](Splash.NSHostClass)
 }
@@ -68,7 +68,7 @@ export function setNSHostClass(
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/parentElement
  */
 export function prepareParentOf(ns: Splash): void {
-	setNSHostClass(ns.getNSElement().parentElement, 'add')
+	setNSHostClass(ns.getNSElement().parentElement, ClassListAction.Add)
 }
 
 /**
@@ -78,7 +78,7 @@ export function prepareParentOf(ns: Splash): void {
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/parentElement
  */
 export function cleanNSParentOf(ns: Splash): void {
-	setNSHostClass(ns.getNSElement().parentElement, 'remove')
+	setNSHostClass(ns.getNSElement().parentElement, ClassListAction.Remove)
 }
 
 /**
@@ -133,9 +133,9 @@ export function elementIsNS(element: Element): boolean {
  */
 export function move(element: Element, targetElement: Element): void {
 	// Clean the current NS host element.
-	setNSHostClass(element.parentElement, 'remove')
+	setNSHostClass(element.parentElement, ClassListAction.Remove)
 	// Assign new NS host element.
-	setNSHostClass(targetElement, 'add')
+	setNSHostClass(targetElement, ClassListAction.Add)
 	injectAsFirstChild(element, targetElement)
 }
 
