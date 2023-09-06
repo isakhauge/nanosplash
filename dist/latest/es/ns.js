@@ -91,7 +91,7 @@ r(d, "NSClass", "ns"), /**
  * The CSS class name of the host element of a Nanosplash component.
  * The host element is the element that the Nanosplash is attached to.
  */
-  r(d, "NSHostClass", "nsh");
+r(d, "NSHostClass", "nsh");
 let l = d;
 function N() {
   return new DOMParser().parseFromString(
@@ -297,7 +297,7 @@ r(s, "WindowAccessorKey", "ns"), /**
  * Singleton instance of NanosplashService.
  * @private
  */
-  r(s, "instance");
+r(s, "instance");
 let a = s;
 const A = { Service: a };
 export {

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1693990293397" clover="3.2.0">
-  <project timestamp="1693990293397" name="All files">
+<coverage generated="1693991027169" clover="3.2.0">
+  <project timestamp="1693991027169" name="All files">
     <metrics statements="531" coveredstatements="530" conditionals="72" coveredconditionals="66" methods="42" coveredmethods="42" elements="645" coveredelements="638" complexity="0" loc="531" ncloc="531" packages="2" files="4" classes="4"/>
     <package name="core">
       <metrics statements="519" coveredstatements="518" conditionals="71" coveredconditionals="65" methods="42" coveredmethods="42"/>
-      <file name="Dom.ts" path="/Users/isakhauge/codespace/nanosplash/src/ts/core/Dom.ts">
+      <file name="Dom.ts" path="/home/runner/work/nanosplash/nanosplash/src/ts/core/Dom.ts">
         <metrics statements="160" coveredstatements="160" conditionals="22" coveredconditionals="19" methods="11" coveredmethods="11"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -167,7 +167,7 @@
         <line num="159" count="11" type="stmt"/>
         <line num="160" count="11" type="stmt"/>
       </file>
-      <file name="Service.ts" path="/Users/isakhauge/codespace/nanosplash/src/ts/core/Service.ts">
+      <file name="Service.ts" path="/home/runner/work/nanosplash/nanosplash/src/ts/core/Service.ts">
         <metrics statements="235" coveredstatements="234" conditionals="32" coveredconditionals="29" methods="19" coveredmethods="19"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -405,7 +405,7 @@
         <line num="234" count="1" type="stmt"/>
         <line num="235" count="1" type="stmt"/>
       </file>
-      <file name="Splash.ts" path="/Users/isakhauge/codespace/nanosplash/src/ts/core/Splash.ts">
+      <file name="Splash.ts" path="/home/runner/work/nanosplash/nanosplash/src/ts/core/Splash.ts">
         <metrics statements="124" coveredstatements="124" conditionals="17" coveredconditionals="17" methods="12" coveredmethods="12"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -535,7 +535,7 @@
     </package>
     <package name="types">
       <metrics statements="12" coveredstatements="12" conditionals="1" coveredconditionals="1" methods="0" coveredmethods="0"/>
-      <file name="Types.ts" path="/Users/isakhauge/codespace/nanosplash/src/ts/types/Types.ts">
+      <file name="Types.ts" path="/home/runner/work/nanosplash/nanosplash/src/ts/types/Types.ts">
         <metrics statements="12" coveredstatements="12" conditionals="1" coveredconditionals="1" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
