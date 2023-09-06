@@ -14,7 +14,9 @@
 		"noUnusedParameters": true,
 		"noImplicitReturns": true,
 		"skipLibCheck": true,
+		"declaration": true,
+		"declarationDir": "dist/types",
 		"types": ["vite/client"]
 	},
-	"include": ["src/ts/**/*.ts", "dtsPlugin.ts"]
+	"include": ["src/ts/**/*.ts"]
 }

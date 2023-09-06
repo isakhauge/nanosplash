@@ -4,7 +4,7 @@
 
 <br>
 
-[![Build](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml/badge.svg?branch=production)](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml) [![Build Status](https://github.com/isakhauge/nanosplash/workflows/CI/badge.svg?branch=production)](https://github.com/isakhauge/nanosplash/actions?query=workflow%3ACI) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/nanosplash) [![Coverage](https://img.shields.io/badge/Coverage-99%25-brightgreen)](./coverage/index.html) [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101)](https://github.com/ellerbrock/typescript-badges/) [![Last Commit](https://img.shields.io/github/last-commit/isakhauge/nanosplash)](https://github.com/isakhauge/nanosplash/commits/production)
+[![Build](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml/badge.svg?branch=production)](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/nanosplash) [![Coverage](https://img.shields.io/badge/Coverage-99%25-brightgreen)](./coverage/index.html) [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101)](https://github.com/ellerbrock/typescript-badges/) [![Last Commit](https://img.shields.io/github/last-commit/isakhauge/nanosplash)](https://github.com/isakhauge/nanosplash/commits/production)
 
 <br>
 
@@ -15,7 +15,7 @@
 When installing via CDN, you will always get the latest version, and CSS is included inside the bundle.
 
 ```html
-<script src="https://unpkg.com/nanosplash/dist/ns.iife.js">
+<script src="https://unpkg.com/nanosplash/dist/latest/iife/ns.iife.js">
 ```
 
 Pros:
@@ -42,18 +42,23 @@ Service.start()
 The CSS file is located in the following path:
 
 ```text
-node_modules/nanosplash/dist/es/style.css
+node_modules/nanosplash/dist/latest/es/style.css
 ```
 
 ### Example usage
 
-```js
-import {handleResponse} from './utils'
+It's so simple to use.
 
+```js
+// Display a fullscreen loading screen
 ns.show('Loading')
+
 axios.get('/api/users')
-    .then((response) => handleResponse(response.data)
-    .finally(() => ns.hide())
+    .then((response) => /* Do something */ )
+    .finally(() => {
+        // Hide it when you're done
+        ns.hide()
+    })
 ```
 
 ### TLDR

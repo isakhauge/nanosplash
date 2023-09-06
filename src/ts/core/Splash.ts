@@ -39,6 +39,7 @@ export class Splash implements SplashInterface {
 	/**
 	 * # Generate GUID
 	 * @returns {GUIDString} A GUID string.
+	 * @private
 	 */
 	private static generateGUID(): GUIDString {
 		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {

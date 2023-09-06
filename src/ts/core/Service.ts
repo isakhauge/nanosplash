@@ -1,5 +1,6 @@
 // @ts-strict
 
+import { version } from '../../../package.json'
 import '../../sass/ns.sass'
 
 import { NSFinder, GUIDString, Reference } from '../types/Types'
@@ -10,7 +11,7 @@ import { Splash } from './Splash'
 /**
  * # Service
  * A service class that handles Nanosplash instances.
- * It's a singleton class and it's instance resides in the Window object and
+ * It's a singleton class and its instance resides in the Window object and
  * serves the public API of the Nanosplash library.
  * @see Splash
  * @author Isak K. Hauge <isakhauge@icloud.com>
@@ -25,13 +26,19 @@ export class Service implements ServiceInterface {
 	/**
 	 * # Instance
 	 * Singleton instance of NanosplashService.
+	 * @private
 	 */
 	private static instance: Service
 
 	/**
+	 * # Version
+	 */
+	public readonly version: string
+
+	/**
 	 * @inheritdoc
 	 */
-	public nsStack: Splash[]
+	public readonly nsStack: Splash[]
 
 	/**
 	 * # Constructor
@@ -39,6 +46,7 @@ export class Service implements ServiceInterface {
 	 * @private
 	 */
 	private constructor() {
+		this.version = version
 		this.nsStack = []
 	}
 
@@ -47,6 +55,7 @@ export class Service implements ServiceInterface {
 	 * Find Nanosplash stack index by callback.
 	 * @param callback Callback function that returns a boolean.
 	 * @returns {number} Index of Nanosplash instance in the stack or -1.
+	 * @private
 	 */
 	private findIndex(callback: NSFinder): number | -1 {
 		return this.nsStack.findIndex(callback)
@@ -57,6 +66,7 @@ export class Service implements ServiceInterface {
 	 * Find Nanosplash in the stack by callback.
 	 * @param callback Callback function that returns a boolean.
 	 * @returns {Splash | undefined} Nanosplash instance or undefined
+	 * @private
 	 */
 	private find(callback: NSFinder): Splash | undefined {
 		return this.nsStack.find(callback)
@@ -80,6 +90,7 @@ export class Service implements ServiceInterface {
 	 * The NanosplashService instance can be accessed in the window object
 	 * using the key window accessor key.
 	 * @see WindowAccessorKey
+	 * @private
 	 */
 	private static assignToWindow(): void {
 		Object.defineProperty(window, Service.WindowAccessorKey, {
@@ -108,6 +119,7 @@ export class Service implements ServiceInterface {
 	 * Return new Nanosplash instance and push it to the stack.
 	 * @param text Text to display.
 	 * @returns {Splash} Nanosplash instance.
+	 * @private
 	 */
 	private createNS(text?: string): Splash {
 		const ns = new Splash()
@@ -121,6 +133,7 @@ export class Service implements ServiceInterface {
 	 * Remove Nanosplash from DOM and clean its parent.
 	 * @param ns Nanosplash instance.
 	 * @returns {GUIDString} Nanosplash ID.
+	 * @private
 	 */
 	private cleanAndRemove(ns: Splash): GUIDString {
 		cleanNSParentOf(ns)
@@ -132,6 +145,7 @@ export class Service implements ServiceInterface {
 	 * Remove Nanosplash instance from the stack.
 	 * @param ns Nanosplash instance.
 	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
+	 * @private
 	 */
 	private stackDelete(ns: Splash): GUIDString | null {
 		let index = this.findIndex((o: Splash) => o.getId() === ns.getId())
@@ -145,6 +159,7 @@ export class Service implements ServiceInterface {
 	 * Remove Nanosplash instance from both the stack and the
 	 * @param callback Callback function.
 	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
+	 * @private
 	 */
 	private deleteNS(callback: NSFinder): GUIDString | null {
 		const ns = this.find(callback)
@@ -197,7 +212,7 @@ export class Service implements ServiceInterface {
 	 */
 	public hideAll(): void {
 		this.nsStack.forEach(this.cleanAndRemove)
-		this.nsStack = []
+		this.nsStack.splice(0, this.nsStack.length)
 	}
 
 	/**
@@ -216,3 +231,5 @@ export class Service implements ServiceInterface {
 		return node ? this.deleteNS(cb) : null
 	}
 }
+
+export default { Service }
