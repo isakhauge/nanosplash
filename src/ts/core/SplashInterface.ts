@@ -1,32 +1,24 @@
-// @ts-strict
-
 import { GUIDString } from '../types/Types'
 import { Splash } from './Splash'
 
 export interface SplashInterface {
 	/**
-	 * # Get NS Content Element
-	 * Returns the content element of the Nanosplash.
-	 */
-	getNSContentElement(): HTMLDivElement
-
-	/**
-	 * # Get NS Text Element
-	 * Returns the text element of the Nanosplash.
-	 */
-	getNSTextElement(): HTMLDivElement
-
-	/**
 	 * # Get ID
 	 * Return Nanosplash instance GUID.
 	 */
-	getId(): GUIDString
+	getId(): GUIDString | null
 
 	/**
-	 * # Get NS Element
+	 * # Get Element
 	 * Return Nanosplash instance HTMLDivElement.
 	 */
-	getNSElement(): HTMLDivElement
+	getElement(): HTMLDivElement | null
+
+	/**
+	 * # Get Text Element
+	 * Returns the text element of the Nanosplash.
+	 */
+	getTextElement(): HTMLDivElement | null
 
 	/**
 	 * # Set Text
@@ -47,8 +39,8 @@ export interface SplashInterface {
 	hideText(): Splash
 
 	/**
-	 * # Remove
-	 * Delete all
+	 * # Delete
+	 * Remove from DOM and delete internal data.
 	 */
-	remove(): Splash
+	delete(): boolean
 }

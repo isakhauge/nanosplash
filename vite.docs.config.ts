@@ -1,15 +1,14 @@
 import { LibraryFormats, defineConfig } from 'vite'
 
-const format = (process.env?.format ?? '') as LibraryFormats
 const entry = (process.env?.entry ?? '') as string
 
 export default defineConfig({
 	build: {
-		outDir: `dist/${format}`,
+		outDir: `docs/.vitepress/theme/js`,
 		lib: {
 			entry,
 			name: 'Nanosplash',
-			formats: [format] as LibraryFormats[],
+			formats: ['iife'] as LibraryFormats[],
 			fileName: 'ns',
 		},
 	},

@@ -1,7 +1,5 @@
-// @ts-strict
-
 import { GUIDString } from '../types/Types'
-import { createElement, showElement, hideElement } from './Dom'
+import { createElement, showElement, hideElement } from './DomUtilities'
 import { SplashInterface } from './SplashInterface'
 
 /**
@@ -28,13 +26,13 @@ export class Splash implements SplashInterface {
 	 * # ID
 	 * Each Nanosplash instance is given a unique GUID.
 	 */
-	private readonly id: GUIDString
+	private id: GUIDString | null
 
 	/**
 	 * # Element
 	 * The root element of the Nanosplash component.
 	 */
-	private element?: HTMLDivElement
+	private element: HTMLDivElement | null
 
 	/**
 	 * # Generate GUID
@@ -61,28 +59,25 @@ export class Splash implements SplashInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public getNSContentElement(): HTMLDivElement {
-		return <HTMLDivElement>this.getNSElement().firstElementChild
+	public getTextElement(): HTMLDivElement {
+		return (
+			<HTMLDivElement>(
+				this.getElement()?.firstElementChild?.firstElementChild
+			) ?? null
+		)
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public getNSTextElement(): HTMLDivElement {
-		return <HTMLDivElement>this.getNSContentElement().firstElementChild
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public getId(): GUIDString {
+	public getId(): GUIDString | null {
 		return this.id
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public getNSElement(): HTMLDivElement {
+	public getElement(): HTMLDivElement | null {
 		return <HTMLDivElement>this.element
 	}
 
@@ -90,7 +85,7 @@ export class Splash implements SplashInterface {
 	 * @inheritdoc
 	 */
 	public setText(text: string): Splash {
-		this.getNSTextElement().innerText = text
+		this.getTextElement().innerText = text
 		text.length > 0 ? this.showText() : this.hideText()
 		return this
 	}
@@ -99,7 +94,7 @@ export class Splash implements SplashInterface {
 	 * @inheritdoc
 	 */
 	public showText(): Splash {
-		showElement(this.getNSTextElement())
+		showElement(this.getTextElement())
 		return this
 	}
 
@@ -107,18 +102,20 @@ export class Splash implements SplashInterface {
 	 * @inheritdoc
 	 */
 	public hideText(): Splash {
-		hideElement(this.getNSTextElement())
+		hideElement(this.getTextElement())
 		return this
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public remove(): Splash {
-		if (this.element) {
-			this.element.parentElement?.removeChild(this.element)
-			delete this.element
+	public delete(): boolean {
+		this.id = null
+		if (this.element !== null) {
+			this.element.innerHTML = ''
+			this.element.remove()
+			this.element = null
 		}
-		return this
+		return this.element === null
 	}
 }

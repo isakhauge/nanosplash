@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { JSDOM } from 'jsdom'
 import { Splash } from '../src/ts/core/Splash'
 
+const rgx = /^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$/
+
 describe('Guid', () => {
 	// Reset the DOM before each test
 	beforeEach(() => {
@@ -13,9 +15,7 @@ describe('Guid', () => {
 	})
 
 	it('Should generate a valid GUID', () => {
-		const guidRegex =
-			/^[{]?[0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}[}]?$/
 		const value = new Splash().getId()
-		expect(value).toMatch(guidRegex)
+		expect(value).toMatch(rgx)
 	})
 })

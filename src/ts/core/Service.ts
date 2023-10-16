@@ -1,12 +1,17 @@
-// @ts-strict
-
 import { version } from '../../../package.json'
-import '../../sass/ns.sass'
 
-import { NSFinder, GUIDString, Reference } from '../types/Types'
-import { cleanNSParentOf, getRecycledNS, move, elementFrom } from './Dom'
+import { Reference, GUIDString } from '../types/Types'
+import {
+	getRecycledSplash,
+	move,
+	elementFrom,
+	render,
+	removeNSHostClass,
+} from './DomUtilities'
 import { ServiceInterface } from './ServiceInterface'
 import { Splash } from './Splash'
+import css from '../../style/ns.sass?inline'
+import { SplashQueue } from './SplashQueue'
 
 /**
  * # Service
@@ -38,7 +43,7 @@ export class Service implements ServiceInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public readonly nsStack: Splash[]
+	public readonly nsQueue: SplashQueue
 
 	/**
 	 * # Constructor
@@ -47,29 +52,17 @@ export class Service implements ServiceInterface {
 	 */
 	private constructor() {
 		this.version = version
-		this.nsStack = []
+		this.nsQueue = new SplashQueue()
+		Service.addStyle()
 	}
 
-	/**
-	 * # Find Index
-	 * Find Nanosplash stack index by callback.
-	 * @param callback Callback function that returns a boolean.
-	 * @returns {number} Index of Nanosplash instance in the stack or -1.
-	 * @private
+	/**e
+	 * # Add Style
+	 * Add Nanosplash CSS to the DOM.
 	 */
-	private findIndex(callback: NSFinder): number | -1 {
-		return this.nsStack.findIndex(callback)
-	}
-
-	/**
-	 * # Find
-	 * Find Nanosplash in the stack by callback.
-	 * @param callback Callback function that returns a boolean.
-	 * @returns {Splash | undefined} Nanosplash instance or undefined
-	 * @private
-	 */
-	private find(callback: NSFinder): Splash | undefined {
-		return this.nsStack.find(callback)
+	private static addStyle(): void {
+		const style = render(`<style>${css}</style>`) as HTMLStyleElement
+		document.body.append(style)
 	}
 
 	/**
@@ -124,62 +117,46 @@ export class Service implements ServiceInterface {
 	private createNS(text?: string): Splash {
 		const ns = new Splash()
 		ns.setText(text || '')
-		this.nsStack.push(ns)
+		this.nsQueue.enqueue(ns)
 		return ns
 	}
 
 	/**
-	 * # Clean And Remove
+	 * # Clean And Remove From DOM
 	 * Remove Nanosplash from DOM and clean its parent.
 	 * @param ns Nanosplash instance.
-	 * @returns {GUIDString} Nanosplash ID.
+	 * @returns True if Nanosplash was removed from DOM.
 	 * @private
 	 */
-	private cleanAndRemove(ns: Splash): GUIDString {
-		cleanNSParentOf(ns)
-		return ns.remove().getId()
-	}
-
-	/**
-	 * # Stack Delete
-	 * Remove Nanosplash instance from the stack.
-	 * @param ns Nanosplash instance.
-	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
-	 * @private
-	 */
-	private stackDelete(ns: Splash): GUIDString | null {
-		let index = this.findIndex((o: Splash) => o.getId() === ns.getId())
-		if (index < 0) return null
-		this.nsStack.splice(index, 1)
-		return ns.getId()
+	private cleanAndRemoveFromDOM(ns: Splash | null): boolean {
+		if (ns) {
+			const parent = ns.getElement()?.parentElement ?? null
+			if (parent) {
+				removeNSHostClass(parent)
+			}
+			return ns.delete()
+		}
+		return false
 	}
 
 	/**
 	 * # Delete NS
 	 * Remove Nanosplash instance from both the stack and the
-	 * @param callback Callback function.
-	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
+	 * @param guid Nanosplash ID.
+	 * @returns True if Nanosplash was removed from DOM.
 	 * @private
 	 */
-	private deleteNS(callback: NSFinder): GUIDString | null {
-		const ns = this.find(callback)
-		if (ns) {
-			this.cleanAndRemove(ns)
-			return this.stackDelete(ns)
-		}
-		return null
+	private deleteNS(guid: GUIDString): boolean {
+		const ns = this.nsQueue.delete(guid)
+		if (!ns) return false
+		return this.cleanAndRemoveFromDOM(ns)
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public show(text?: string): GUIDString {
-		let ns = getRecycledNS(document.body)
-		if (!ns) {
-			ns = this.createNS()
-			move(ns.getNSElement(), document.body)
-		}
-		return ns.setText(text || '').getId()
+	public show(text?: string): GUIDString | null {
+		return this.showInside(document.body, text)
 	}
 
 	/**
@@ -188,14 +165,16 @@ export class Service implements ServiceInterface {
 	public showInside(ref: Reference, text?: string): GUIDString | null {
 		const destinationNode: Element | null = elementFrom(ref)
 		if (destinationNode) {
-			let ns = getRecycledNS(destinationNode)
+			let ns = getRecycledSplash(destinationNode)
 			if (!ns) {
 				ns = this.createNS()
 			}
-			move(ns.getNSElement(), <Element>destinationNode)
-			return ns.setText(text || '').getId()
+			const nsElement = ns.getElement()
+			if (nsElement) {
+				move(nsElement, destinationNode)
+			}
+			return ns.setText(String(text)).getId()
 		}
-
 		return null
 	}
 
@@ -203,23 +182,30 @@ export class Service implements ServiceInterface {
 	 * @inheritdoc
 	 */
 	public hide(): GUIDString | null {
-		const ns = this.nsStack.pop()
-		return ns ? this.cleanAndRemove(ns) : null
+		const ns = this.nsQueue.dequeue()
+		if (!ns) return null
+		this.cleanAndRemoveFromDOM(ns)
+		return ns.getId()
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public hideAll(): void {
-		this.nsStack.forEach(this.cleanAndRemove)
-		this.nsStack.splice(0, this.nsStack.length)
+		let ns = this.nsQueue.dequeue()
+		while (ns) {
+			this.cleanAndRemoveFromDOM(ns)
+			ns = this.nsQueue.dequeue()
+		}
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public hideId(id: GUIDString): GUIDString | null {
-		return this.deleteNS((ns: Splash) => ns.getId() === id)
+		const ns = this.nsQueue.has(id)
+		if (!ns) return null
+		return this.deleteNS(id) ? id : null
 	}
 
 	/**
@@ -227,8 +213,12 @@ export class Service implements ServiceInterface {
 	 */
 	public hideInside(ref: Reference): GUIDString | null {
 		const node = elementFrom(ref)
-		const cb = (ns: Splash) => ns.getNSElement().parentElement === node
-		return node ? this.deleteNS(cb) : null
+		if (!node) return null
+		const ns = getRecycledSplash(node)
+		if (!ns) return null
+		const guid = ns.getId()
+		if (!guid) return null
+		return this.deleteNS(guid) ? guid : null
 	}
 }
 

@@ -1,119 +1,198 @@
-// @ts-strict
-
-import { JSDOM } from 'jsdom'
 import { beforeEach, expect, describe, it } from 'vitest'
-import { getRecycledNS } from '../src/ts/core/Dom'
 import { Service } from '../src/ts/core/Service'
 import { Splash } from '../src/ts/core/Splash'
+import { GUIDString } from '../src/ts/types/Types'
+import { ExpectedParsedValues, div, resetDOM } from './TestUtilities'
+
+resetDOM()
+
+declare global {
+	interface Window {
+		ns: Service
+	}
+}
 
 describe('NanosplashService', () => {
-	const nss = Service.getInstance()
-	const getById = (id: string): Splash | undefined =>
-		nss.nsStack.find((ns: Splash) => ns.getId() === id)
-
 	// Reset the DOM before each test
 	beforeEach(() => {
-		const dom = new JSDOM()
-		// @ts-ignore
-		globalThis.window = dom.window
-		globalThis.document = dom.window.document
-		globalThis.DOMParser = dom.window.DOMParser
-		globalThis.Node = dom.window.Node
-		globalThis.Element = dom.window.Element
+		resetDOM()
 	})
 
 	it('Should be able to create an instance', () => {
+		const nss = Service.getInstance()
 		expect(nss).toBeInstanceOf(Service)
 	})
 
-	it('Should be able to get the same singleton instance', () => {
+	it('Should be a valid singleton instance', () => {
 		const nss1 = Service.getInstance()
 		const nss2 = Service.getInstance()
 		expect(nss1).toBe(nss2)
 	})
 
-	it('Should be able to start the service', () => {
+	it('Should be able to start the service and attach it to Window', () => {
 		Service.start()
-		expect(nss).toBeInstanceOf(Service)
-	})
-
-	it('Should be able to retrieve an existing Nanosplash instance from a destination node', () => {
-		const destinationNode = document.createElement('div')
-		document.body.appendChild(destinationNode)
-		destinationNode.id = 'test-id'
-		const nsInstance1 = getRecycledNS(destinationNode) as Splash
-		expect(nsInstance1).toBeNull()
-		let nsId = nss.showInside('erroneous-selector', 'Hello World!')
-		expect(nsId).toBeNull()
-		nsId = nss.showInside('div[id="test-id"]', 'Hello World!')
-		const nsInstance2 = getRecycledNS(destinationNode)
-		expect(nsInstance2).toBeInstanceOf(Splash)
-		expect(nsInstance2?.getId()).toBe(nsId)
+		const nss = Service.getInstance()
+		expect(nss).toBe(window.ns)
 	})
 
 	it('Should be able to show a Nanosplash in the browser window', () => {
 		const text = 'Hello World!'
-		const nsId = nss.show(text)
+		const nss = Service.getInstance()
+		const nsId = <GUIDString>nss.show(text)
+
+		// Compare the elements:
 		const element = document.getElementById(nsId)
-		const ns = getById(nsId)
-		const nsText = ns?.getNSTextElement().innerText
-		expect(element).toBe(ns?.getNSElement())
+		const splash = nss.nsQueue.get(nsId)
+		expect(element).toBe(splash?.getElement())
+
+		// Compare the text:
+		const nsText = splash?.getTextElement().innerText
 		expect(nsText).toBe(text)
 	})
 
 	it('Should be able to show a Nanosplash over a given element', () => {
+		const id = 'test-id'
 		const text = 'Hello World!'
 		const destination = document.createElement('div')
-		destination.id = 'test-id'
+
+		// Assign ID and append to DOM
+		destination.id = id
 		document.body.appendChild(destination)
-		const nsId = <string>nss.showInside('#test-id', text)
-		const element = document.getElementById(nsId)
-		const ns = getById(nsId)
-		const nsText = ns?.getNSTextElement().innerText
-		expect(element).toBe(ns?.getNSElement())
+
+		const nss = Service.getInstance()
+
+		// Show Splash inside element
+		const nsId = nss.showInside(`#${id}`, text)
+
+		// Get element from DOM with the same ID
+		const element = document.getElementById(<string>nsId)
+
+		// Get Splash instance from NS Service with the same ID
+		const ns = nss.nsQueue.get(<string>nsId)
+
+		// Compare the two
+		expect(element).toBe(ns?.getElement())
+
+		// Compare the text
+		const nsText = ns?.getTextElement().innerText
 		expect(nsText).toBe(text)
 	})
 
-	it('Should be able to hide a Nanosplash', () => {
-		const nsId = nss.show()
+	it('Should be able to hide a Splash', () => {
+		const nss = Service.getInstance()
+		const nsId = <GUIDString>nss.show()
 		nss.hide()
-		const ns = getById(nsId)
-		expect(ns?.getNSElement()).toBeUndefined()
+		const splash = nss.nsQueue.get(nsId)
+		expect(splash).toBeUndefined()
+	})
+
+	it('Should be able to hide multiple Splashes in FIFO-order', () => {
+		document.body.append(div('a'), div('b'), div('c'))
+
+		const nss = Service.getInstance()
+		const a = nss.showInside('#a', 'A')
+		const b = nss.showInside('#b', 'B')
+		const c = nss.showInside('#c', 'C')
+
+		expect(nss.nsQueue.size).toBe(3)
+
+		nss.hide()
+		expect(nss.nsQueue.size).toBe(2)
+		expect(nss.nsQueue.get(a as string)).toBeUndefined()
+		expect(nss.nsQueue.get(b as string)).toBeInstanceOf(Splash)
+		expect(nss.nsQueue.get(c as string)).toBeInstanceOf(Splash)
+
+		nss.hide()
+		expect(nss.nsQueue.size).toBe(1)
+		expect(nss.nsQueue.get(a as string)).toBeUndefined()
+		expect(nss.nsQueue.get(b as string)).toBeUndefined()
+		expect(nss.nsQueue.get(c as string)).toBeInstanceOf(Splash)
+
+		nss.hide()
+		expect(nss.nsQueue.size).toBe(0)
+		expect(nss.nsQueue.get(a as string)).toBeUndefined()
+		expect(nss.nsQueue.get(b as string)).toBeUndefined()
+		expect(nss.nsQueue.get(c as string)).toBeUndefined()
 	})
 
 	it('Should be able to hide all Nanosplashes', () => {
-		const div = (id: string) => {
-			const d = document.createElement('div')
-			d.id = id
-			return d
-		}
 		document.body.append(div('a'), div('b'), div('c'))
-		nss.hideAll()
-		expect(nss.nsStack.length).toBe(0)
+
+		const nss = Service.getInstance()
+
+		nss.hideAll() // Reset the queue
+		expect(nss.nsQueue.size).toBe(0)
+
+		// Add three Nanosplashes to the queue
 		nss.showInside('#a', 'A')
 		nss.showInside('#b', 'B')
 		nss.showInside('#c', 'C')
-		expect(nss.nsStack.length).toBe(3)
+
+		// Expect the queue to have three items
+		expect(nss.nsQueue.size).toBe(3)
+
+		// Hide all Nanosplashes
 		nss.hideAll()
-		expect(nss.nsStack.length).toBe(0)
+
+		// Expect the queue to be empty
+		expect(nss.nsQueue.size).toBe(0)
 	})
 
 	it('Should be able to hide a Nanosplash based on its ID', () => {
-		const nsId = nss.show()
+		const nss = Service.getInstance()
+		const nsId = <GUIDString>nss.show()
 		nss.hideId(nsId)
-		const ns = getById(nsId)
-		expect(ns?.getNSElement()).toBeUndefined()
+		const splash = nss.nsQueue.get(nsId)
+		expect(splash).toBeUndefined()
 	})
 
 	it('Should be able to hide a Nanosplash residing inside a given element', () => {
-		const destination = document.createElement('div')
-		destination.id = 'test-id'
-		document.body.appendChild(destination)
-		let nsId = nss.showInside('#test-id')
-		nsId = nss.hideInside('erroneous-selector')
-		expect(nsId).toBeNull()
-		nsId = <string>nss.hideInside('#test-id')
-		const ns = getById(nsId)
-		expect(ns?.getNSElement()).toBeUndefined()
+		const id = 'test-id'
+		const parent = document.createElement('div')
+		parent.id = id
+		document.body.appendChild(parent)
+
+		const nss = Service.getInstance()
+		const nsId = <GUIDString>nss.showInside(`#${id}`)
+
+		// Confirm existence.
+		const element = document.getElementById(<string>nsId)
+		expect(element?.parentElement).toBe(parent)
+
+		// Hide using API.
+		nss.hideInside(`#${id}`)
+
+		// Confirm non-existence.
+		expect(element?.isConnected).toBe(false)
+		expect(nss.nsQueue.get(nsId)).toBeUndefined()
+	})
+
+	it('Should take any argument as text without breaking', () => {
+		const nss = Service.getInstance()
+
+		// Destructure the expected values
+		const {
+			numValues,
+			arrValues,
+			objValues,
+			boolValues,
+			nullValues,
+			undefValues,
+		} = ExpectedParsedValues
+
+		// Create functions to test the values
+		const testValues = (raw: any, parsed: any) => {
+			const id = <GUIDString>nss.show(raw)
+			const value = nss.nsQueue.get(id)?.getTextElement().innerText
+			expect(value).toBe(parsed)
+		}
+
+		// Test the values
+		testValues(numValues.raw, numValues.parsed)
+		testValues(arrValues.raw, arrValues.parsed)
+		testValues(objValues.raw, objValues.parsed)
+		testValues(boolValues.raw, boolValues.parsed)
+		testValues(nullValues.raw, nullValues.parsed)
+		testValues(undefValues.raw, undefValues.parsed)
 	})
 })

@@ -1,0 +1,95 @@
+%maximize
+    width: 100%
+    height: 100%
+
+%upper-left
+    top: 0
+    left: 0
+
+%flex-center-xy
+    display: flex
+    justify-content: center
+    align-items: center
+
+// Nanosplash host scoped varibles
+.nsh
+    --color: DarkSlateGray
+    --size: 20px
+    --relSize: calc(var(--size) * 0.9)
+    --font: 'Helvetica', 'Arial', sans-serif
+    --weight: 400
+    --bg: #{ rgba(White, 0.8) }
+    --zIdx: 999999999
+    --blur: blur(10px)
+
+// Nanosplash host
+.nsh
+    position: relative
+    z-index: var(--zIdx)
+    &::before
+        @extend %maximize
+        @extend %upper-left
+        position: absolute
+        background-color: var(--bg)
+        content: ''
+        backdrop-filter: var(--blur)
+        -webkit-backdrop-filter: var(--blur)
+        z-index: calc(var(--zIdx) + 1)
+        border-radius: inherit
+
+// When Nanosplash host is the document body
+body.nsh
+    height: 100vh
+
+// Nanosplash (main element)
+.ns
+    @extend %maximize
+    @extend %upper-left
+    @extend %flex-center-xy
+    position: absolute
+    z-index: calc(var(--zIdx) + 2)
+
+// Nanosplash container
+.nsc
+    @extend %flex-center-xy
+    filter: drop-shadow(0 0 0.1rem #{ rgba(LightGray, 0.5) })
+
+// Nanosplash text
+.nst
+    color: var(--color)
+    font-size: var(--size)
+    font-family: var(--font)
+    font-weight: var(--weight)
+    margin-right: var(--relSize)
+    text-shadow: 0 0 0.06rem #{ rgba(DarkSlateGray, .25) }
+
+// Nanosplash spinner
+.nss
+    display: block
+    width: var(--relSize)
+    height: var(--relSize)
+    & > svg
+        animation: Rotate 2s linear infinite
+        position: relative
+        width: inherit
+        height: inherit
+        stroke-width: 8
+    & .path
+        stroke: var(--color)
+        stroke-linecap: round
+        animation: Dash 1.5s ease-in-out infinite
+
+// Spinner animations:
+@keyframes Rotate
+    100%
+        transform: rotate(360deg)
+@keyframes Dash
+    0%
+        stroke-dasharray: 1, 150
+        stroke-dashoffset: 0
+    50%
+        stroke-dasharray: 90, 150
+        stroke-dashoffset: -35
+    100%
+        stroke-dasharray: 90, 150
+        stroke-dashoffset: -124

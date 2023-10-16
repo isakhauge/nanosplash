@@ -1,7 +1,5 @@
-// @ts-strict
-
 import { GUIDString, Reference } from '../types/Types'
-import { Splash } from './Splash'
+import { SplashQueue } from './SplashQueue'
 
 export interface ServiceInterface {
 	/**
@@ -10,15 +8,15 @@ export interface ServiceInterface {
 	 * When a Nanosplash instance is removed, it's removed from the stack.
 	 * @see Splash
 	 */
-	readonly nsStack: Splash[]
+	readonly nsQueue: SplashQueue
 
 	/**
 	 * # Show
 	 * Present a Nanosplash in the browser window displaying the given text.
 	 * @param text Text to display.
-	 * @returns {GUIDString} Nanosplash ID.
+	 * @returns {GUIDString | null} Nanosplash ID.
 	 */
-	show(text?: string): GUIDString
+	show(text?: string): GUIDString | null
 
 	/**
 	 * # Show Inside
@@ -31,7 +29,7 @@ export interface ServiceInterface {
 
 	/**
 	 * # Hide
-	 * Hide the last created Nanosplash.
+	 * Hide the oldest Nanosplash.
 	 * @returns {GUIDString | null} Nanosplash ID or null if it doesn't exist.
 	 */
 	hide(): GUIDString | null

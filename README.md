@@ -8,25 +8,16 @@
 
 <br>
 
-## Get started
+> 📣 **New in 3.0.2**
+> - CSS is included inside the ES and CJS bundles 🎉
+> - The `ns.hide` method will now delete splash screens in a FIFO sequence.
+
+## Get started 🚀
 
 ### Install via CDN
-
-When installing via CDN, you will always get the latest version, and CSS is included inside the bundle.
-
 ```html
-<script src="https://unpkg.com/nanosplash/dist/latest/iife/ns.iife.js">
+<script src="https://unpkg.com/nanosplash@3.0.2/dist/iife/ns.iife.js">
 ```
-
-Pros:
-
-- Easy to get started.
-- Always get the latest version.
-- CSS is included inside the bundle.
-
-Cons:
-
-- Always get the latest version.
 
 ### Install via NPM
 
@@ -39,29 +30,17 @@ import { Service } from 'nanosplash'
 Service.start()
 ```
 
-The CSS file is located in the following path:
+The start function will inject a singleton instance into the global Window 
+object. You can simply access the Nanosplash service by using the `ns` 
+variable like the example below.
 
-```text
-node_modules/nanosplash/dist/latest/es/style.css
+```js
+ns.show('Hello world')
 ```
 
 ### Example usage
 
 It's so simple to use.
-
-```js
-// Display a fullscreen loading screen
-ns.show('Loading')
-
-axios.get('/api/users')
-    .then((response) => /* Do something */ )
-    .finally(() => {
-        // Hide it when you're done
-        ns.hide()
-    })
-```
-
-### TLDR
 
 ```js
 // Fullscreen spinning wheel
@@ -87,7 +66,7 @@ ns.hideId(id)
 ns.hideAll()
 ```
 
-## API Documentation
+## API Documentation 📚
 
 ### Show
 
@@ -100,45 +79,54 @@ ns.show(text?: string): GUIDString
 If you enter no text, it will display the spinning wheel only.
 
 ```js
-ns.show() // Spinner only
-ns.show('Loading') // Spinner with text
+ns.show()
+```
+
+If you enter text, it will display the spinning wheel and the text.
+
+```js
+ns.show('Loading')
 ```
 
 ### Show inside
 
-This method displays a fullscreen loading screen inside an element and returns a GUID string.
+This method displays a loading screen inside an element and returns a GUID 
+string. The `Reference` type is a union type of `string | Element`. A reference
+can be both a CSS selector `string or an `Element`.
 
 ```ts
 ns.showInside(ref: Reference, text?: string): GUIDString | null
 ```
 
-The `Reference` type is a union type of `string | Element`. The `string` type is a CSS selector string. The `Element` type is a DOM element.
-
 ```js
-// Both works
+// CSS selector
 const selector = '#my-table'
-const element = document.getElementById('my-table')
 ns.showInside(selector, 'Loading')
+
+// Element
+const element = document.getElementById('my-table')
 ns.showInside(element, 'Loading')
 ```
 
+> ℹ️ A host element can only contain one Nanosplash element at a time. If 
+> you try to show a splash inside an element that already contains a splash, 
+> the existing splash will be overwritten. 
+
 ### Hide
 
-Hides the last created loading screen (LIFO).
+Hides the oldest splash screen (FIFO).
 
 ```ts
 ns.hide(): GUIDString | null
 ```
 
-The reason why the hide function works in a LIFO (last in first out) manner is because you should always see the loading screen that you want to hide, which will always be the last one you created.
-
 ```js
 ns.show('a')
 ns.show('b')
 ns.show('c')
-ns.hide() // Hides 'c'
-ns.hide() // Hides 'b'
 ns.hide() // Hides 'a'
+ns.hide() // Hides 'b'
+ns.hide() // Hides 'c'
 ```
 
 > 💡 **PRO Tip:** If you have multiple loading screens open at the same time, I would recommend that you hide specific elements based on their GUID or host element. See `hideId` and `hideInside` for more information.
