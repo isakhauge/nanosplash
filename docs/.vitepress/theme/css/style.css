@@ -141,16 +141,17 @@
 	background-color: transparent;
 }
 
-.vp-doc [class*='language-'] .has-highlighted-lines {
-	& .line {
-		transition: filter 0.35s, opacity 0.35s;
-	}
-	& .line:not(.highlighted) {
-		filter: blur(1px);
-		opacity: 0.5;
-	}
-	&:hover .line:not(.highlighted) {
-		filter: blur(0);
-		opacity: 1;
-	}
+.vp-doc [class*='language-'] .has-highlighted-lines .line {
+	transition: filter 0.35s, opacity 0.35s;
+}
+.vp-doc [class*='language-'] .has-highlighted-lines .line:not(.highlighted) {
+	filter: blur(1px);
+	opacity: 0.5;
+}
+.vp-doc
+	[class*='language-']
+	.has-highlighted-lines:hover
+	.line:not(.highlighted) {
+	filter: blur(0);
+	opacity: 1;
 }
