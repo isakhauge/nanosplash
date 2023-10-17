@@ -6,7 +6,6 @@ export default defineConfig({
 	description: 'The tiny loading screen for web artisans',
 
 	themeConfig: {
-		// https://vitepress.dev/reference/default-theme-config
 		nav: [
 			{ text: 'Home', link: '/' },
 			{ text: 'Get started', link: '/api/start/install' },

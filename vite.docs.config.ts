@@ -4,7 +4,7 @@ const entry = (process.env?.entry ?? '') as string
 
 export default defineConfig({
 	build: {
-		outDir: `docs/.vitepress/theme/js`,
+		outDir: `docs/public`,
 		lib: {
 			entry,
 			name: 'Nanosplash',

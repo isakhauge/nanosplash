@@ -94,22 +94,22 @@ describe('NanosplashService', () => {
 		const b = nss.showInside('#b', 'B')
 		const c = nss.showInside('#c', 'C')
 
-		expect(nss.nsQueue.size).toBe(3)
+		expect(nss.nsQueue.queue.length).toBe(3)
 
 		nss.hide()
-		expect(nss.nsQueue.size).toBe(2)
+		expect(nss.nsQueue.queue.length).toBe(2)
 		expect(nss.nsQueue.get(a as string)).toBeUndefined()
 		expect(nss.nsQueue.get(b as string)).toBeInstanceOf(Splash)
 		expect(nss.nsQueue.get(c as string)).toBeInstanceOf(Splash)
 
 		nss.hide()
-		expect(nss.nsQueue.size).toBe(1)
+		expect(nss.nsQueue.queue.length).toBe(1)
 		expect(nss.nsQueue.get(a as string)).toBeUndefined()
 		expect(nss.nsQueue.get(b as string)).toBeUndefined()
 		expect(nss.nsQueue.get(c as string)).toBeInstanceOf(Splash)
 
 		nss.hide()
-		expect(nss.nsQueue.size).toBe(0)
+		expect(nss.nsQueue.queue.length).toBe(0)
 		expect(nss.nsQueue.get(a as string)).toBeUndefined()
 		expect(nss.nsQueue.get(b as string)).toBeUndefined()
 		expect(nss.nsQueue.get(c as string)).toBeUndefined()
@@ -121,7 +121,7 @@ describe('NanosplashService', () => {
 		const nss = Service.getInstance()
 
 		nss.hideAll() // Reset the queue
-		expect(nss.nsQueue.size).toBe(0)
+		expect(nss.nsQueue.queue.length).toBe(0)
 
 		// Add three Nanosplashes to the queue
 		nss.showInside('#a', 'A')
@@ -129,13 +129,13 @@ describe('NanosplashService', () => {
 		nss.showInside('#c', 'C')
 
 		// Expect the queue to have three items
-		expect(nss.nsQueue.size).toBe(3)
+		expect(nss.nsQueue.queue.length).toBe(3)
 
 		// Hide all Nanosplashes
 		nss.hideAll()
 
 		// Expect the queue to be empty
-		expect(nss.nsQueue.size).toBe(0)
+		expect(nss.nsQueue.queue.length).toBe(0)
 	})
 
 	it('Should be able to hide a Nanosplash based on its ID', () => {

@@ -39,10 +39,10 @@ export const ExpectedParsedValues = {
 	},
 	nullValues: {
 		raw: null,
-		parsed: 'null',
+		parsed: '',
 	},
 	undefValues: {
 		raw: undefined,
-		parsed: 'undefined',
+		parsed: '',
 	},
 }

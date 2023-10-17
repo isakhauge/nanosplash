@@ -2,7 +2,6 @@
 import { h } from 'vue'
 import Theme from 'vitepress/theme'
 import './css/style.scss'
-import './js/ns.iife.js'
 
 export default {
 	extends: Theme,

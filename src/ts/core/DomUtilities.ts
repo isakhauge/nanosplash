@@ -3,6 +3,14 @@ import { Service } from './Service'
 import { Splash } from './Splash'
 
 /**
+ * # DOM Utilities
+ * A collection of functions that are used by the Nanosplash classes.
+ * @see Splash
+ * @see Service
+ * @author Isak K. Hauge <isakhauge@icloud.com>
+ */
+
+/**
  * # Render
  * @param html HTML string to render.
  * @returns Rendered HTML element.
@@ -14,14 +22,6 @@ export function render(html: string): HTMLElement {
 		document.createElement('div')
 	)
 }
-
-/**
- * # DOM Utilities
- * A collection of functions that are used by the Nanosplash classes.
- * @see Splash
- * @see Service
- * @author Isak K. Hauge <isakhauge@icloud.com>
- */
 
 /**
  * # Create Element

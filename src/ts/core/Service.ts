@@ -97,14 +97,10 @@ export class Service implements ServiceInterface {
 	 * Initialize and attach a Nanosplash Service instance to the Window object.
 	 */
 	public static start(): void {
-		Service.assignToWindow()
-		window.addEventListener('load', () => {
-			const nss = window[Service.WindowAccessorKey]
-			const nssAssigned = nss instanceof Service
-			if (!nssAssigned) {
-				Service.assignToWindow()
-			}
-		})
+		const nss = window[Service.WindowAccessorKey]
+		if (!nss) {
+			Service.assignToWindow()
+		}
 	}
 
 	/**
@@ -115,8 +111,7 @@ export class Service implements ServiceInterface {
 	 * @private
 	 */
 	private createNS(text?: string): Splash {
-		const ns = new Splash()
-		ns.setText(text || '')
+		const ns = new Splash().setText(text || '')
 		this.nsQueue.enqueue(ns)
 		return ns
 	}
@@ -130,10 +125,7 @@ export class Service implements ServiceInterface {
 	 */
 	private cleanAndRemoveFromDOM(ns: Splash | null): boolean {
 		if (ns) {
-			const parent = ns.getElement()?.parentElement ?? null
-			if (parent) {
-				removeNSHostClass(parent)
-			}
+			removeNSHostClass(ns.getElement()?.parentElement ?? null)
 			return ns.delete()
 		}
 		return false
@@ -147,9 +139,7 @@ export class Service implements ServiceInterface {
 	 * @private
 	 */
 	private deleteNS(guid: GUIDString): boolean {
-		const ns = this.nsQueue.delete(guid)
-		if (!ns) return false
-		return this.cleanAndRemoveFromDOM(ns)
+		return this.cleanAndRemoveFromDOM(this.nsQueue.delete(guid) ?? null)
 	}
 
 	/**
@@ -163,19 +153,16 @@ export class Service implements ServiceInterface {
 	 * @inheritdoc
 	 */
 	public showInside(ref: Reference, text?: string): GUIDString | null {
-		const destinationNode: Element | null = elementFrom(ref)
-		if (destinationNode) {
-			let ns = getRecycledSplash(destinationNode)
-			if (!ns) {
-				ns = this.createNS()
-			}
-			const nsElement = ns.getElement()
-			if (nsElement) {
-				move(nsElement, destinationNode)
-			}
-			return ns.setText(String(text)).getId()
+		try {
+			const destinationNode = elementFrom(ref) as Element
+			const ns = getRecycledSplash(destinationNode) ?? this.createNS()
+			move(ns.getElement() as Element, destinationNode)
+			const parsedText = text ? String(text) : ''
+			return ns.setText(parsedText).getId()
+		} catch (e) {
+			console.error(e)
+			return null
 		}
-		return null
 	}
 
 	/**
@@ -203,8 +190,6 @@ export class Service implements ServiceInterface {
 	 * @inheritdoc
 	 */
 	public hideId(id: GUIDString): GUIDString | null {
-		const ns = this.nsQueue.has(id)
-		if (!ns) return null
 		return this.deleteNS(id) ? id : null
 	}
 
@@ -212,13 +197,14 @@ export class Service implements ServiceInterface {
 	 * @inheritdoc
 	 */
 	public hideInside(ref: Reference): GUIDString | null {
-		const node = elementFrom(ref)
-		if (!node) return null
-		const ns = getRecycledSplash(node)
-		if (!ns) return null
-		const guid = ns.getId()
-		if (!guid) return null
-		return this.deleteNS(guid) ? guid : null
+		try {
+			const ns = getRecycledSplash(elementFrom(ref) as Element)
+			const guid = ns?.getId() ?? ''
+			return this.deleteNS(guid ?? '') ? guid : null
+		} catch (e) {
+			console.error(e)
+			return null
+		}
 	}
 }
 

@@ -59,17 +59,6 @@ export class Splash implements SplashInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public getTextElement(): HTMLDivElement {
-		return (
-			<HTMLDivElement>(
-				this.getElement()?.firstElementChild?.firstElementChild
-			) ?? null
-		)
-	}
-
-	/**
-	 * @inheritdoc
-	 */
 	public getId(): GUIDString | null {
 		return this.id
 	}
@@ -79,6 +68,17 @@ export class Splash implements SplashInterface {
 	 */
 	public getElement(): HTMLDivElement | null {
 		return <HTMLDivElement>this.element
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public getTextElement(): HTMLDivElement {
+		return (
+			<HTMLDivElement>(
+				this.getElement()?.firstElementChild?.firstElementChild
+			) ?? null
+		)
 	}
 
 	/**

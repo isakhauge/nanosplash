@@ -1,5 +1,7 @@
 <script setup>
 import { ref, defineProps } from 'vue'
+import { Service } from '../../../../dist/es/ns'
+Service.start()
 
 const props = defineProps({
 	commands: Array,
