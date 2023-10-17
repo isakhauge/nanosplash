@@ -439,10 +439,10 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-18.14.2.tgz"
   integrity sha512-1uEQxww3DaghA0RxqHx0O0ppVlo43pJhepY51OxuQIKHpjbnYLA7vcdwioNPzIqmC2u3I/dmylcqjlh0e7AyUA==
 
-"@types/node@^20.8.5":
-  version "20.8.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.8.5.tgz#13352ae1f80032171616910e8aba2e3e52e57d96"
-  integrity sha512-SPlobFgbidfIeOYlzXiEjSYeIJiOCthv+9tSQVpvk4PAdIIc+2SmjNVzWXk9t0Y7dl73Zdf+OgXKHX9XtkqUpw==
+"@types/node@^20.8.6":
+  version "20.8.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.8.6.tgz#0dbd4ebcc82ad0128df05d0e6f57e05359ee47fa"
+  integrity sha512-eWO4K2Ji70QzKUqRy6oyJWUeB7+g2cRagT3T/nxYibYcT4y2BDL8lqolRXjTHmkZCdJfIPaY73KbJAZmcryxTQ==
   dependencies:
     undici-types "~5.25.1"
 
@@ -975,7 +975,7 @@ flatted@^3.2.7:
   resolved "https://registry.npmjs.org/flatted/-/flatted-3.2.7.tgz"
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
 
-focus-trap@^7.5.3:
+focus-trap@^7.5.4:
   version "7.5.4"
   resolved "https://registry.yarnpkg.com/focus-trap/-/focus-trap-7.5.4.tgz#6c4e342fe1dae6add9c2aa332a6e7a0bbd495ba2"
   integrity sha512-N7kHdlgsO/v+iD/dMoJKtsSqs5Dz/dXZVebRgJw23LDk+jMi/974zyiOYDziY2JPp8xivq9BmUGwIJMiuSBi7w==
@@ -1617,10 +1617,10 @@ tabbable@^6.2.0:
   resolved "https://registry.yarnpkg.com/tabbable/-/tabbable-6.2.0.tgz#732fb62bc0175cfcec257330be187dcfba1f3b97"
   integrity sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==
 
-terser@^5.21.0:
-  version "5.21.0"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-5.21.0.tgz#d2b27e92b5e56650bc83b6defa00a110f0b124b2"
-  integrity sha512-WtnFKrxu9kaoXuiZFSGrcAvvBqAdmKx0SFNmVNYdJamMu9yyN3I/QF0FbH4QcqJQ+y1CJnzxGIKH0cSj+FGYRw==
+terser@^5.22.0:
+  version "5.22.0"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-5.22.0.tgz#4f18103f84c5c9437aafb7a14918273310a8a49d"
+  integrity sha512-hHZVLgRA2z4NWcN6aS5rQDc+7Dcy58HOf2zbYwmFcQ+ua3h6eEFf5lIDKTzbWwlazPyOZsFQO8V80/IjVNExEw==
   dependencies:
     "@jridgewell/source-map" "^0.3.3"
     acorn "^8.8.2"
@@ -1664,9 +1664,9 @@ totalist@^3.0.0:
   integrity sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==
 
 tough-cookie@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.npmjs.org/tough-cookie/-/tough-cookie-4.1.2.tgz"
-  integrity sha512-G9fqXWoYFZgTc2z8Q5zaHy/vJMjm+WV0AkAeHxVCQiEB1b+dGvWzFW6QV07cY5jQ5gRkeid2qIkzkxUnmoQZUQ==
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-4.1.3.tgz#97b9adb0728b42280aa3d814b6b999b2ff0318bf"
+  integrity sha512-aX/y5pVRkfRnfmuX+OdbSdXvPe6ieKX/G2s7e98f4poJHnqH3281gDPm/metm6E/WRamfx7WC4HUqkWHfQHprw==
   dependencies:
     psl "^1.1.33"
     punycode "^2.1.1"
@@ -1756,10 +1756,10 @@ vite@^4.4.11:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitepress@1.0.0-rc.21:
-  version "1.0.0-rc.21"
-  resolved "https://registry.yarnpkg.com/vitepress/-/vitepress-1.0.0-rc.21.tgz#fbe1a63db86a37729c554048e4df3c606ba0d803"
-  integrity sha512-eHX057NgAqmrj6FIqh7Sqsbk/kftrFMBUpCKjuQIZ+c+bYTbmzXsXrHSbT5b4WWy4vLx1993a+H3wIRy2dHi8g==
+vitepress@1.0.0-rc.22:
+  version "1.0.0-rc.22"
+  resolved "https://registry.yarnpkg.com/vitepress/-/vitepress-1.0.0-rc.22.tgz#9855edc0991a57cf88561e790b0b35ddc447fbf0"
+  integrity sha512-n7le5iikCFgWMuX7sKfzDGJGlrsYQ5trG3S97BghNz2alOTr4Xp+GrB6ShwogUTX9gNgeNmrACjokhW55LNeBA==
   dependencies:
     "@docsearch/css" "^3.5.2"
     "@docsearch/js" "^3.5.2"
@@ -1767,7 +1767,7 @@ vitepress@1.0.0-rc.21:
     "@vue/devtools-api" "^6.5.1"
     "@vueuse/core" "^10.5.0"
     "@vueuse/integrations" "^10.5.0"
-    focus-trap "^7.5.3"
+    focus-trap "^7.5.4"
     mark.js "8.11.1"
     minisearch "^6.1.0"
     shiki "^0.14.5"
