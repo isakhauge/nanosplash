@@ -31,7 +31,8 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
 
-            - uses: oven-sh/setup-bun@v1
+            - name: Install Bun
+              uses: oven-sh/setup-bun@v1
 
             - name: Setup Node.js
               uses: actions/setup-node@v3
@@ -60,6 +61,9 @@ jobs:
 
             - name: Generate Code Coverage (Vitest)
               run: bun run coverage
+
+            - name: Add nojekyll file
+              run: touch docs/.vitepress/dist/.nojekyll
 
             - name: Commit and push changes
               run: |
