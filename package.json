@@ -60,7 +60,7 @@
 		"build:cjs": "tsc && cross-env entry=./src/ts/core/Service.ts format=cjs bun vite build -m production --c vite.config.ts",
 		"build:iife": "tsc && cross-env entry=./src/ts/main.ts format=iife bun vite build -m production --c vite.config.ts",
 		"build:all": "bun build:es && bun build:cjs && bun build:iife",
-		"build:docs": "tsc && cross-env entry=./src/ts/main.ts vite build -m production --c vite.docs.config.ts",
+		"build:docs": "bun docs:build && touch docs/.vitepress/dist/.nojekyll",
 		"preview": "vite preview",
 		"test": "vitest",
 		"test:ui": "vitest --ui",
