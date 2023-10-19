@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
 	title: 'Nanosplash',
 	description: 'The tiny loading screen for web artisans',
-	base: '/nanosplash/',
+	base: '/nanosplash/docs/.vitepress/dist/',
 	themeConfig: {
 		nav: [
 			{ text: 'Home', link: '/' },

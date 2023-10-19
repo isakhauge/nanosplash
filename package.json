@@ -55,7 +55,7 @@
 	},
 	"types": "./src/ts/types/global.d.ts",
 	"scripts": {
-		"build": "bun build:all && bun build:docs && bun docs:build",
+		"build": "bun build:all && bun build:docs",
 		"build:es": "tsc && cross-env entry=./src/ts/core/Service.ts format=es bun vite build -m production --c vite.config.ts",
 		"build:cjs": "tsc && cross-env entry=./src/ts/core/Service.ts format=cjs bun vite build -m production --c vite.config.ts",
 		"build:iife": "tsc && cross-env entry=./src/ts/main.ts format=iife bun vite build -m production --c vite.config.ts",
