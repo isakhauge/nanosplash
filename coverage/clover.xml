@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1697801422350" clover="3.2.0">
-  <project timestamp="1697801422350" name="All files">
+<coverage generated="1697801503272" clover="3.2.0">
+  <project timestamp="1697801503273" name="All files">
     <metrics statements="542" coveredstatements="529" conditionals="80" coveredconditionals="63" methods="43" coveredmethods="43" elements="665" coveredelements="635" complexity="0" loc="542" ncloc="542" packages="1" files="4" classes="4"/>
     <file name="DomUtilities.ts" path="/home/runner/work/nanosplash/nanosplash/src/ts/core/DomUtilities.ts">
       <metrics statements="161" coveredstatements="156" conditionals="23" coveredconditionals="18" methods="10" coveredmethods="10"/>
