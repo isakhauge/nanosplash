@@ -4,7 +4,7 @@
 
 <br>
 
-[![Build](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml/badge.svg?branch=production)](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/nanosplash) [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
+[![Build](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml/badge.svg?branch=production)](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml) ![npm bundle size](https://badgen.net/bundlephobia/minzip/nanosplash)
 
 ## Usage
 
