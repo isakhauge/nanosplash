@@ -1,4 +1,4 @@
-name: Main Github Actions Workflow
+name: Build and Test
 
 on:
     push:
