@@ -5,6 +5,7 @@ export default defineConfig({
 	title: 'Nanosplash',
 	description: 'The tiny loading screen for web artisans',
 	base: '/nanosplash/',
+	appearance: 'dark',
 	themeConfig: {
 		nav: [
 			{ text: 'Home', link: '/' },
