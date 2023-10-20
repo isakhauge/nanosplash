@@ -16,7 +16,7 @@ hero:
 
 features:
     - title: 📦 Tiny
-      details: Only 3KB minified and gzipped.
+      details: Only 1.4KB minified and gzipped.
       link: /api/start/features#small-bundle-size
     - title: 🍼 Simple API
       details: Start using Nanosplash in seconds.
