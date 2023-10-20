@@ -11,12 +11,15 @@ hero:
           text: Get started
           link: /api/start/install.md
         - theme: alt
+          text: Playground
+          link: /api/start/playground.md
+        - theme: alt
           text: API Documentation
           link: /api/doc/show.md
 
 features:
     - title: 📦 Tiny
-      details: Only 1.4KB minified and gzipped.
+      details: Less than 3KB minified and gzipped.
       link: /api/start/features#small-bundle-size
     - title: 🍼 Simple API
       details: Start using Nanosplash in seconds.

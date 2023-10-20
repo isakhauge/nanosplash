@@ -2,7 +2,7 @@
 
 ## Small bundle size
 
-The Nanosplash bundle is merely 1.4KB minified and gzipped and will not add any significant weight to your application what so ever. Go to [Bundlephobia](https://bundlephobia.com/package/nanosplash) to see for yourself.
+The Nanosplash bundle is less than 3KB minified and gzipped and will not add any significant weight to your application what so ever. Go to [Bundlephobia](https://bundlephobia.com/package/nanosplash) to see for yourself.
 
 ## Simple API
 

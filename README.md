@@ -1,7 +1,3 @@
-<script setup>
-import { version } from '../../../../package.json'
-</script>
-
 # Nanosplash
 
 ### The tiny loading screen for web artisans

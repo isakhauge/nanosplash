@@ -71,6 +71,7 @@ $border-radius: 5px
 	border-radius: $border-radius 0 0 $border-radius
 	border: 1px solid rgba(Black, 0.1)
 	cursor: pointer
+	width: 100%
 
 $btn-bg: RoyalBlue
 .exe

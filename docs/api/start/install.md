@@ -1,5 +1,4 @@
 <script setup>
-import { version } from '../../../package.json'
 import Card from '../../.vitepress/theme/vue/Card.vue'
 </script>
 
@@ -9,7 +8,7 @@ Nanosplash can be installed either via CDN or NPM. Installing via CDN is easier 
 
 ## CSS
 
-Since version {{ version }}, CSS is included inside the JS bundle. 🎉
+CSS is included inside the JS bundle. 🎉
 
 ## Install via CDN
 
