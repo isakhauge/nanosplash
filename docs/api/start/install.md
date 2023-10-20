@@ -1,4 +1,5 @@
 <script setup>
+import { version } from '../../../package.json'
 import Card from '../../.vitepress/theme/vue/Card.vue'
 </script>
 
@@ -8,14 +9,14 @@ Nanosplash can be installed either via CDN or NPM. Installing via CDN is easier 
 
 ## CSS
 
-Since version 3.0.4, CSS is included inside the JS bundle. 🎉
+Since version {{ version }}, CSS is included inside the JS bundle. 🎉
 
 ## Install via CDN
 
 Add the following script tag to the `<head>` of your HTML document:
 
 ```html
-<script src="https://unpkg.com/nanosplash@3.0.4/dist/iife/ns.iife.js"></script>
+<script src="https://unpkg.com/nanosplash/dist/iife/ns.iife.js"></script>
 ```
 
 ```html{5}
@@ -23,7 +24,7 @@ Add the following script tag to the `<head>` of your HTML document:
 	<head>
 		<meta charset="UTF-8" />
 		<title>My awesome application 🚀</title>
-		<script src="https://unpkg.com/nanosplash@3.0.4/dist/iife/ns.iife.js"></script>
+		<script src="https://unpkg.com/nanosplash/dist/iife/ns.iife.js"></script>
 	</head>
 	...
 </html>
