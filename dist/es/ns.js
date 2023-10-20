@@ -1,7 +1,7 @@
 var m = Object.defineProperty;
 var v = (s, e, t) => e in s ? m(s, e, { enumerable: !0, configurable: !0, writable: !0, value: t }) : s[e] = t;
 var r = (s, e, t) => (v(s, typeof e != "symbol" ? e + "" : e, t), t);
-const y = "3.0.5", a = class a {
+const y = "3.0.6", a = class a {
   /**
    * # Constructor
    * Creates a new Nanosplash instance.
