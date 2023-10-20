@@ -8,7 +8,7 @@
 
 <br>
 
-> 📣 **New in 3.0.2**
+> 📣 **New in 3.0.3**
 >
 > -   CSS is included inside the ES and CJS bundles 🎉
 > -   The `ns.hide` method will now delete splash screens in a FIFO sequence.
