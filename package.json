@@ -2,7 +2,7 @@
 	"name": "nanosplash",
 	"description": "The tiny loading screen for web artisans",
 	"private": false,
-	"version": "3.0.7",
+	"version": "3.0.8",
 	"type": "module",
 	"author": {
 		"name": "Isak K. Hauge",
