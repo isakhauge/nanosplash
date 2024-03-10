@@ -1,35 +1,66 @@
 <script setup>
-import { ref, defineProps } from 'vue'
-import { Service } from '../../../../dist/es/ns'
-Service.start()
+import { ref } from 'vue'
+import { useNs } from '../../../../dist/es/ns.js'
+const ns = useNs()
 
-const props = defineProps({
-	commands: Array,
-})
+const Commands = {
+	ShowInsideA: 'ns.show("Loading A", "#a")',
+	ShowInsideB: 'ns.show("Loading B", "#b")',
+	ShowInsideC: 'ns.show("Loading C", "#c")',
+	ShowInsideD: 'ns.show("Loading D", "#d")',
+	ShowInsideWrapper: 'ns.show("Loading Wrapper", "#wrapper")',
+	ShowFullScreen: 'ns.show("Loading window")',
+	Hide: 'ns.hide()',
+	HideAll: 'ns.hideAll()',
+	Progress: 'Funny',
+}
 
 const rCommandString = ref('')
 
 const wait = ms => new Promise(r => setTimeout(r, ms))
 
-function onClickExe() {
-	const str = rCommandString.value
-	let executable = null
-	if (str.startsWith('ns.show(')) {
-		const text = /ns\.show\(['"](.+)['"]\)/.exec(str)[1]
-		executable = async () => {
-			const id = eval(str)
-			let ms = 4000
-			while (ms > 0) {
-				await wait(1000)
-				ms -= 1000
-				ns.show(`${text} (${ms / 1000})`)
+async function onClickExe() {
+	const value = rCommandString.value
+	const phrases = [
+		'Making sandwitch ...',
+		'Browsing insurance policies ...',
+		'Watering plants ...',
+		'Downloading music illegally ...',
+	]
+	switch (value) {
+		case Commands.ShowInsideA:
+			ns.show('Loading A', '#a')
+			break
+		case Commands.ShowInsideB:
+			ns.show('Loading B', '#b')
+			break
+		case Commands.ShowInsideC:
+			ns.show('Loading C', '#c')
+			break
+		case Commands.ShowInsideD:
+			ns.show('Loading D', '#d')
+			break
+		case Commands.ShowInsideWrapper:
+			ns.show('Loading Wrapper', '#wrapper')
+			break
+		case Commands.ShowFullScreen:
+			const id = ns.show('Loading window')
+			await wait(4000)
+			ns.hide(id)
+			break
+		case Commands.Hide:
+			ns.hide()
+			break
+		case Commands.HideAll:
+			ns.hideAll()
+			break
+		case Commands.Progress:
+			for (const phrase of phrases) {
+				ns.show(phrase)
+				await wait(2000)
 			}
-			ns.hideId(id)
-		}
-	} else {
-		executable = new Function(rCommandString.value)
+			ns.hideAll()
 	}
-	executable()
 }
 </script>
 
@@ -37,11 +68,7 @@ function onClickExe() {
 	<div class="container">
 		<select class="select" v-model="rCommandString">
 			<option value="" selected disabled>Click and select</option>
-			<option
-				v-for="(command, i) in props.commands"
-				:key="i"
-				:value="command"
-			>
+			<option v-for="(command, i) in Commands" :key="i" :value="command">
 				{{ command }}
 			</option>
 		</select>

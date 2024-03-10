@@ -1,9 +1,3 @@
 // @ts-strict
-
-import { Service } from './core/Service'
-
-try {
-	Service.start()
-} catch (e) {
-	console.warn(e)
-}
+import { useNs } from './Nanosplash'
+useNs() // Attach API to global scope (Window)
