@@ -17,5 +17,5 @@
 ns.show('Loading')
 
 // Splash screen inside a DOM element
-ns.showInside('#my-div', 'Loading')
+ns.show('Loading', '#my-div')
 ```

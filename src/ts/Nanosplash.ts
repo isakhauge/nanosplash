@@ -7,6 +7,7 @@ import {
 	NSElement,
 	ScopedSelectors,
 } from './types/Types'
+import { version } from '../../package.json'
 
 const StyleID: string = 'nscss'
 
@@ -213,5 +214,6 @@ export const useNs = (): NanosplashInterface => {
 		show,
 		hide,
 		hideAll,
+		version,
 	}))
 }

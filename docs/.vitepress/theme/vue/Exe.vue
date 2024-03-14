@@ -10,9 +10,9 @@ const Commands = {
 	ShowInsideD: 'ns.show("Loading D", "#d")',
 	ShowInsideWrapper: 'ns.show("Loading Wrapper", "#wrapper")',
 	ShowFullScreen: 'ns.show("Loading window")',
+	Progress: 'Progressive Demo',
 	Hide: 'ns.hide()',
 	HideAll: 'ns.hideAll()',
-	Progress: 'Funny',
 }
 
 const rCommandString = ref('')
@@ -22,10 +22,13 @@ const wait = ms => new Promise(r => setTimeout(r, ms))
 async function onClickExe() {
 	const value = rCommandString.value
 	const phrases = [
-		'Making sandwitch ...',
-		'Browsing insurance policies ...',
-		'Watering plants ...',
-		'Downloading music illegally ...',
+		'Generating witty dialog',
+		'Swapping time and space',
+		'sudo rm -rf /**/*',
+		'Tokenizing real life',
+		'Pushing pixels',
+		"Don't think of purple hippos",
+		'One mississippi, two mississippi...',
 	]
 	switch (value) {
 		case Commands.ShowInsideA:
@@ -57,7 +60,7 @@ async function onClickExe() {
 		case Commands.Progress:
 			for (const phrase of phrases) {
 				ns.show(phrase)
-				await wait(2000)
+				await wait(1500)
 			}
 			ns.hideAll()
 	}

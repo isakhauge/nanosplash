@@ -2,42 +2,41 @@
 
 ## Show
 
-This method displays a fullscreen loading screen and returns a GUID string.
+This function display NS in fullscreen and returns the internal ID.
 
 ```ts
-ns.show(text?: string): GUIDString
+ns.show(text?: string): number
 ```
 
 If you enter no text, it will display the spinning wheel only.
 
 ```js
-ns.show()
+ns.show(): number
 ```
 
 If you enter text, it will display the spinning wheel adjacent to the text.
 
 ```js
-ns.show('Loading')
+ns.show('Loading'): number
 ```
 
 ## Show inside
 
-This method displays a loading screen inside an element and returns a GUID
-string. The `Reference` type is a union type of `string | Element`. A reference
-can be both a CSS selector `string` or an `Element`.
+This function display NS inside another element and returns the internal ID,
+or `null` if the reference argument does not match any node inside the DOM.
 
 ```ts
-ns.showInside(ref: Reference, text?: string): GUIDString | null
+ns.show(text?: string, ref?: Element | string): number | null
 ```
 
 ```js
-// CSS selector
-const selector = '#my-table'
-ns.showInside(selector, 'Loading')
+// DOM selector
+const selector: string = '#my-table'
+ns.showInside('Loading', selector)
 
 // Element
-const element = document.getElementById('my-table')
-ns.showInside(element, 'Loading')
+const element: HTMLElement = document.getElementById('my-table')
+ns.showInside('Loading', element)
 ```
 
 ::: tip
