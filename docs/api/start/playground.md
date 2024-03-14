@@ -6,6 +6,6 @@ import PlayGround from '../../.vitepress/theme/vue/PlayGround.vue'
 
 Here you can play around with Nanosplash and see how it works.
 
-<PlayGround></PlayGround>
+<PlayGround />
 
 Select a method from the dropdown menu above and click "Run" to see it in action.

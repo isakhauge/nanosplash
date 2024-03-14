@@ -45,9 +45,11 @@ yarn add nanosplash
 
 To import and start the Nanosplash service in your application, you need to import the Service class and start it.
 
-```js{2}
-import { Service } from 'nanosplash'
-Service.start()
+```js{2,3}
+import { useNs } from 'nanosplash'
+const ns = useNs()
+ns.show('It works!')
 ```
 
-The service will inject an instance of itself inside the global `window` object. You can now start using Nanosplash by simply calling `ns.show`.
+The hook will inject the Nanosplash API inside the global `window` object.
+You can now start using Nanosplash by simply calling `ns.show`.

@@ -142,16 +142,117 @@
 }
 
 .vp-doc [class*='language-'] .has-highlighted-lines .line {
-	transition: filter 0.35s, opacity 0.35s;
+	transition:
+		filter 0.35s,
+		opacity 0.35s;
 }
-.vp-doc [class*='language-'] .has-highlighted-lines .line:not(.highlighted) {
+.vp-doc code:has(.highlighted) .line:not(.highlighted) {
 	filter: blur(1px);
 	opacity: 0.5;
+	transition: all 0.3s ease;
 }
-.vp-doc
-	[class*='language-']
-	.has-highlighted-lines:hover
-	.line:not(.highlighted) {
+.vp-doc code:has(.highlighted):hover .line:not(.highlighted) {
 	filter: blur(0);
 	opacity: 1;
+	transition: all 0.3s ease;
+}
+
+:root {
+	--ns-doc-glass-border: 1px solid rgba(130, 130, 130, 0.2);
+}
+
+header {
+	backdrop-filter: blur(10px) !important;
+	-webkit-backdrop-filter: blur(10px) !important;
+	border-top: var(--ns-doc-glass-border);
+	border-bottom: var(--ns-doc-glass-border);
+}
+
+.mac.dark header {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mac:not(.dark) header {
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+.VPNavBar {
+	background-color: transparent !important;
+	border-bottom: 0 !important;
+}
+
+.VPNavBar .content-body {
+	background-color: transparent !important;
+	border-bottom: 0 !important;
+}
+
+/* Remove header divider */
+.VPNavBar > .divider {
+	opacity: 0;
+}
+
+.VPNavBarTitle {
+	background: var(--vp-home-hero-name-background);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: var(--vp-home-hero-name-color);
+}
+
+.VPNavBarTitle .title {
+	border: 0 !important;
+}
+
+.DocSearch-Button {
+	background-color: rgba(255, 255, 255, 0.05);
+	border: var(--ns-doc-glass-border);
+}
+
+.VPButton {
+	border-radius: 8px !important;
+}
+
+.VPFeature {
+	background-color: transparent !important;
+	box-shadow:
+		0 -8px 32px rgba(0, 81, 255, 0.1),
+		0 8px 32px rgba(251, 0, 255, 0.1);
+}
+
+/* Remove footer border */
+.VPFooter {
+	border-top: 0 !important;
+}
+
+/* Center footer credits */
+.VPFooter .container {
+	justify-content: center;
+}
+
+.VPLocalSearchBox .backdrop {
+	background-color: transparent !important;
+	backdrop-filter: blur(10px) !important;
+	-webkit-backdrop-filter: blur(10px) !important;
+}
+
+.VPButton {
+	border: var(--ns-doc-glass-border) !important;
+	background-color: transparent !important;
+	/* box-shadow:
+		0 2px 4px rgba(0, 0, 0, 0.025),
+		0 4px 8px rgba(0, 0, 0, 0.025),
+		0 8px 16px rgba(0, 0, 0, 0.025); */
+}
+
+.VPButton.brand {
+	background-color: #222 !important;
+}
+
+.VPLocalSearchBox .shell {
+	box-shadow:
+		0 0 2px 1px #0000000d,
+		0 4px 8px rgba(0, 0, 0, 0.05),
+		0 8px 16px rgba(0, 0, 0, 0.05),
+		0 16px 32px rgba(0, 0, 0, 0.05),
+		0 32px 64px rgba(0, 0, 0, 0.05),
+		0 64px 128px rgba(0, 0, 0, 0.05);
 }

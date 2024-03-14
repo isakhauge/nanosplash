@@ -1,14 +1,14 @@
-import NS from '../core/Service'
-import { ServiceInterface } from '../core/ServiceInterface'
+import { NanosplashInterface } from './NanosplashInterface'
 
-export class Service extends NS.Service {}
+interface IWindow {
+	ns: NanosplashInterface
+}
 
 declare global {
-	export const ns: ServiceInterface
-	export interface Window {
-		ns: ServiceInterface
-	}
-	export interface window {
-		ns: ServiceInterface
+	interface Window extends IWindow {}
+	interface window extends IWindow {}
+	interface globalThis extends globalThis {
+		Window: IWindow
+		window: IWindow
 	}
 }

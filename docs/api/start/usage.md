@@ -1,6 +1,6 @@
 # Usage
 
-```js{2,5,8,11,14,18,21}
+```js{2,5,8,11,15,18}
 // Fullscreen spinning wheel
 ns.show()
 
@@ -8,13 +8,10 @@ ns.show()
 ns.show('Loading')
 
 // Display inside an element
-ns.showInside('#my-table', 'Fetching data')
+ns.show('Fetching data', '#my-table')
 
 // Hide the first created loading screen (FIFO)
 ns.hide()
-
-// Hide loading screen inside an element
-ns.hideInside('#my-table')
 
 // Hide specific loading screen
 const id = ns.show('Loading')
