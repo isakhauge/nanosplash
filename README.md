@@ -12,10 +12,52 @@
 
 ## Usage
 
-```js
-// Fullscreen splash screen
-ns.show('Loading')
+### Show
 
-// Splash screen inside a DOM element
-ns.show('Loading', '#my-div')
+#### Spinner only
+
+Fullscreen Nanosplash with spinner only.
+
+```js
+ns.show()
+```
+
+Nanosplash inside the given element with spinner only.
+
+```js
+ns.show(null, '#my-div')
+```
+
+#### Text and spinner
+
+Fullscreen Nanosplash with text and spinner.
+
+```js
+ns.show('Hi')
+```
+
+Nanosplash inside the given element with text and spinner.
+
+```js
+ns.show('Hi', '#my-div')
+```
+
+### Hide
+
+#### Agnostic (FIFO)
+
+```js
+ns.hide()
+```
+
+#### Specific
+
+```js
+ns.hide(id)
+```
+
+#### All
+
+```js
+ns.hide('*')
 ```
