@@ -46,17 +46,23 @@ ns.show('Hi', '#my-div')
 
 #### Agnostic (FIFO)
 
+Remove the oldest Nanosplash residing inside the window body.
+
 ```js
 ns.hide()
 ```
 
 #### Specific
 
+Remove a specific Nanosplash by its ID.
+
 ```js
 ns.hide(id)
 ```
 
 #### All
+
+Remove all Nanosplashes.
 
 ```js
 ns.hide('*')
