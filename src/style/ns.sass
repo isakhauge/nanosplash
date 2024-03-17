@@ -1,9 +1,9 @@
 // Spinner animations:
-@keyframes ns-rotate
+@keyframes nsRotate
 	100%
 		transform: rotate(360deg)
 
-@keyframes ns-dash
+@keyframes nsDash
 	0%
 		stroke-dasharray: 1, 150
 		stroke-dashoffset: 0
@@ -14,13 +14,13 @@
 		stroke-dasharray: 90, 150
 		stroke-dashoffset: -124
 
-@keyframes ns-fade
+@keyframes nsFade
 	from
 		opacity: 0
 	to
 		opacity: 1
 
-@keyframes ns-ascend
+@keyframes nsAscend
 	from
 		opacity: 0
 		transform: translateY(13px)
@@ -85,12 +85,8 @@ body.nsh
 	@extend %flex-center-xy
 	position: absolute
 	z-index: calc(var(--zIdx) + 2)
-	animation: ns-fade 2s
-
-// Nanosplash container
-.nsc
-	@extend %flex-center-xy
-	filter: drop-shadow(0 0 0.07rem #{ rgba(Black, 0.25) })
+	animation: nsFade 2s
+	gap: var(--relSize)
 
 // Nanosplash text
 .nst
@@ -98,23 +94,22 @@ body.nsh
 	font-size: var(--size)
 	font-family: var(--font)
 	font-weight: var(--weight)
-	font-optical-sizing: auto
 	max-width: 80dvw
 	white-space: nowrap
 	text-overflow: ellipsis
 	overflow: hidden
-	margin-right: var(--relSize)
 	text-shadow: 0 0 0.06rem #{ rgba(DarkSlateGray, .25) }
-	animation: ns-ascend 500ms
+	filter: drop-shadow(0 0 0.07rem #{ rgba(Black, 0.25) })
+	animation: nsAscend 0.5s
 
 // Nanosplash spinner
 .nss
 	display: block
 	width: var(--relSize)
 	height: var(--relSize)
-	animation: ns-ascend 500ms
+	animation: nsAscend 0.5s
 	& > svg
-		animation: ns-rotate 2s linear infinite
+		animation: nsRotate 2s linear infinite
 		position: relative
 		width: inherit
 		height: inherit
@@ -122,4 +117,4 @@ body.nsh
 	& .path
 		stroke: var(--color)
 		stroke-linecap: round
-		animation: ns-dash 1.5s ease-in-out infinite
+		animation: nsDash 1.5s ease-in-out infinite

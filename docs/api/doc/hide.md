@@ -36,7 +36,7 @@ used to hide a specific Nanosplash at a later time.
 
 ```js
 const id = ns.show('Loading')
-ns.hideId(id)
+ns.hide(id)
 ```
 
 ## Hide all
@@ -44,5 +44,5 @@ ns.hideId(id)
 Hides all Nanosplashes in the `window`.
 
 ```ts
-ns.hideAll(): void
+ns.hide('*'): void
 ```

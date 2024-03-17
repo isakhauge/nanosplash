@@ -32,11 +32,11 @@ ns.show(text?: string, ref?: Element | string): number | null
 ```js
 // DOM selector
 const selector: string = '#my-table'
-ns.showInside('Loading', selector)
+ns.show('Loading', selector)
 
 // Element
 const element: HTMLElement = document.getElementById('my-table')
-ns.showInside('Loading', element)
+ns.show('Loading', element)
 ```
 
 ::: tip

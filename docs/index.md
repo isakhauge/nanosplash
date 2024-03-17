@@ -18,16 +18,16 @@ hero:
       link: /api/doc/show.md
 
 features:
-  - title: 📦 Tiny
+  - title: ✨ Tiny
     details: Less than 2KB minified and gzipped.
     link: /api/start/features#small-bundle-size
-  - title: 🍼 Simple API
+  - title: ✌️ 2 Function API
     details: Start using Nanosplash in seconds.
     link: /api/start/features#simple-api
-  - title: 🧚 Spawning
+  - title: 🪴 Spawning
     details: Spawn a splash element anywhere in your DOM.
     link: /api/start/features#spawning
-  - title: ♻️ Element recycling
+  - title: 🚀 Node recycling
     details: Nanosplash will recycle existing elements.
     link: /api/start/features#element-recycling
 ---

@@ -30,6 +30,10 @@ export default defineConfig({
 						text: 'Playground',
 						link: '/api/start/playground',
 					},
+					{
+						text: 'Customize',
+						link: '/api/start/customize',
+					},
 				],
 			},
 			{
@@ -68,7 +72,7 @@ export default defineConfig({
 
 		footer: {
 			message:
-				'Made with 🤍 by <a href="https://twitter.com/isakhauge">Isak Hauge</a>',
+				'Made with 💖 by <a href="https://twitter.com/isakhauge">Isak Hauge</a>',
 		},
 	},
 })

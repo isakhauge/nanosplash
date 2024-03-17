@@ -1,15 +1,17 @@
 import { describe, it, test, expect, beforeEach } from 'vitest'
 import { useNs } from '../src/ts/Nanosplash'
 import { JSDOM } from 'jsdom'
+import { NanosplashInterface } from '../src/ts/types/NanosplashInterface'
 
-let ns
+let document: Document | null = null
+let ns: NanosplashInterface | null = null
 
 beforeEach(() => {
 	const dom = new JSDOM()
 	// @ts-ignore
 	globalThis.window = dom.window
-	globalThis.document = window.document
-	globalThis.window.ns = ns = useNs()
+	document = globalThis.document = dom.window.document
+	ns = globalThis.window.ns = useNs()
 })
 
 describe('Nanosplash API', () => {
@@ -23,10 +25,6 @@ describe('Nanosplash API', () => {
 
 	it('should have the "hide" method', () => {
 		expect(window.ns.hide).toBeDefined()
-	})
-
-	it('should have the "hideAll" method', () => {
-		expect(window.ns.hideAll).toBeDefined()
 	})
 
 	it('should have the global instance', () => {

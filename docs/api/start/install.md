@@ -12,20 +12,22 @@ CSS is included inside the JS bundle. 🎉
 
 ## Install via CDN
 
-Add the following script tag to the `<head>` of your HTML document:
+Add the following script tag inside of the `<body>` tag:
 
 ```html
 <script src="https://unpkg.com/nanosplash/dist/iife/ns.iife.js"></script>
 ```
 
-```html{5}
+```html{7}
 <html>
 	<head>
 		<meta charset="UTF-8" />
 		<title>My awesome application 🚀</title>
-		<script src="https://unpkg.com/nanosplash/dist/iife/ns.iife.js"></script>
 	</head>
-	...
+	<body>
+		<script src="https://unpkg.com/nanosplash/dist/iife/ns.iife.js"></script>
+		...
+	</body>
 </html>
 ```
 

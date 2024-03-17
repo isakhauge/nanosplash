@@ -15,8 +15,8 @@ ns.hide()
 
 // Hide specific loading screen
 const id = ns.show('Loading')
-ns.hideId(id)
+ns.hide(id)
 
 // Hide all loading screens
-ns.hideAll()
+ns.hide('*')
 ```

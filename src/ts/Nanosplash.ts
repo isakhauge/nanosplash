@@ -10,20 +10,20 @@ import {
 import { version } from '../../package.json'
 
 const StyleID: string = 'nscss'
+const b = () => document.body
 
 /**
- *
+ * # Scope
+ * Creates scoped selectors.
  * @param node Node to query.
  * @returns An object containing two, slightly different functions that
  * retrieves elements from the DOM.
  */
-const scope = (node: ParentNode): ScopedSelectors => {
-	const all = (ref: string) => Array.from(node.querySelectorAll(ref))
-	return {
+const scope = (node: ParentNode): ScopedSelectors =>
+	(all => ({
 		all,
 		first: (ref: string) => all(ref)[0] ?? null,
-	}
-}
+	}))((ref: string) => Array.from(node.querySelectorAll(ref)))
 
 /**
  * # Get all
@@ -52,12 +52,8 @@ const getAllNS = (): NSElement[] => getAll('.ns') as NSElement[]
  * @param ref Element reference which could be a selector or an Element.
  * @returns The Element node or null.
  */
-const parseRef = (ref: ElementReference): Element => {
-	if (ref instanceof Element) return ref
-	const element = get(ref)
-	if (!element) throw new Error(`Selector (${ref}) returned null`)
-	return element
-}
+const parseRef = (ref: ElementReference): Element | null =>
+	ref instanceof Element ? ref : get(ref)
 
 /**
  * # Div
@@ -69,7 +65,7 @@ const div = (
 	className?: string,
 	...children: (Node | string)[]
 ): HTMLDivElement => {
-	const el = document.createElement('div')
+	const el: HTMLDivElement = document.createElement('div')
 	if (className) el.classList.add(className)
 	el.append(...children)
 	return el
@@ -88,13 +84,12 @@ const parse = (html: string): Node => {
 
 /**
  * # Create NS
- * TODO: Investigate the possibility of inheritence.
  * @returns Nanpslash DOM element.
  */
 const createNS = (): NSElement => {
 	const circle: string = '<circle class=path cx=25 cy=25 r=20 fill=none />'
 	const svg = parse(`<svg viewBox="0 0 50 50">${circle}</svg>`) as Element
-	const el = div('ns', div('nsc', div('nst'), div('nss', svg))) as NSElement
+	const el = div('ns', div('nst'), div('nss', svg)) as NSElement
 	el.nsId = Date.now()
 	return el
 }
@@ -123,8 +118,7 @@ const setNSText = (ns: NSElement, text: string): void => {
 	if (oldNst) {
 		oldNst.replaceWith(newNst)
 	} else {
-		const nsc = nsScope.first('.nsc') as Element
-		nsc.insertBefore(newNst, nsc.firstChild)
+		ns.insertBefore(newNst, ns.firstChild)
 	}
 }
 
@@ -150,9 +144,11 @@ const setNSParent = (ns: NSElement, parent: Element): void => {
  * @returns The ID if the NS element — which is a UTC integer.
  */
 const show = (text?: string, inside?: string | Element): number | null => {
-	const parent: Element = inside ? parseRef(inside) : document.body
+	const parent: Element | null = (
+		inside ? parseRef(inside) : b
+	) as Element | null
 	let ns: NSElement
-	const recycledNs = scope(parent).first('& > .ns')
+	const recycledNs = scope(parent ?? b()).first('& > .ns')
 	if (recycledNs) {
 		ns = recycledNs as NSElement
 	} else {
@@ -161,7 +157,7 @@ const show = (text?: string, inside?: string | Element): number | null => {
 	}
 	setNSText(ns, text ?? '')
 	const top: string = window.scrollY + 'px'
-	window.document.body.style.setProperty('--ns-top', top)
+	b().style.setProperty('--ns-top', top)
 	return ns.nsId
 }
 
@@ -183,37 +179,31 @@ const findNS = (id: number) => getAllNS().find(v => v.nsId === id) ?? null
 
 /**
  * # Hide
- * @param id Optional ID of a Nanosplash element.
+ * Hide agnostically in FIFO order, specifically by ID, or all by the asterisk
+ * which will delete all Nanosplashes.
+ * @param id Optional ID of a Nanosplash element or '*' .
  */
-const hide = (id?: number): void => {
-	const ns: NSElement | null = id ? findNS(id) : peek()
-	deleteNS(ns)
+const hide = (id?: number | '*'): void => {
+	if (id === '*') getAll('.ns').forEach(deleteNS)
+	else deleteNS(typeof id === 'number' ? findNS(id) : peek())
 }
-
-/**
- * # Hide All
- */
-const hideAll = (): void => getAll('.ns').forEach(deleteNS)
 
 /**
  * # Add style
  */
 const addStyle = (): void => {
 	get('#nscss')?.remove()
-	const html: string = `<style id=${StyleID}>${style}</style>`
-	document.body.append(parse(html))
+	b().append(parse(`<style id=${StyleID}>${style}</style>`))
 }
 
 /**
  * # Use NS
  * @returns Nanosplash API.
  */
-export const useNs = (): NanosplashInterface => {
-	addStyle()
-	return (window.ns = Object.freeze({
+export const useNs = (): NanosplashInterface =>
+	!!new Promise(addStyle) &&
+	(window.ns = {
 		show,
 		hide,
-		hideAll,
-		version,
-	}))
-}
+		version: version,
+	})

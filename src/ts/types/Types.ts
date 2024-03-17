@@ -1,6 +1,7 @@
 import { NanosplashInterface } from './NanosplashInterface'
 
-export type UTCInteger = number
+export type Integer = number
+export type UTCInteger = Integer
 export type DOMSelector = string
 export type ElementReference = DOMSelector | Element
 

@@ -12,7 +12,7 @@ const Commands = {
 	ShowFullScreen: 'ns.show("Loading window")',
 	Progress: 'Progressive Demo',
 	Hide: 'ns.hide()',
-	HideAll: 'ns.hideAll()',
+	HideAll: 'ns.hide("*")',
 }
 
 const rCommandString = ref('')
@@ -55,14 +55,14 @@ async function onClickExe() {
 			ns.hide()
 			break
 		case Commands.HideAll:
-			ns.hideAll()
+			ns.hide('*')
 			break
 		case Commands.Progress:
 			for (const phrase of phrases) {
 				ns.show(phrase)
 				await wait(1500)
 			}
-			ns.hideAll()
+			ns.hide('*')
 	}
 }
 </script>
