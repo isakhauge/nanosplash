@@ -36,16 +36,16 @@ jobs:
         uses: actions/configure-pages@v3
 
       - name: Install dependencies
-        run: bun install
+        run: pnpm install
 
       - name: Build (Vite)
-        run: bun run build
+        run: pnpm build
 
       - name: Test (Vitest)
-        run: bun run test
+        run: pnpm test
 
       - name: Generate Code Coverage (Vitest)
-        run: bun run coverage
+        run: pnpm coverage
 
       - name: Commit and push changes
         run: |
