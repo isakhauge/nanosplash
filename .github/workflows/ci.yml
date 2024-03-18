@@ -1,54 +1,56 @@
 name: Build and Test
 
 on:
-    push:
-        branches:
-            - production
-    pull_request:
-        branches:
-            - production
+  push:
+    branches:
+      - production
+  pull_request:
+    branches:
+      - production
 
 jobs:
-    build-and-test:
-        runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-            - name: Install Bun
-              uses: oven-sh/setup-bun@v1
+      - name: Install PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 20
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
 
-            - name: Set up Git and update production branch
-              run: |
-                  git config --global user.name "GitHub Actions"
-                  git config --global user.email "actions@github.com"
-                  git checkout production
-                  git fetch
-                  git pull --no-rebase
+      - name: Set up Git and update production branch
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git fetch
+          git checkout production
+          git pull --no-rebase
 
-            - name: Setup Pages
-              uses: actions/configure-pages@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
 
-            - name: Install dependencies
-              run: bun install
+      - name: Install dependencies
+        run: pnpm install
 
-            - name: Build (Vite)
-              run: bun run build
+      - name: Build (Vite)
+        run: pnpm build
 
-            - name: Test (Vitest)
-              run: bun run test
+      - name: Test (Vitest)
+        run: pnpm test
 
-            - name: Generate Code Coverage (Vitest)
-              run: bun run coverage
+      - name: Generate Code Coverage (Vitest)
+        run: pnpm coverage
 
-            - name: Commit and push changes
-              run: |
-                  git add .
-                  git commit --allow-empty -m "Build, test, and coverage report"
-                  git push
+      - name: Commit and push changes
+        run: |
+          git add .
+          git commit --allow-empty -m "Build, test, and coverage report"
+          git push
