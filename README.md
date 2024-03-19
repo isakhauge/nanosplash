@@ -6,11 +6,11 @@
 
 [![Build](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml/badge.svg?branch=production)](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml)
 
-## Documentation
+## 💖 Documentation
 
 [isakhauge.github.io/nanosplash/](https://isakhauge.github.io/nanosplash/)
 
-## Usage
+## 🚀 Usage
 
 ### Show
 
@@ -67,3 +67,23 @@ Remove all Nanosplashes.
 ```js
 ns.hide('*')
 ```
+
+## 🦄 Customization
+
+You can easily make Nanosplash look the way you want.
+
+```scss
+// Backdrop selector
+.nsh::before
+
+// Main wrapper selector
+.ns
+
+// Text selector
+.nst
+
+// Spinner selector
+.nss
+```
+
+Read more here: [Customization](https://isakhauge.github.io/nanosplash/api/start/customize.html)

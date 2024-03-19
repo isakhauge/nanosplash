@@ -1,6 +1,6 @@
 # Customize
 
-Stying Nanosplash to your needs is easy!
+Styling Nanosplash to your needs is easy!
 
 ```css
 /* Backdrop */
