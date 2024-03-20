@@ -38,7 +38,7 @@ jobs:
         uses: actions/configure-pages@v3
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build (Vite)
         run: pnpm build
