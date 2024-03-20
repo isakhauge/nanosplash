@@ -10,7 +10,7 @@ const b = '@keyframes nsRotate{to{transform:rotate(360deg)}}@keyframes nsDash{0%
 }, g = () => {
   const s = v('<svg viewBox="0 0 50 50"><circle class=path cx=25 cy=25 r=20 fill=none /></svg>'), t = n("ns", n("nst"), n("nss", s));
   return t.nsId = Date.now(), t;
-}, w = () => p().sort((e, s) => e.nsId - s.nsId)[0] ?? null, k = (e, s) => {
+}, k = () => p().sort((e, s) => e.nsId - s.nsId)[0] ?? null, w = (e, s) => {
   const t = a(e).first(".nst");
   if (!s)
     return t == null ? void 0 : t.remove();
@@ -23,18 +23,18 @@ const b = '@keyframes nsRotate{to{transform:rotate(360deg)}}@keyframes nsDash{0%
   const t = s ? u(s) : r;
   let o;
   const c = a(t ?? r).first("& > .ns");
-  c ? o = c : (o = g(), x(o, t)), k(o, e ?? "");
+  c ? o = c : (o = g(), x(o, t)), w(o, e ?? "");
   const y = scrollY + "px";
   return r.style.setProperty("--ns-top", y), o.nsId;
 }, d = (e) => {
   var s;
   (s = e == null ? void 0 : e.parentElement) == null || s.classList.remove("nsh"), e == null || e.remove();
 }, I = (e) => p().find((s) => s.nsId === e) ?? null, A = (e) => {
-  e === "*" ? f(".ns").forEach(d) : d(typeof e == "number" ? I(e) : w());
+  e === "*" ? f(".ns").forEach(d) : d(typeof e == "number" ? I(e) : k());
 }, N = () => {
   var e;
   (e = h("#" + l)) == null || e.remove(), r.append(v(`<style id=${l}>${b}</style>`));
-}, S = () => (N(), window.ns = {
+}, S = () => (N(), {
   show: z,
   hide: A,
   version: m

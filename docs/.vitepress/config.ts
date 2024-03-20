@@ -10,7 +10,6 @@ export default defineConfig({
 		nav: [
 			{ text: 'Home', link: '/' },
 			{ text: 'Get started', link: '/api/start/install' },
-			{ text: 'Playground', link: '/api/start/playground' },
 			{ text: 'API documentation', link: '/api/doc/show' },
 		],
 
@@ -25,10 +24,6 @@ export default defineConfig({
 					{
 						text: 'Usage',
 						link: '/api/start/usage',
-					},
-					{
-						text: 'Playground',
-						link: '/api/start/playground',
 					},
 					{
 						text: 'Customize',

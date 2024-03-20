@@ -11,9 +11,6 @@ hero:
       text: Get started
       link: /api/start/install.md
     - theme: alt
-      text: Playground
-      link: /api/start/playground.md
-    - theme: alt
       text: API Documentation
       link: /api/doc/show.md
 

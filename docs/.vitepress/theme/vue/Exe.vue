@@ -1,74 +1,68 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
-onMounted(async () => {
-	if (!window) return
-	const nsLib = await import('../../../../dist/es/ns.js')
-	const ns = nsLib.useNs()
+const Commands = {
+	ShowInsideA: 'ns.show("Loading A", "#a")',
+	ShowInsideB: 'ns.show("Loading B", "#b")',
+	ShowInsideC: 'ns.show("Loading C", "#c")',
+	ShowInsideD: 'ns.show("Loading D", "#d")',
+	ShowInsideWrapper: 'ns.show("Loading Wrapper", "#wrapper")',
+	ShowFullScreen: 'ns.show("Loading window")',
+	Progress: 'Progressive Demo',
+	Hide: 'ns.hide()',
+	HideAll: 'ns.hide("*")',
+}
 
-	const Commands = {
-		ShowInsideA: 'ns.show("Loading A", "#a")',
-		ShowInsideB: 'ns.show("Loading B", "#b")',
-		ShowInsideC: 'ns.show("Loading C", "#c")',
-		ShowInsideD: 'ns.show("Loading D", "#d")',
-		ShowInsideWrapper: 'ns.show("Loading Wrapper", "#wrapper")',
-		ShowFullScreen: 'ns.show("Loading window")',
-		Progress: 'Progressive Demo',
-		Hide: 'ns.hide()',
-		HideAll: 'ns.hide("*")',
+const rCommandString = ref('')
+
+const wait = ms => new Promise(r => setTimeout(r, ms))
+
+async function onClickExe() {
+	const value = rCommandString.value
+	const phrases = [
+		'Generating witty dialog',
+		'Swapping time and space',
+		'sudo rm -rf /**/*',
+		'Tokenizing real life',
+		'Pushing pixels',
+		"Don't think of purple hippos",
+		'One mississippi, two mississippi...',
+	]
+	switch (value) {
+		case Commands.ShowInsideA:
+			ns.show('Loading A', '#a')
+			break
+		case Commands.ShowInsideB:
+			ns.show('Loading B', '#b')
+			break
+		case Commands.ShowInsideC:
+			ns.show('Loading C', '#c')
+			break
+		case Commands.ShowInsideD:
+			ns.show('Loading D', '#d')
+			break
+		case Commands.ShowInsideWrapper:
+			ns.show('Loading Wrapper', '#wrapper')
+			break
+		case Commands.ShowFullScreen:
+			const id = ns.show('Loading window')
+			await wait(4000)
+			ns.hide(id)
+			break
+		case Commands.Hide:
+			ns.hide()
+			break
+		case Commands.HideAll:
+			ns.hide('*')
+			break
+		case Commands.Progress:
+			for (const phrase of phrases) {
+				ns.show(phrase)
+				await wait(1500)
+			}
+			ns.hide('*')
 	}
-
-	const rCommandString = ref('')
-
-	const wait = ms => new Promise(r => setTimeout(r, ms))
-
-	async function onClickExe() {
-		const value = rCommandString.value
-		const phrases = [
-			'Generating witty dialog',
-			'Swapping time and space',
-			'sudo rm -rf /**/*',
-			'Tokenizing real life',
-			'Pushing pixels',
-			"Don't think of purple hippos",
-			'One mississippi, two mississippi...',
-		]
-		switch (value) {
-			case Commands.ShowInsideA:
-				ns.show('Loading A', '#a')
-				break
-			case Commands.ShowInsideB:
-				ns.show('Loading B', '#b')
-				break
-			case Commands.ShowInsideC:
-				ns.show('Loading C', '#c')
-				break
-			case Commands.ShowInsideD:
-				ns.show('Loading D', '#d')
-				break
-			case Commands.ShowInsideWrapper:
-				ns.show('Loading Wrapper', '#wrapper')
-				break
-			case Commands.ShowFullScreen:
-				const id = ns.show('Loading window')
-				await wait(4000)
-				ns.hide(id)
-				break
-			case Commands.Hide:
-				ns.hide()
-				break
-			case Commands.HideAll:
-				ns.hide('*')
-				break
-			case Commands.Progress:
-				for (const phrase of phrases) {
-					ns.show(phrase)
-					await wait(1500)
-				}
-				ns.hide('*')
-		}
-	}
-})
+}
 </script>
 
 <template>

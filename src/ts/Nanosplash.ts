@@ -201,9 +201,9 @@ const addCssToBody = (): void => {
  */
 export const useNs = (): NanosplashInterface => {
 	addCssToBody()
-	return (window.ns = {
+	return {
 		show,
 		hide,
 		version,
-	})
+	}
 }
