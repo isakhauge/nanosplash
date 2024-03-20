@@ -6,10 +6,14 @@ export default defineConfig({
 	description: 'The tiny loading screen for web artisans',
 	base: '/nanosplash/',
 	appearance: 'dark',
+	head: [
+		['script', { src: 'https://unpkg.com/nanosplash/dist/iife/ns.iife.js' }],
+	],
 	themeConfig: {
 		nav: [
 			{ text: 'Home', link: '/' },
 			{ text: 'Get started', link: '/api/start/install' },
+			{ text: 'Playground', link: '/api/start/playground' },
 			{ text: 'API documentation', link: '/api/doc/show' },
 		],
 
@@ -24,6 +28,10 @@ export default defineConfig({
 					{
 						text: 'Usage',
 						link: '/api/start/usage',
+					},
+					{
+						text: 'Playground',
+						link: '/api/start/playground',
 					},
 					{
 						text: 'Customize',

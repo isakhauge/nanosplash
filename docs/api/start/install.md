@@ -18,15 +18,15 @@ Add the following script tag inside of the `<body>` tag:
 <script src="https://unpkg.com/nanosplash/dist/iife/ns.iife.js"></script>
 ```
 
-```html{7}
+### Example
+
+```html{6}
 <html>
 	<head>
-		<meta charset="UTF-8" />
 		<title>My awesome application 🚀</title>
 	</head>
 	<body>
 		<script src="https://unpkg.com/nanosplash/dist/iife/ns.iife.js"></script>
-		...
 	</body>
 </html>
 ```
@@ -53,5 +53,9 @@ const ns = useNs()
 ns.show('It works!')
 ```
 
-The hook will inject the Nanosplash API inside the global `window` object.
-You can now start using Nanosplash by simply calling `ns.show`.
+For ease of use, add it to the window object for global access.
+
+```js{2}
+import { useNs } from 'nanosplash'
+window.ns = useNs()
+```

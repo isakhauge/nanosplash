@@ -1,7 +1,6 @@
 <script setup>
 import CardGrid from './CardGrid.vue'
 import Card from './Card.vue'
-import Exe from './Exe.vue'
 </script>
 
 <template>
@@ -20,7 +19,6 @@ import Exe from './Exe.vue'
 				Lorem ipsum dolor sit amet consectetur adipiscing elit ut aliquam
 			</Card>
 		</CardGrid>
-		<Exe />
 	</div>
 </template>
 

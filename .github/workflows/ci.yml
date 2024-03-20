@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-
+          registry-url: 'https://registry.npmjs.org'
       - name: Set up Git and update production branch
         run: |
           git config --global user.name "GitHub Actions"
@@ -54,3 +54,8 @@ jobs:
           git add .
           git commit --allow-empty -m "Build, test, and coverage report"
           git push
+
+      - name: Publish to NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}

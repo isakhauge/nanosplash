@@ -8,4 +8,9 @@ Here you can play around with Nanosplash and see how it works.
 
 <PlayGround />
 
-Select a method from the dropdown menu above and click "Run" to see it in action.
+Open your browser console (developer tools).
+
+- macOS: `⌘` `⌥` `i`
+- Windows: `Ctrl` `⇧` `i`
+
+Try to target different elements in the DOM. Nanosplash is available in the window scope as `ns`. Give it a shot!
