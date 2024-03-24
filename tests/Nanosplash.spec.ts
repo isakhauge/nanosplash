@@ -3,7 +3,10 @@ import { useNs } from '../src/ts/Nanosplash'
 import { NSElement } from '../src/ts/types/Types'
 
 const ns = (window.ns = useNs())
-const allNs = () => Array.from(document.querySelectorAll('.ns')) as NSElement[]
+const get = (selector: string) => document.querySelector(selector)
+const getAll = (selector: string) =>
+	Array.from(document.querySelectorAll(selector))
+const allNs = () => getAll('.ns') as NSElement[]
 const nsCount = () => allNs().length
 
 const div = (id: string) => {
@@ -12,7 +15,7 @@ const div = (id: string) => {
 	return node
 }
 
-describe('Nanosplash API in Window', () => {
+describe('Global access', () => {
 	it('should have "ns"', () => {
 		expect(window.ns).toBeDefined()
 		expect(window.ns).toBe(ns)
@@ -29,49 +32,58 @@ describe('Nanosplash API in Window', () => {
 	})
 })
 
-describe.sequential('Nanosplash API Functionality', () => {
+describe.sequential('Nanosplash API', () => {
 	describe.sequential('show / hide cleanup', () => {
-		it('should make the body host', () => {
-			const id = ns.show()
-			const bod = document.body
-			const bodyIsHost = bod.classList.contains('nsh')
-			expect(bodyIsHost).toBe(true)
-			ns.hide(id as number)
+		describe('show', () => {
+			it('should make the body host', () => {
+				const id = ns.show()
+				const bod = document.body
+				const bodyIsHost = bod.classList.contains('nsh')
+				expect(bodyIsHost).toBe(true)
+				ns.hide(id as number)
+				expect(nsCount()).toBe(0)
+			})
+
+			it('should create a Nanosplash element', () => {
+				const id = ns.show()
+				const nsElement = get('body > .ns') as NSElement
+				expect(nsElement).toBeInstanceOf(HTMLDivElement)
+				ns.hide(id as number)
+				expect(nsCount()).toBe(0)
+			})
+
+			it('should have the correct internal ID', () => {
+				const id = ns.show()
+				const nsElement = get('body > .ns') as NSElement
+				expect(id).toBe(nsElement.nsId)
+				ns.hide(id as number)
+				expect(nsCount()).toBe(0)
+			})
 		})
 
-		it('should create a Nanosplash element', () => {
-			const id = ns.show()
-			const nsElement = document.querySelector('body > .ns') as NSElement
-			expect(nsElement).toBeInstanceOf(HTMLDivElement)
-			ns.hide(id as number)
-		})
+		describe('hide', () => {
+			it('should be able to hide the element', () => {
+				const id = ns.show()
+				expect(nsCount()).toBeGreaterThan(0)
+				ns.hide(id as number)
+				expect(nsCount()).toBe(0)
+			})
 
-		it('should have the correct internal ID', () => {
-			const id = ns.show()
-			const nsElement = document.querySelector('body > .ns') as NSElement
-			expect(id).toBe(nsElement.nsId)
-			ns.hide(id as number)
-		})
+			it('should undo body as host', () => {
+				const id = ns.show()
+				ns.hide(id as number)
+				const bodyIsNoLongerHost = document.body.classList.contains('nsh')
+				expect(bodyIsNoLongerHost).toBe(false)
+				expect(nsCount()).toBe(0)
+			})
 
-		it('should be able to hide the element', () => {
-			const id = ns.show()
-			expect(nsCount()).toBeGreaterThan(0)
-			ns.hide(id as number)
-			expect(nsCount()).toBe(0)
-		})
-
-		it('should undo body as host', () => {
-			const id = ns.show()
-			ns.hide(id as number)
-			const bodyIsNoLongerHost = document.body.classList.contains('nsh')
-			expect(bodyIsNoLongerHost).toBe(false)
-		})
-
-		it('should remove the Nanosplash element from DOM', () => {
-			const id = ns.show()
-			const nsElement = document.querySelector('body > .ns') as NSElement
-			ns.hide(id as number)
-			expect(nsElement?.isConnected).toBe(false)
+			it('should remove the Nanosplash element from DOM', () => {
+				const id = ns.show()
+				const nsElement = get('body > .ns') as NSElement
+				ns.hide(id as number)
+				expect(nsElement?.isConnected).toBe(false)
+				expect(nsCount()).toBe(0)
+			})
 		})
 	})
 
@@ -82,15 +94,43 @@ describe.sequential('Nanosplash API Functionality', () => {
 			const element = elements.find((v: NSElement) => v.nsId === id)
 			expect(element).toBeInstanceOf(HTMLDivElement)
 			ns.hide(id as number)
+			expect(nsCount()).toBe(0)
 		})
 
 		it('should only display a spinner', () => {
 			const id = ns.show()
-			const nst = document.querySelector('.ns > .nst')
-			const nss = document.querySelector('.ns > .nss')
+			const nst = get('.ns > .nst')
+			const nss = get('.ns > .nss')
 			expect(nst).toBeNull()
 			expect(nss).toBeInstanceOf(HTMLDivElement)
 			ns.hide(id as number)
+			expect(nsCount()).toBe(0)
+		})
+
+		it('should recycle elements', () => {
+			const idFirst = ns.show()
+			const idSecond = ns.show()
+			expect(nsCount()).toBe(1)
+			expect(idFirst).toBe(idSecond)
+			ns.hide()
+			ns.hide()
+			expect(nsCount()).toBe(0)
+		})
+	})
+
+	describe('show("foo", "#bar")', () => {
+		it('should display text inside #bar', () => {
+			const bar = div('bar')
+			document.body.append(bar)
+			const id = ns.show('foo', '#bar')
+			expect(nsCount()).toBe(1)
+			const selector = '#bar.nsh > .ns > .nst'
+			const nst = get(selector)
+			expect(nst).toBeInstanceOf(HTMLDivElement)
+			expect((nst as HTMLDivElement).innerHTML).toBe('foo')
+			ns.hide(id as number)
+			bar.remove()
+			expect(nsCount()).toBe(0)
 		})
 	})
 
@@ -103,8 +143,7 @@ describe.sequential('Nanosplash API Functionality', () => {
 			ns.show(null, '#c')
 			ns.show(null, '#d')
 
-			const theseExist = (...ids: string[]) =>
-				ids.every(id => document.querySelector(id))
+			const theseExist = (...ids: string[]) => ids.every(id => get(id))
 
 			expect(theseExist('#a', '#b', '#c', '#d')).toBe(true)
 			ns.hide()
@@ -116,7 +155,8 @@ describe.sequential('Nanosplash API Functionality', () => {
 			ns.hide()
 
 			expect(nsCount()).toBe(0)
-			document.querySelectorAll('#a, #b, #c, #d').forEach(node => node.remove())
+			getAll('#a, #b, #c, #d').forEach(node => node.remove())
+			expect(nsCount()).toBe(0)
 		})
 	})
 
@@ -133,9 +173,10 @@ describe.sequential('Nanosplash API Functionality', () => {
 			ns.hide(idB as number)
 			expect(nsCount()).toBe(1)
 			expect(allNs()[0].nsId).toBe(idA)
+			ns.hide(idA as number)
 			a.remove()
 			b.remove()
-			ns.hide()
+			expect(nsCount()).toBe(0)
 		})
 	})
 
@@ -151,7 +192,8 @@ describe.sequential('Nanosplash API Functionality', () => {
 			ns.hide('*')
 			expect(nsCount()).toBe(0)
 
-			document.querySelectorAll('#a, #b, #c').forEach(node => node.remove())
+			getAll('#a, #b, #c').forEach(node => node.remove())
+			expect(nsCount()).toBe(0)
 		})
 	})
 })
