@@ -1,12 +1,9 @@
-name: Build and Test
+name: CI Test - Build, Test
 
 on:
-  push:
-    branches:
-      - production
   pull_request:
     branches:
-      - production
+      - test
 
 jobs:
   build-and-test:
@@ -32,7 +29,7 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git fetch
-          git checkout production
+          git checkout test
           git pull --no-rebase
 
       - name: Setup GitHub Pages
@@ -49,20 +46,3 @@ jobs:
 
       - name: Generate Code Coverage
         run: pnpm coverage
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: isakhauge/nanosplash
-
-      # - name: Commit and push changes
-      #   run: |
-      #     git add -f dist/**/* coverage/**/*
-      #     git commit --allow-empty -m "Build, test, coverage"
-      #     git push
-
-      #- name: Publish to NPM
-      #  run: npm publish
-      #  env:
-      #    NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
