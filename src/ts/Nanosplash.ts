@@ -1,4 +1,3 @@
-// @ts-strict
 import style from '../style/ns.sass?inline'
 import { NanosplashInterface } from './types/NanosplashInterface'
 import { ElementReference, NSElement } from './types/Types'
