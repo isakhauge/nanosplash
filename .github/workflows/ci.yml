@@ -13,19 +13,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install PNPM
         uses: pnpm/action-setup@v3
         with:
           version: 8
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          registry-url: 'https://registry.npmjs.org'
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Set up Git and update production branch
         run: |
           git config --global user.name "GitHub Actions"
@@ -34,19 +35,19 @@ jobs:
           git checkout production
           git pull --no-rebase
 
-      - name: Setup Pages
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v3
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build (Vite)
+      - name: Build
         run: pnpm build
 
-      - name: Test (Vitest)
+      - name: Test
         run: pnpm test
 
-      - name: Generate Code Coverage (Vitest)
+      - name: Generate Code Coverage
         run: pnpm coverage
 
       - name: Commit and push changes
