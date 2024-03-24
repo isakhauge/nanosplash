@@ -12,8 +12,9 @@ export const useNs = (): NanosplashInterface => {
 	const doc = window.document
 	const bod = doc.body
 
+	const toArray = <T>(iter: Iterable<T> | ArrayLike<T>) => Array.from(iter)
 	const all = (node: ParentNode, ref: string) =>
-		Array.from(node.querySelectorAll(ref))
+		toArray(node.querySelectorAll(ref))
 	const first = (node: ParentNode, ref: string) => all(node, ref)[0] ?? null
 
 	/**
@@ -118,11 +119,11 @@ export const useNs = (): NanosplashInterface => {
 	 * @returns The ID if the NS element — which is a UTC integer.
 	 */
 	const show = (text?: string, inside?: string | Element): number | null => {
-		const parent: Element | null = (
-			inside ? parseRef(inside) : bod
-		) as Element | null
+		const parent: Element = (inside ? parseRef(inside) ?? bod : bod) as Element
 		let ns: NSElement
-		const recycled = (parent ?? bod).firstElementChild
+		const recycled: Element | undefined = toArray(parent.children)
+			.filter(node => node.classList.contains('ns'))
+			.at(0)
 		const isNs = recycled?.classList.contains('ns')
 		if (isNs) {
 			ns = recycled as NSElement
