@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1711298730084" clover="3.2.0">
-  <project timestamp="1711298730084" name="All files">
+<coverage generated="1711300069785" clover="3.2.0">
+  <project timestamp="1711300069785" name="All files">
     <metrics statements="224" coveredstatements="131" conditionals="11" coveredconditionals="5" methods="18" coveredmethods="5" elements="253" coveredelements="141" complexity="0" loc="224" ncloc="224" packages="2" files="4" classes="4"/>
     <package name="ts">
       <metrics statements="182" coveredstatements="131" conditionals="9" coveredconditionals="5" methods="16" coveredmethods="5"/>
-      <file name="Nanosplash.ts" path="/Users/isak/src/nanosplash/src/ts/Nanosplash.ts">
+      <file name="Nanosplash.ts" path="/home/runner/work/nanosplash/nanosplash/src/ts/Nanosplash.ts">
         <metrics statements="177" coveredstatements="131" conditionals="8" coveredconditionals="5" methods="15" coveredmethods="5"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -184,7 +184,7 @@
         <line num="176" count="1" type="stmt"/>
         <line num="177" count="1" type="stmt"/>
       </file>
-      <file name="main.ts" path="/Users/isak/src/nanosplash/src/ts/main.ts">
+      <file name="main.ts" path="/home/runner/work/nanosplash/nanosplash/src/ts/main.ts">
         <metrics statements="5" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="2" count="0" type="stmt"/>
@@ -195,7 +195,7 @@
     </package>
     <package name="ts.types">
       <metrics statements="42" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0"/>
-      <file name="NanosplashInterface.ts" path="/Users/isak/src/nanosplash/src/ts/types/NanosplashInterface.ts">
+      <file name="NanosplashInterface.ts" path="/home/runner/work/nanosplash/nanosplash/src/ts/types/NanosplashInterface.ts">
         <metrics statements="26" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="2" count="0" type="stmt"/>
@@ -224,7 +224,7 @@
         <line num="25" count="0" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
       </file>
-      <file name="Types.ts" path="/Users/isak/src/nanosplash/src/ts/types/Types.ts">
+      <file name="Types.ts" path="/home/runner/work/nanosplash/nanosplash/src/ts/types/Types.ts">
         <metrics statements="16" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="2" count="0" type="stmt"/>
