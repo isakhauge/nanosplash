@@ -21,3 +21,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Dist files
+dist
+coverage
+docs/.vitepress/dist
+docs/.vitepress/cahce
