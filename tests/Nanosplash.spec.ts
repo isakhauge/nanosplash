@@ -1,9 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { JSDOM } from 'jsdom'
 import { useNs } from '../src/ts/Nanosplash'
 
-const dom = new JSDOM()
-var window = dom.window
 const ns = (window.ns = useNs(window))
 
 describe('Nanosplash API', () => {

@@ -16,6 +16,13 @@ export default defineConfig({
 			fileName: 'ns',
 		},
 	},
+	test: {
+		environment: 'jsdom',
+		globals: true,
+		coverage: {
+			reporter: ['text', 'json', 'html', 'lcov'],
+		},
+	},
 	plugins: [
 		codecovVitePlugin({
 			enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
