@@ -3,7 +3,7 @@ import CardGrid from './CardGrid.vue'
 import Card from './Card.vue'
 import { useNs } from '../../../../dist/es/ns'
 if (window) {
-	window.ns = useNs(window)
+	window.ns = useNs()
 }
 </script>
 
