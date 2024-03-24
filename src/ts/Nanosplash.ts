@@ -2,17 +2,14 @@
 import style from '../style/ns.sass?inline'
 import { NanosplashInterface } from './types/NanosplashInterface'
 import { ElementReference, NSElement } from './types/Types'
-import type { DOMWindow } from 'jsdom'
 import { version } from '../../package.json'
 
 /**
  * # Use Nanosplash
  * @returns Nanosplash API.
  */
-export const useNs = (
-	win?: (Window | (Window & typeof globalThis)) | DOMWindow
-): NanosplashInterface => {
-	const doc = (win ?? window).document
+export const useNs = (): NanosplashInterface => {
+	const doc = window.document
 	const bod = doc.body
 
 	const all = (node: ParentNode, ref: string) =>
@@ -125,9 +122,10 @@ export const useNs = (
 			inside ? parseRef(inside) : bod
 		) as Element | null
 		let ns: NSElement
-		const recycledNs = first(parent ?? bod, '& > .ns')
-		if (recycledNs) {
-			ns = recycledNs as NSElement
+		const recycled = (parent ?? bod).firstElementChild
+		const isNs = recycled?.classList.contains('ns')
+		if (isNs) {
+			ns = recycled as NSElement
 		} else {
 			ns = makeNs()
 			setNsParent(ns, parent as Element)
