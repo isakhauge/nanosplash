@@ -6,9 +6,6 @@ export default defineConfig({
 	description: 'The tiny loading screen for web artisans',
 	base: '/nanosplash/',
 	appearance: 'dark',
-	head: [
-		['script', { src: 'https://unpkg.com/nanosplash/dist/iife/ns.iife.js' }],
-	],
 	themeConfig: {
 		nav: [
 			{ text: 'Home', link: '/' },
