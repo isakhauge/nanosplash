@@ -30,16 +30,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70% </span>
+                <span class="strong">62.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/10</span>
+                <span class='fraction'>5/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">41.17% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/17</span>
+                <span class='fraction'>5/15</span>
             </div>
         
             
@@ -431,8 +431,8 @@ import { version } from '../../package.json'
 export const useNs = (
 	win?: (Window | (Window &amp; typeof globalThis)) | DOMWindow
 ): NanosplashInterface =&gt; {
-	const doc = () =&gt; (<span class="branch-0 cbranch-no" title="branch not covered" >win ?? window).d</span>ocument
-	const bod = () =&gt; doc().body
+	const doc = (<span class="branch-0 cbranch-no" title="branch not covered" >win ?? window).d</span>ocument
+	const bod = doc.body
 &nbsp;
 	const all = (node: ParentNode, ref: string) =&gt;
 		Array.from(node.querySelectorAll(ref))
@@ -442,7 +442,7 @@ export const useNs = (
 	 * # Get All Nanosplashes
 	 * @returns An array of all Nanosplash elements in the DOM.
 	 */
-	const getAllNs = <span class="fstat-no" title="function not covered" >(): NSElement[] =&gt; all(doc(), '.ns') as NSElement[]</span>
+	const getAllNs = <span class="fstat-no" title="function not covered" >(): NSElement[] =&gt; all(doc, '.ns') as NSElement[]</span>
 &nbsp;
 	/**
 	 * # Parse Ref
@@ -450,7 +450,7 @@ export const useNs = (
 	 * @returns The Element node or null.
 	 */
 	const parseRef = <span class="fstat-no" title="function not covered" >(ref: ElementReference): Element | null =&gt;</span>
-<span class="cstat-no" title="statement not covered" >		ref instanceof Element ? ref : first(doc(), ref)</span>
+<span class="cstat-no" title="statement not covered" >		ref instanceof Element ? ref : first(doc, ref)</span>
 &nbsp;
 	/**
 	 * # Create HTMLDivElement
@@ -462,7 +462,7 @@ export const useNs = (
 		className?: string,
 		...children: (Node | string)[]
 	): HTMLDivElement =&gt; {
-		const node: HTMLDivElement = doc().createElement('div')
+		const node: HTMLDivElement = doc.createElement('div')
 		if (className) <span class="branch-0 cbranch-no" title="branch not covered" >node.classList.add(className)</span>
 		node.append(...children)
 		return node
@@ -484,7 +484,7 @@ export const useNs = (
 	 * @returns Nanpslash DOM element.
 	 */
 	const makeNs = <span class="fstat-no" title="function not covered" >(): NSElement =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >		const circle: string = '&lt;circle class=path cx=25 cy=25 r=20 fill=none/&gt;'</span>
+<span class="cstat-no" title="statement not covered" >		const circle: string = '&lt;circle class=path cx=25 cy=25 r=20 fill=none /&gt;'</span>
 <span class="cstat-no" title="statement not covered" >		const svg = parse(`&lt;svg viewBox="0 0 50 50"&gt;${circle}&lt;/svg&gt;`) as Element</span>
 <span class="cstat-no" title="statement not covered" >		const node = div('ns', div('nst'), div('nss', svg)) as NSElement</span>
 <span class="cstat-no" title="statement not covered" >		node.nsId = Date.now()</span>
@@ -544,7 +544,7 @@ export const useNs = (
 <span class="cstat-no" title="statement not covered" >			inside ? parseRef(inside) : bod</span>
 <span class="cstat-no" title="statement not covered" >		) as Element | null</span>
 <span class="cstat-no" title="statement not covered" >		let ns: NSElement</span>
-<span class="cstat-no" title="statement not covered" >		const recycledNs = first(parent ?? bod(), '&amp; &gt; .ns')</span>
+<span class="cstat-no" title="statement not covered" >		const recycledNs = first(parent ?? bod, '&amp; &gt; .ns')</span>
 <span class="cstat-no" title="statement not covered" >		if (recycledNs) {</span>
 <span class="cstat-no" title="statement not covered" >			ns = recycledNs as NSElement</span>
 <span class="cstat-no" title="statement not covered" >		} else {</span>
@@ -553,7 +553,7 @@ export const useNs = (
 <span class="cstat-no" title="statement not covered" >		}</span>
 <span class="cstat-no" title="statement not covered" >		setNsText(ns, text ?? '')</span>
 <span class="cstat-no" title="statement not covered" >		const top: string = scrollY + 'px'</span>
-<span class="cstat-no" title="statement not covered" >		bod().style.setProperty('--ns-top', top)</span>
+<span class="cstat-no" title="statement not covered" >		bod.style.setProperty('--ns-top', top)</span>
 <span class="cstat-no" title="statement not covered" >		return ns.nsId</span>
 <span class="cstat-no" title="statement not covered" >	}</span>
 &nbsp;
@@ -580,13 +580,13 @@ export const useNs = (
 	 * @param id Optional ID of a Nanosplash element or '*' .
 	 */
 	const hide = <span class="fstat-no" title="function not covered" >(id?: number | '*'): void =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >		if (id === '*') all(doc(), '.ns').forEach(removeNs)</span>
+<span class="cstat-no" title="statement not covered" >		if (id === '*') all(doc, '.ns').forEach(removeNs)</span>
 <span class="cstat-no" title="statement not covered" >		else removeNs(typeof id === 'number' ? findNs(id) : peekNsQueue())</span>
 <span class="cstat-no" title="statement not covered" >	}</span>
 &nbsp;
 	// Add CSS to window
-	first(doc(), '#ns'<span class="branch-0 cbranch-no" title="branch not covered" >)?.remove()</span>
-	bod().append(parse(`&lt;style id="ns"&gt;${style}&lt;/style&gt;`))
+	first(doc, '#ns'<span class="branch-0 cbranch-no" title="branch not covered" >)?.remove()</span>
+	bod.append(parse(`&lt;style id="ns"&gt;${style}&lt;/style&gt;`))
 &nbsp;
 	return {
 		show,
@@ -601,7 +601,7 @@ export const useNs = (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-24T16:06:41.108Z
+                at 2024-03-24T16:34:08.634Z
             </div>
         <script src="../prettify.js"></script>
         <script>
