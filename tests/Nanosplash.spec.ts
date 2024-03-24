@@ -32,8 +32,16 @@ describe('Global access', () => {
 	})
 })
 
-describe.sequential('Nanosplash API', () => {
-	describe.sequential('show / hide cleanup', () => {
+describe('useNs hook', () => {
+	it('should return the Nanosplash API', () => {
+		const instance = useNs()
+		expect(instance.show).toBeTypeOf('function')
+		expect(instance.hide).toBeTypeOf('function')
+	})
+})
+
+describe('Nanosplash API', () => {
+	describe('show / hide cleanup', () => {
 		describe('show', () => {
 			it('should make the body host', () => {
 				const id = ns.show()
