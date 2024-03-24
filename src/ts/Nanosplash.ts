@@ -12,8 +12,8 @@ import { version } from '../../package.json'
 export const useNs = (
 	win?: (Window | (Window & typeof globalThis)) | DOMWindow
 ): NanosplashInterface => {
-	const doc = () => (win ?? window).document
-	const bod = () => doc().body
+	const doc = (win ?? window).document
+	const bod = doc.body
 
 	const all = (node: ParentNode, ref: string) =>
 		Array.from(node.querySelectorAll(ref))
@@ -23,7 +23,7 @@ export const useNs = (
 	 * # Get All Nanosplashes
 	 * @returns An array of all Nanosplash elements in the DOM.
 	 */
-	const getAllNs = (): NSElement[] => all(doc(), '.ns') as NSElement[]
+	const getAllNs = (): NSElement[] => all(doc, '.ns') as NSElement[]
 
 	/**
 	 * # Parse Ref
@@ -31,7 +31,7 @@ export const useNs = (
 	 * @returns The Element node or null.
 	 */
 	const parseRef = (ref: ElementReference): Element | null =>
-		ref instanceof Element ? ref : first(doc(), ref)
+		ref instanceof Element ? ref : first(doc, ref)
 
 	/**
 	 * # Create HTMLDivElement
@@ -43,7 +43,7 @@ export const useNs = (
 		className?: string,
 		...children: (Node | string)[]
 	): HTMLDivElement => {
-		const node: HTMLDivElement = doc().createElement('div')
+		const node: HTMLDivElement = doc.createElement('div')
 		if (className) node.classList.add(className)
 		node.append(...children)
 		return node
@@ -65,7 +65,7 @@ export const useNs = (
 	 * @returns Nanpslash DOM element.
 	 */
 	const makeNs = (): NSElement => {
-		const circle: string = '<circle class=path cx=25 cy=25 r=20 fill=none/>'
+		const circle: string = '<circle class=path cx=25 cy=25 r=20 fill=none />'
 		const svg = parse(`<svg viewBox="0 0 50 50">${circle}</svg>`) as Element
 		const node = div('ns', div('nst'), div('nss', svg)) as NSElement
 		node.nsId = Date.now()
@@ -125,7 +125,7 @@ export const useNs = (
 			inside ? parseRef(inside) : bod
 		) as Element | null
 		let ns: NSElement
-		const recycledNs = first(parent ?? bod(), '& > .ns')
+		const recycledNs = first(parent ?? bod, '& > .ns')
 		if (recycledNs) {
 			ns = recycledNs as NSElement
 		} else {
@@ -134,7 +134,7 @@ export const useNs = (
 		}
 		setNsText(ns, text ?? '')
 		const top: string = scrollY + 'px'
-		bod().style.setProperty('--ns-top', top)
+		bod.style.setProperty('--ns-top', top)
 		return ns.nsId
 	}
 
@@ -161,13 +161,13 @@ export const useNs = (
 	 * @param id Optional ID of a Nanosplash element or '*' .
 	 */
 	const hide = (id?: number | '*'): void => {
-		if (id === '*') all(doc(), '.ns').forEach(removeNs)
+		if (id === '*') all(doc, '.ns').forEach(removeNs)
 		else removeNs(typeof id === 'number' ? findNs(id) : peekNsQueue())
 	}
 
 	// Add CSS to window
-	first(doc(), '#ns')?.remove()
-	bod().append(parse(`<style id="ns">${style}</style>`))
+	first(doc, '#ns')?.remove()
+	bod.append(parse(`<style id="ns">${style}</style>`))
 
 	return {
 		show,
