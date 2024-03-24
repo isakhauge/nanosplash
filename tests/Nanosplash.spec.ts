@@ -1,20 +1,10 @@
-import { describe, it, test, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { JSDOM } from 'jsdom'
-import { NanosplashInterface } from '../src/ts/types/NanosplashInterface'
+import { useNs } from '../src/ts/Nanosplash'
 
-let dom = new JSDOM()
-let document: Document | null = null
-let ns: NanosplashInterface | null = null
-
-async function updateGlobals() {
-	dom = new JSDOM()
-	// @ts-ignore
-	globalThis.window = dom.window
-	document = globalThis.document = dom.window.document
-	ns = globalThis.window.ns = (await import('../src/ts/Nanosplash')).useNs()
-}
-
-beforeEach(updateGlobals)
+const dom = new JSDOM()
+var window = dom.window
+const ns = (window.ns = useNs(window))
 
 describe('Nanosplash API', () => {
 	it('should be defined', () => {

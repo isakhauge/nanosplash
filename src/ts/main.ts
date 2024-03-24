@@ -1,3 +1,5 @@
 // @ts-strict
 import { useNs } from './Nanosplash'
-window.ns = useNs() // Attach API to global scope (Window)
+window.addEventListener('load', function () {
+	this.ns = useNs(this)
+})
