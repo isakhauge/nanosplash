@@ -56,11 +56,11 @@ jobs:
       - name: Generate Code Coverage
         run: pnpm coverage
 
-      #- name: Commit and push changes
-      #  run: |
-      #    git add .
-      #    git commit --allow-empty -m "Build, test, and coverage report"
-      #    git push
+      - name: Commit and push changes
+        run: |
+          git add -f dist/**/* coverage/**/*
+          git commit --allow-empty -m "Build, test, coverage"
+          git push
 
       #- name: Publish to NPM
       #  run: npm publish

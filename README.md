@@ -5,6 +5,7 @@
 <br>
 
 [![Build](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml/badge.svg?branch=production)](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/isakhauge/nanosplash/graph/badge.svg?token=KDUC5H82UE)](https://codecov.io/gh/isakhauge/nanosplash)
 
 ## 💖 Documentation
 
