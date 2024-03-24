@@ -44,23 +44,23 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4.0.1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: isakhauge/nanosplash
-
       - name: Test
         run: pnpm test
 
       - name: Generate Code Coverage
         run: pnpm coverage
 
-      - name: Commit and push changes
-        run: |
-          git add -f dist/**/* coverage/**/*
-          git commit --allow-empty -m "Build, test, coverage"
-          git push
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: isakhauge/nanosplash
+
+      # - name: Commit and push changes
+      #   run: |
+      #     git add -f dist/**/* coverage/**/*
+      #     git commit --allow-empty -m "Build, test, coverage"
+      #     git push
 
       #- name: Publish to NPM
       #  run: npm publish
