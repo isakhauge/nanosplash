@@ -56,7 +56,7 @@ jobs:
           git commit --allow-empty -m "Build, test, and coverage report"
           git push
 
-      - name: Publish to NPM
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+      #- name: Publish to NPM
+      #  run: npm publish
+      #  env:
+      #    NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
