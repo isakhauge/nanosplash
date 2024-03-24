@@ -52,6 +52,7 @@ jobs:
       - name: Commit and push changes
         run: |
           git add .
+          git add -f coverage/**/* dist/**/*
           git commit --allow-empty -m "Build, test, and coverage report"
           git push
 
