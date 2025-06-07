@@ -1,7 +1,7 @@
 {
   "name": "nanosplash",
   "private": false,
-  "version": "4.0.3",
+  "version": "4.0.4",
   "type": "module",
   "author": {
     "name": "Isak K. Hauge",
@@ -13,7 +13,7 @@
     "url": "git+https://github.com/isakhauge/nanosplash.git"
   },
   "description": "The tiny loading screen for web artisans",
-  "homepage": "https://isakhauge.github.io/nanosplash",
+  "homepage": "https://github.com/isakhauge/nanosplash",
   "keywords": [
     "loading",
     "loader",
