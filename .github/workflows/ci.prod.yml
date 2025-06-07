@@ -65,4 +65,4 @@ jobs:
       - name: Publish to NPM
         run: bunx npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
