@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'
+          registry-url: 'https://registry.npmjs.org'  # Specify NPM registry
 
       # Setting up the latest Bun.js version
       - name: Set up Bun.js
