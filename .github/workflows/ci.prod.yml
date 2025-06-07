@@ -64,6 +64,6 @@ jobs:
 
       # Publishing to NPM
       - name: Publish to NPM
-        run: bunx npm publish
+        run: bunx npm version patch && bunx npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
