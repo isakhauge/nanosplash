@@ -58,9 +58,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-      # Publishing to NPM
+      - name: Configure npm for authentication
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLISH_TOKEN }}" > ~/.npmrc
+
       - name: Publish to NPM
-        if: ${{inputs.persistent}}
+        if: ${{ inputs.persistent }}
         run: npm publish --tag latest
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
