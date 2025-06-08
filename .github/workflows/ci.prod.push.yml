@@ -1,20 +1,18 @@
-name: CI Test
+name: CI Production
 
 on:
   push:
-    branches: [ test ]
-  pull_request:
-    branches: [ test ]
+    branches: [ production ]
 
 jobs:
-  test--test-build-commit:
+  production--test-coverage-build-commit-publish:
     runs-on: ubuntu-latest
 
     steps:
       # Checking out the repository with the latest version
       - uses: actions/checkout@v4
         with:
-          ref: test
+          ref: production
 
       # Setting up the latest Node.js version
       - name: Set up Node.js
@@ -32,15 +30,23 @@ jobs:
       # Installing dependencies using Bun
       - name: Install Dependencies
         run: bun install
-
+        
       # Running Vitest with coverage using Bun
       - name: Run Vitest with Coverage
         run: bunx vitest run --coverage
+      
+      # Running Prettier formatting
+      - name: Run Format
+        run: bun run format
+
+      # Running Linting
+      - name: Run ESLint
+        run: bun run lint
 
       # Running build using Bun
       - name: Run Build
         run: bun run build
-      
+  
       # Committing build artifacts to the production branch
       - name: Commit Build
         run: |
@@ -49,6 +55,19 @@ jobs:
           git config --global init.defaultBranch production
           git add .
           git commit -m "GitHub Actions: Persist build artifacts[ci skip]" || echo "No changes to commit"
-          git push
+          git push origin production
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Uploading coverage to Coveralls
+      - name: Upload Coverage to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./coverage/lcov.info
+
+      # Publishing to NPM
+      - name: Publish to NPM
+        run: bunx npm version patch && bunx npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}

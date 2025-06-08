@@ -1,11 +1,11 @@
 name: CI Production
 
 on:
-  push:
+  pull_request:
     branches: [ production ]
 
 jobs:
-  build-and-test:
+  production--test-coverage-build-commit-publish-mock:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,15 +30,23 @@ jobs:
       # Installing dependencies using Bun
       - name: Install Dependencies
         run: bun install
-        
+      
       # Running Vitest with coverage using Bun
       - name: Run Vitest with Coverage
         run: bunx vitest run --coverage
+        
+      # Running Prettier formatting
+      - name: Run Format
+        run: bun run format
+
+      # Running Linting
+      - name: Run ESLint
+        run: bun run lint  
 
       # Running build using Bun
       - name: Run Build
         run: bun run build
-  
+      
       # Committing build artifacts to the production branch
       - name: Commit Build
         run: |
@@ -49,7 +57,7 @@ jobs:
           git commit -m "GitHub Actions: Persist build artifacts[ci skip]" || echo "No changes to commit"
           git push origin production
         env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Uploading coverage to Coveralls
       - name: Upload Coverage to Coveralls
@@ -60,6 +68,6 @@ jobs:
 
       # Publishing to NPM
       - name: Publish to NPM
-        run: bunx npm version patch && bunx npm publish
+        run: bunx npm version patch && bunx npm publish --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
