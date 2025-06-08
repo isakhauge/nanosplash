@@ -46,7 +46,7 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add .
-          git commit -m "GitHub Actions: NPM build ${{ env.VERSION }}" || echo "No changes to commit"
+          git commit -m "GitHub Actions: NPM build ${{ env.VERSION }}" --allow-empty
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
