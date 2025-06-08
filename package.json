@@ -1,7 +1,7 @@
 {
   "name": "nanosplash",
   "private": false,
-  "version": "4.0.3",
+  "version": "4.0.5",
   "type": "module",
   "author": {
     "name": "Isak K. Hauge",
@@ -40,7 +40,7 @@
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "format": "prettier --write \"src/**/*.ts\" \"vite.config.ts\"",
-    "test": "bun run vitest"
+    "test": "bunx vitest --coverage"
   },
   "types": "./src/types/global.d.ts",
   "exports": {
@@ -68,9 +68,7 @@
     "prettier": "3.5.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.33.0",
-    "vite": "^6.3.5"
-  },
-  "dependencies": {
+    "vite": "^6.3.5",
     "vitest": "^3.1.4"
   }
 }

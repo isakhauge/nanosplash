@@ -1,0 +1,66 @@
+name: Reusable - NPM Publish
+
+on:
+  workflow_call:
+    inputs:
+      persistent:
+        required: true
+        type: boolean
+
+jobs:
+  npm-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checking out the repository with the latest version
+      - uses: actions/checkout@v4
+
+      # Setting up the latest Node.js version
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+          registry-url: 'https://registry.npmjs.org'  # Specify NPM registry
+          
+      # Get the version inside package.json
+      - name: Get version from package.json
+        id: get-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+  
+      # Set version only if different
+      - name: Set version with npm (only if different)
+        run: |
+          CURRENT=$(node -p "require('./package.json').version")
+          if [ "$CURRENT" != "$VERSION" ]; then
+            echo "Updating version from $CURRENT to $VERSION"
+            npm version $VERSION --no-git-tag-version
+          else
+            echo "Version already $VERSION, skipping"
+          fi
+
+      # Publishing to NPM (dry-run for testing purposes)
+      - name: Publish to NPM (dry-run)
+        run: npm publish --dry-run --tag latest
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          
+      # Commit the version tag made by NPM
+      - name: Commit version tag
+        if: ${{ inputs.persist }}
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "GitHub Actions: NPM build ${{ env.VERSION }}" --allow-empty
+          git push origin HEAD:$GITHUB_REF_NAME
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      # Publishing to NPM
+      - name: Publish to NPM
+        if: ${{inputs.persistent}}
+        run: npm publish --tag latest
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}

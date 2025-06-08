@@ -9,6 +9,6 @@ export default tseslint.config(
     tseslint.configs.strict,
     tseslint.configs.stylistic,
     {
-        ignores: ["node_modules", "dist"],
+        ignores: ["node_modules", "dist", "coverage"],
     }
 );

@@ -1,0 +1,50 @@
+name: Reusable - Run Tests
+
+on:
+  workflow_call:
+    inputs:
+      persistent:
+        required: true
+        type: boolean
+
+jobs:
+  run-vitest:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checking out the repository with the latest version
+      - uses: actions/checkout@v4
+
+      # Setting up the latest Bun.js version
+      - name: Set up Bun.js
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+
+      # Installing dependencies using Bun
+      - name: Install Dependencies
+        run: bun install
+      
+      # Running Vitest with coverage using Bun
+      - name: Run Vitest
+        run: bunx vitest
+      
+      # Committing coverage artifacts to the current branch
+      - name: Commit Build
+        if: ${{ inputs.persistent }}
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "GitHub Actions: Create Test Coverage" --allow-empty
+          git push origin HEAD:$GITHUB_REF_NAME
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Uploading coverage to Coveralls
+      - name: Upload Coverage to Coveralls
+        if: ${{ inputs.persistent }}
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./coverage/lcov.info

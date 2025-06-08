@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { describe, it, expect, beforeEach } from 'vitest'
 import {useNs} from "@/composables/ns";
 import type {INSElement} from "@/interfaces/INSElement";

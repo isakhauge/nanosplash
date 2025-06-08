@@ -1,0 +1,42 @@
+name: Reusable - Build
+
+on:
+  workflow_call:
+    inputs:
+      persistent:
+        required: true
+        type: boolean
+
+jobs:
+  run-vite-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checking out the repository with the latest version
+      - uses: actions/checkout@v4
+
+      # Setting up the latest Bun.js version
+      - name: Set up Bun.js
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+
+      # Installing dependencies using Bun
+      - name: Install Dependencies
+        run: bun install
+      
+      # Running Vite Build
+      - name: Run Vite Build
+        run: bun run build
+        
+      # Committing built files to the current branch
+      - name: Commit Built Files
+        if: ${{ inputs.persist }}
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "GitHub Actions: Build" --allow-empty
+          git push origin HEAD:$GITHUB_REF_NAME
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
