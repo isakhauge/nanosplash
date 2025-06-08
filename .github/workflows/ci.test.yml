@@ -7,43 +7,44 @@ on:
     branches: [ test ]
 
 jobs:
-  final-production-and-publish:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Lint (non-persistent)
-        uses: './.github/workflows/reusable.lint.yml'
-        with:
-          run-linting: true
-
-      - name: Format (non-persistent)
-        uses: './.github/workflows/reusable.format.yml'
-        with:
-          persistent: false
-
-      - name: Test (non-persistent)
-        uses: './.github/workflows/reusable.test.yml'
-        with:
-          persistent: false
-
-      - name: Build (non-persistent)
-        uses: './.github/workflows/reusable.build.yml'
-        with:
-          persistent: false
-
-      - name: NPM Publish Dry-Run (non-persistent)
-        uses: './.github/workflows/reusable.npm-publish.yml'
-        with:
-          persistent: false
-
-      - name: Format
-        uses: './.github/workflows/reusable.format.yml'
-        with:
-          persistent: true
-
-      - name: Build
-        uses: './.github/workflows/reusable.build.yml'
-        with:
-          persistent: true
+  call-lint-non-persistent:
+    name: Lint (non-persistent)
+    uses: './.github/workflows/reusable.lint.yml'
+    with:
+      run-linting: true
+  
+  call-format-non-persistent:
+    name: Format (non-persistent)
+    uses: './.github/workflows/reusable.format.yml'
+    with:
+      persistent: false
+  
+  call-test-non-persistent:
+    name: Test (non-persistent)
+    uses: './.github/workflows/reusable.test.yml'
+    with:
+      persistent: false
+  
+  call-build-non-persistent:
+    name: Build (non-persistent)
+    uses: './.github/workflows/reusable.build.yml'
+    with:
+      persistent: false
+  
+  call-npm-publish-non-persistent:
+    name: NPM Publish Dry-Run (non-persistent)
+    uses: './.github/workflows/reusable.npm-publish.yml'
+    with:
+      persistent: false
+  
+  call-format:
+    name: Format
+    uses: './.github/workflows/reusable.format.yml'
+    with:
+      persistent: true
+  
+  call-build:
+    name: Build
+    uses: './.github/workflows/reusable.build.yml'
+    with:
+      persistent: true

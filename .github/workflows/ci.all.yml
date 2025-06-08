@@ -11,22 +11,20 @@ on:
       - test
 
 jobs:
-  general-ci:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Test (non-persistent)
-        uses: './.github/workflows/reusable.test.yml'
-        with:
-          persistent: false
-      
-      - name: Lint (non-persistent)
-        uses: './.github/workflows/reusable.lint.yml'
-        with:
-          run-linting: true
-      
-      - name: Build (non-persistent)
-        uses: './.github/workflows/reusable.build.yml'
-        with:
-          persistent: false
+  call-test-non-persistent:
+    name: Running Test (non-persistent)
+    uses: './.github/workflows/reusable.test.yml'
+    with:
+      persistent: false
+  
+  call-lint-non-persistent:
+    name: Running Linting (non-persistent)
+    uses: './.github/workflows/reusable.lint.yml'
+    with:
+      run-linting: true
+  
+  call-build-non-persistent:
+    name: Running build (non-persistent)
+    uses: './.github/workflows/reusable.build.yml'
+    with:
+      persistent: false
