@@ -2,6 +2,10 @@ name: Reusable - ESLint (non-persistent)
 
 on:
   workflow_call:
+    inputs:
+      run-linting:
+        required: true
+        type: boolean
 
 jobs:
   run-eslint:

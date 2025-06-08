@@ -16,11 +16,13 @@ on:
 
 jobs:
   call-reusable--test:
-    uses: './.github/workflows/reusable/test.yml'
+    uses: '/.github/workflows/reusable/test.yml'
     with:
       persistent: false
   call-reusable--lint:
     uses: './.github/workflows/reusable/lint.yml'
+    with:
+      run-linting: true
   call-reusable--build:
     uses: './.github/workflows/reusable/build.yml'
     with: 

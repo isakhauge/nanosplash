@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Lint (non-persistent)
         uses: './.github/workflows/reusable/lint.yml'
+        with:
+          run-linting: true
   
       - name: Format (non-persistent)
         uses: './.github/workflows/reusable/format.yml'
