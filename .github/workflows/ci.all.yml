@@ -18,12 +18,14 @@ jobs:
       persistent: false
   
   call-lint-non-persistent:
+    needs: call-test-non-persistent
     name: Running Linting (non-persistent)
     uses: './.github/workflows/reusable.lint.yml'
     with:
       run-linting: true
   
   call-build-non-persistent:
+    needs: call-lint-non-persistent
     name: Running build (non-persistent)
     uses: './.github/workflows/reusable.build.yml'
     with:

@@ -12,48 +12,56 @@ jobs:
       run-linting: true
   
   call-format-non-persistent:
+    needs: call-lint-non-persistent
     name: Format (non-persistent)
     uses: './.github/workflows/reusable.format.yml'
     with:
       persistent: false
   
   call-test-non-persistent:
+    needs: call-format-non-persistent
     name: Test (non-persistent)
     uses: './.github/workflows/reusable.test.yml'
     with:
       persistent: false
   
   call-build-non-persistent:
+    needs: call-test-non-persistent
     name: Build (non-persistent)
     uses: './.github/workflows/reusable.build.yml'
     with:
       persistent: false
   
   call-npm-publish-dryrun:
+    needs: call-build-non-persistent
     name: NPM Publish Dry-Run (non-persistent)
     uses: './.github/workflows/reusable.npm-publish.yml'
     with:
       persistent: false
   
   call-format:
+    needs: call-npm-publish-dryrun
     name: Format
     uses: './.github/workflows/reusable.format.yml'
     with:
       persistent: true
   
   call-test-and-coverage:
+    needs: call-format
     name: Test & Coverage
     uses: './.github/workflows/reusable.test.yml'
     with: 
       persistent: true
   
   call-build:
+    needs: call-test-and-coverage
     name: Build
     uses: './.github/workflows/reusable.build.yml'
     with:
       persistent: true
   
-  call-npm-publish: 
+  call-npm-publish:
+    needs: call-build
     name: NPM Publish
     uses: './.github/workflows/reusable.npm-publish.yml'
     with: 
