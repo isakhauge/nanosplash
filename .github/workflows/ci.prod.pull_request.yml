@@ -13,36 +13,36 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Lint (non-persistent)
-        uses: './.github/workflows/reusable/lint.yml'
+        uses: './.github/workflows/reusable.lint.yml'
         with: 
           run-linting: true
 
       - name: Format (non-persistent)
-        uses: './.github/workflows/reusable/format.yml'
+        uses: './.github/workflows/reusable.format.yml'
         with:
           persistent: false
 
       - name: Test (non-persistent)
-        uses: './.github/workflows/reusable/test.yml'
+        uses: './.github/workflows/reusable.test.yml'
         with: 
           persistent: false
 
       - name: Build (non-persistent)
-        uses: './.github/workflows/reusable/build.yml'
+        uses: './.github/workflows/reusable.build.yml'
         with: 
           persistent: false
       
       - name: NPM Publish Dry-Run (non-persistent)
-        uses: './.github/workflows/reusable/npm-publish.yml'
+        uses: './.github/workflows/reusable.npm-publish.yml'
         with: 
           persistent: false
 
       - name: Format
-        uses: './.github/workflows/reusable/format.yml'
+        uses: './.github/workflows/reusable.format.yml'
         with:
           persistent: true
 
       - name: Build
-        uses: './.github/workflows/reusable/build.yml'
+        uses: './.github/workflows/reusable.build.yml'
         with: 
           persistent: true
