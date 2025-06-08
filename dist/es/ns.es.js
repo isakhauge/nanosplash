@@ -1,4 +1,4 @@
-const z = `@keyframes nsRotate {
+const S = `@keyframes nsRotate {
   100% {
     transform: rotate(360deg);
   }
@@ -132,62 +132,66 @@ body.nsh {
     animation: nsDash 1.5s ease-in-out infinite;
   }
 }
-`, h = () => globalThis.document, c = () => globalThis.document.body, S = (t) => Array.from(t), v = (t, o) => S(t.querySelectorAll(o)), d = (t, o) => v(t, o)[0] ?? null, A = (t) => t instanceof Element ? t : d(h(), t), l = (t, ...o) => {
-  const i = h().createElement("div");
-  return t && i.classList.add(t), i.append(...o), i;
-}, y = (t) => {
-  const o = l();
+`, d = () => globalThis.document, l = () => globalThis.document.body, v = (t) => Array.from(t), u = (t, o) => v(t.querySelectorAll(o)), h = (t, o) => u(t, o)[0] ?? null, T = (t) => t instanceof Element ? t : h(d(), t), c = (t, ...o) => {
+  const a = d().createElement("div");
+  return t && a.classList.add(t), a.append(...o), a;
+}, m = (t) => {
+  const o = c();
   return o.innerHTML = t, o.firstChild;
-}, a = {
+}, r = {
   ns: "ns",
   nsHost: "nsh",
   nsText: "nst",
   nsSpinner: "nss"
-}, f = {
-  ns: "." + a.ns,
-  nsText: "." + a.nsText
-}, I = "4.0.3", E = () => {
-  const t = () => v(h(), f.ns), o = () => {
-    const e = y('<svg viewBox="0 0 50 50"><circle class=path cx=25 cy=25 r=20 fill=none /></svg>'), s = l(
-      a.ns,
-      l(a.nsText),
-      l(a.nsSpinner, e)
+}, y = {
+  ns: "." + r.ns,
+  nsText: "." + r.nsText
+}, A = "4.0.5", H = () => {
+  const t = () => u(d(), y.ns), o = () => {
+    const e = m('<svg viewBox="0 0 50 50"><circle class=path cx=25 cy=25 r=20 fill=none /></svg>'), s = c(
+      r.ns,
+      c(r.nsText),
+      c(r.nsSpinner, e)
     );
     return s.nsId = Date.now(), s;
-  }, i = () => t().sort((n, e) => n.nsId - e.nsId), u = () => i()[0] ?? null, b = (n, e) => {
-    const s = d(n, f.nsText);
-    if (!e) return s == null ? void 0 : s.remove();
-    const r = l(a.nsText, e);
-    s ? s.replaceWith(r) : n.insertBefore(r, n.firstChild);
+  }, a = () => t().sort((n, e) => n.nsId - e.nsId), b = () => a()[0] ?? null, g = (n, e) => {
+    var i;
+    if ((i = h(n, y.nsText)) == null || i.remove(), !e) return;
+    const s = c(r.nsText, e);
+    n.insertBefore(s, n.firstChild);
   }, w = (n, e) => {
     const s = e.firstElementChild;
-    s && e.insertBefore(n, s), e.append(n), e.classList.add(a.nsHost);
-  }, g = (n, e) => {
-    const s = e ? A(e) ?? c() : c();
-    let r;
-    const m = d(s, "& > " + f.ns);
-    m ? r = m : (r = o(), w(r, s)), b(r, n ?? "");
-    const N = scrollY + "px";
-    return c().style.setProperty("--ns-top", N), r.nsId;
-  }, p = (n) => {
+    s && e.insertBefore(n, s), e.append(n), e.classList.add(r.nsHost);
+  }, x = (n) => v(n.children).find(
+    (s) => s.classList.contains(r.ns)
+  ), k = (n, e) => {
+    const s = e ? T(e) ?? l() : l();
+    let i;
+    const p = x(s);
+    if (p ? i = p : (i = o(), w(i, s)), g(i, n ?? ""), s === l()) {
+      const I = scrollY + "px";
+      l().style.setProperty("--ns-top", I);
+    }
+    return i.nsId;
+  }, f = (n) => {
     var e;
-    (e = n == null ? void 0 : n.parentElement) == null || e.classList.remove(a.nsHost), n == null || n.remove();
-  }, x = (n) => t().find((e) => e.nsId === n) ?? null, k = (n) => {
-    n === "*" ? t().forEach(p) : p(typeof n == "number" ? x(n) : u());
+    (e = n == null ? void 0 : n.parentElement) == null || e.classList.remove(r.nsHost), n == null || n.remove();
+  }, N = (n) => t().find((e) => e.nsId === n) ?? null, z = (n) => {
+    n === "*" ? t().forEach(f) : f(typeof n == "number" ? N(n) : b());
   };
   return (() => {
     var e;
-    (e = d(h(), "#ns")) == null || e.remove();
-    const n = y(
-      `<style id="ns">${z}</style>`
+    (e = h(d(), "#ns")) == null || e.remove();
+    const n = m(
+      `<style id="ns">${S}</style>`
     );
-    c().append(n);
+    l().append(n);
   })(), {
-    show: g,
-    hide: k,
-    version: I
+    show: k,
+    hide: z,
+    version: A
   };
 };
 export {
-  E as useNs
+  H as useNs
 };
