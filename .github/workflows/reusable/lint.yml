@@ -1,0 +1,26 @@
+name: Reusable - ESLint (non-persistent)
+
+on:
+  workflow_call:
+
+jobs:
+  run-eslint:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checking out the repository with the latest version
+      - uses: actions/checkout@v4
+
+      # Setting up the latest Bun.js version
+      - name: Set up Bun.js
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+
+      # Installing dependencies using Bun
+      - name: Install Dependencies
+        run: bun install
+      
+      # Running Vitest with coverage using Bun
+      - name: Run ESLint
+        run: bun run lint

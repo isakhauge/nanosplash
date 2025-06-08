@@ -1,0 +1,42 @@
+name: Reusable - Prettier Formatting
+
+on:
+  workflow_call:
+    inputs:
+      persistent:
+        required: true
+        type: boolean
+
+jobs:
+  run-prettier:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checking out the repository with the latest version
+      - uses: actions/checkout@v4
+
+      # Setting up the latest Bun.js version
+      - name: Set up Bun.js
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 'latest'
+
+      # Installing dependencies using Bun
+      - name: Install Dependencies
+        run: bun install
+      
+      # Running Prettier using Bun
+      - name: Run Prettier Format
+        run: bun run format
+        
+      # Committing formatted files to the current branch
+      - name: Commit Formatted Files
+        if: ${{ inputs.persistent }}
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "GitHub Actions: Format using Prettier" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,77 +1,27 @@
-name: CI General
+name: CI General (non-persistent)
 
 on:
   push:
     branches:
       - '**' # Trigger on all branches
+    branches-ignore:
+      - production
+      - test
   pull_request:
     branches:
       - '**' # Trigger on all branches
+    branches-ignore:
+      - production
+      - test
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-
-    steps:
-      # Checking out the repository with the latest version
-      - uses: actions/checkout@v4
-        with:
-          ref: production
-
-      # Setting up the latest Node.js version
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'latest'
-          registry-url: 'https://registry.npmjs.org'  # Specify NPM registry
-
-      # Setting up the latest Bun.js version
-      - name: Set up Bun.js
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 'latest'
-
-      # Installing dependencies using Bun
-      - name: Install Dependencies
-        run: bun install
-      
-      # Running Vitest with coverage using Bun
-      - name: Run Vitest
-        run: bunx vitest
-        
-      # Running Prettier formatting
-      - name: Run Format
-        run: bun run format
-        
-      # Running Linting
-      - name: Run ESLint
-        run: bun run lint
-
-      # Running build using Bun
-      - name: Run Build
-        run: bun run build
-      
-      # Committing build artifacts to the production branch
-      - name: Commit Build
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git config --global init.defaultBranch production
-          git add .
-          git commit -m "GitHub Actions: Persist build artifacts[ci skip]" || echo "No changes to commit"
-          git push origin production
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Uploading coverage to Coveralls
-      - name: Upload Coverage to Coveralls
-        uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ./coverage/lcov.info
-
-      # Publishing to NPM
-      - name: Publish to NPM
-        run: bunx npm version patch && bunx npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+  call-reusable--test:
+    uses: './.github/workflows/reusable/test.yml'
+    with:
+      persistent: false
+  call-reusable--lint:
+    uses: './.github/workflows/reusable/lint.yml'
+  call-reusable--build:
+    uses: './.github/workflows/reusable/build.yml'
+    with: 
+      persistent: false

@@ -7,48 +7,39 @@ on:
     branches: [ test ]
 
 jobs:
-  test--test-build-commit:
+  final-production-and-publish:
     runs-on: ubuntu-latest
-
+    
     steps:
-      # Checking out the repository with the latest version
-      - uses: actions/checkout@v4
+      - name: Lint (non-persistent)
+        uses: './.github/workflows/reusable/lint.yml'
+
+      - name: Format (non-persistent)
+        uses: './.github/workflows/reusable/format.yml'
         with:
-          ref: test
+          persistent: false
 
-      # Setting up the latest Node.js version
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Test (non-persistent)
+        uses: './.github/workflows/reusable/test.yml'
         with:
-          node-version: 'latest'
-          registry-url: 'https://registry.npmjs.org'  # Specify NPM registry
+          persistent: false
 
-      # Setting up the latest Bun.js version
-      - name: Set up Bun.js
-        uses: oven-sh/setup-bun@v2
+      - name: Build (non-persistent)
+        uses: './.github/workflows/reusable/build.yml'
         with:
-          bun-version: 'latest'
+          persistent: false
 
-      # Installing dependencies using Bun
-      - name: Install Dependencies
-        run: bun install
+      - name: NPM Publish Dry-Run (non-persistent)
+        uses: './.github/workflows/reusable/npm-publish.yml'
+        with:
+          persistent: false
 
-      # Running Vitest with coverage using Bun
-      - name: Run Vitest with Coverage
-        run: bunx vitest run --coverage
+      - name: Format
+        uses: './.github/workflows/reusable/format.yml'
+        with:
+          persistent: true
 
-      # Running build using Bun
-      - name: Run Build
-        run: bun run build
-      
-      # Committing build artifacts to the production branch
-      - name: Commit Build
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git config --global init.defaultBranch production
-          git add .
-          git commit -m "GitHub Actions: Persist build artifacts[ci skip]" || echo "No changes to commit"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        uses: './.github/workflows/reusable/build.yml'
+        with:
+          persistent: true
