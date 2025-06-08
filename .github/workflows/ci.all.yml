@@ -15,15 +15,22 @@ on:
       - test
 
 jobs:
-  call-reusable--test:
-    uses: '/.github/workflows/reusable/test.yml'
-    with:
-      persistent: false
-  call-reusable--lint:
-    uses: './.github/workflows/reusable/lint.yml'
-    with:
-      run-linting: true
-  call-reusable--build:
-    uses: './.github/workflows/reusable/build.yml'
-    with: 
-      persistent: false
+  general-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test (non-persistent)
+        uses: '/.github/workflows/reusable/test.yml'
+        with:
+          persistent: false
+      
+      - name: Lint (non-persistent)
+        uses: './.github/workflows/reusable/lint.yml'
+        with:
+          run-linting: true
+      
+      - name: Build (non-persistent)
+        uses: './.github/workflows/reusable/build.yml'
+        with:
+          persistent: false
