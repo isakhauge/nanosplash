@@ -28,17 +28,6 @@ jobs:
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-  
-      # Set version only if different
-      - name: Set version with npm (only if different)
-        run: |
-          CURRENT=$(node -p "require('./package.json').version")
-          if [ "$CURRENT" != "$VERSION" ]; then
-            echo "Updating version from $CURRENT to $VERSION"
-            npm version $VERSION --no-git-tag-version
-          else
-            echo "Version already $VERSION, skipping"
-          fi
 
       # Publishing to NPM (dry-run for testing purposes)
       - name: Publish to NPM (dry-run)
