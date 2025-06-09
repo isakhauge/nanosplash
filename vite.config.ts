@@ -24,7 +24,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    // @ts-ignore
+    // @ts-expect-error
     postcss({
       plugins: [
         cssnano({
