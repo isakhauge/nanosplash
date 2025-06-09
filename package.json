@@ -43,6 +43,7 @@
     "test": "bunx vitest --coverage"
   },
   "types": "./src/types/global.d.ts",
+  "main": "./dist/es/ns.es.js",
   "exports": {
     ".": {
       "types": "./src/types/global.d.ts",
@@ -51,7 +52,7 @@
       "default": "./dist/es/ns.es.js"
     }
   },
-  "source": "./src/composables/ns.ts",
+  "source": "./dist/es/ns.es.js",
   "unpkg": "./dist/iife/ns.iife.js",
   "devDependencies": {
     "@eslint/js": "^9.28.0",
