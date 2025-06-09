@@ -7,11 +7,7 @@
 
 ---
 
-## Introduction
-
-Nanosplash is the ultra-lightweight JavaScript library that makes adding a polished loading experience to your web app effortless. Weighing in at just 3KB and with zero dependencies, it’s designed to be blazingly fast and beautifully simple. Whether you need a fullscreen spinner or a branded loading message within a specific container, Nanosplash’s dead-simple 2-function API (show and hide) and full CSS customization make it the perfect tool for any modern web project. Try it today and elevate your app’s loading experience with zero fuss!
-
----
+### Nanosplash is the ultra-lightweight JavaScript library that makes adding a polished loading experience to your web app effortless. Weighing in at just 3KB and with zero dependencies, it’s designed to be blazingly fast and beautifully simple. Whether you need a fullscreen spinner or a branded loading message within a specific container, Nanosplash’s dead-simple 2-function API (show and hide) and full CSS customization make it the perfect tool for any modern web project. Try it today and elevate your app’s loading experience with zero fuss!
 
 ## Features
 
@@ -22,8 +18,6 @@ Nanosplash is the ultra-lightweight JavaScript library that makes adding a polis
 - **Modules**: Supports ESM, CJS, and IIFE.
 - **TypeScript support**: Fully typed.
 - **2 Function API**: Easy to use.
-
----
 
 ## Installation
 
@@ -38,8 +32,6 @@ or
 ```bash
 npm install nanosplash
 ```
-
----
 
 ## API Documentation
 
@@ -86,8 +78,6 @@ show(text?: string, target?: string | Element): number
   ns.show('Please wait', '#my-div')
   ```
 
----
-
 ### Hide
 
 The hide function removes one or more Nanosplash loading indicators from your page.
@@ -124,8 +114,6 @@ hide(id?: number | '*'): void
   ns.hide('*')
   ```
 
----
-
 ## Customization
 
 Nanosplash is designed to be fully customizable with CSS. You can style its key parts using these selectors:
@@ -136,8 +124,6 @@ Nanosplash is designed to be fully customizable with CSS. You can style its key 
 | `.ns`           | Main wrapper for the splash               |
 | `.nst`          | Text element                              |
 | `.nss`          | Spinner element                           |
-
----
 
 ## Examples
 
@@ -162,10 +148,6 @@ Here’s a quick snippet to show a loading indicator while fetching data:
 </script>
 ```
 
----
-
 ## 💖 Contributing & Feedback
 
 Found a bug or have a feature request? Visit the [GitHub repository](https://github.com/isakhauge/nanosplash) and open an issue or pull request!
-
----
