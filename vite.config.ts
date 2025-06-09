@@ -1,8 +1,8 @@
 import { defineConfig, type LibraryFormats } from 'vite'
 import path from 'node:path'
 import { config } from 'dotenv'
-import postcss from "postcss";
-import cssnano from "cssnano";
+import postcss from 'postcss'
+import cssnano from 'cssnano'
 config()
 
 const name = 'ns'
