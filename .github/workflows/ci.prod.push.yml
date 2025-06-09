@@ -59,10 +59,3 @@ jobs:
     uses: './.github/workflows/reusable.build.yml'
     with:
       persistent: true
-  
-  call-npm-publish:
-    needs: call-build
-    name: NPM Publish
-    uses: './.github/workflows/reusable.npm-publish.yml'
-    with: 
-      persistent: true
