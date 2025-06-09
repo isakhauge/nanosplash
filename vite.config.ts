@@ -24,7 +24,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    // @ts-ignore
+    // @ts-expect-error Because postcss is missing types.
     postcss({
       plugins: [
         cssnano({
