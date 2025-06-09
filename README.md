@@ -7,25 +7,25 @@
 
 ---
 
-## 🚀 Introduction
+## Introduction
 
-Nanosplash provides a lightweight and customizable loading screen for your web applications. Whether you want a simple spinner or a fully branded loading experience, Nanosplash makes it easy to implement and customize.
-
----
-
-## ✨ Features
-
-- 🔬 Tiny size: Only 3KB – ideal for lean, fast applications.
-- ⚡ High performance: Engineered for speed and responsiveness.
-- ✅ Zero dependencies: No extra baggage – pure JavaScript!
-- 🎨 Minimalistic design: Easily integrates with other designs.
-- 🚚 Exports in multiple formats: Supports ESM, CJS, and IIFE.
-- 📘 TypeScript support: Fully typed. Better DX.
-- ✌️ 2 Function API: Small, simple – just what you need.
+Nanosplash is the ultra-lightweight JavaScript library that makes adding a polished loading experience to your web app effortless. Weighing in at just 3KB and with zero dependencies, it’s designed to be blazingly fast and beautifully simple. Whether you need a fullscreen spinner or a branded loading message within a specific container, Nanosplash’s dead-simple 2-function API (show and hide) and full CSS customization make it the perfect tool for any modern web project. Try it today and elevate your app’s loading experience with zero fuss!
 
 ---
 
-## 📦 Installation
+## Features
+
+- **Tiny**: Only 3KB
+- **Performance**: Created to be fast.
+- **Zero dependencies**: Pure JS.
+- **Beautiful**: Good and generic design.
+- **Modules**: Supports ESM, CJS, and IIFE.
+- **TypeScript support**: Fully typed.
+- **2 Function API**: Easy to use.
+
+---
+
+## Installation
 
 Include Nanosplash in your project via your preferred method (e.g., CDN, module bundler). Example:
 
@@ -41,11 +41,19 @@ npm install nanosplash
 
 ---
 
-## 🎯 API Documentation
+## API Documentation
 
-### `ns.show(text?, target?)`
+### Show
 
-Displays a Nanosplash.
+The show function displays a Nanosplash loading indicator on your page.
+You can pass in optional text to display with the spinner, and an optional target element (or CSS selector) to control where it appears.
+If no target is provided, Nanosplash will create a fullscreen splash covering the entire viewport.
+
+```txt
+show(text?: string, target?: string | Element): number
+```
+
+#### Parameters
 
 | Parameter | Type                             | Description                                                 |
 |-----------|----------------------------------|-------------------------------------------------------------|
@@ -80,9 +88,16 @@ Displays a Nanosplash.
 
 ---
 
-### `ns.hide(id?)`
+### Hide
 
-Hides or removes a Nanosplash.
+The hide function removes one or more Nanosplash loading indicators from your page.
+By default, it removes the oldest fullscreen splash (FIFO). If you want to remove a specific splash, you can pass its ID (returned by show).
+You can also remove all splashes at once by passing the wildcard '*'.
+
+```txt
+hide(id?: number | '*'): void
+```
+#### Arguments
 
 | Parameter | Type                  | Description                                                |
 |-----------|-----------------------|------------------------------------------------------------|
@@ -111,7 +126,7 @@ Hides or removes a Nanosplash.
 
 ---
 
-## 🎨 Customization
+## Customization
 
 Nanosplash is designed to be fully customizable with CSS. You can style its key parts using these selectors:
 
@@ -124,7 +139,7 @@ Nanosplash is designed to be fully customizable with CSS. You can style its key 
 
 ---
 
-## 🛠️ Examples
+## Examples
 
 Here’s a quick snippet to show a loading indicator while fetching data:
 

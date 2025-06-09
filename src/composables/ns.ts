@@ -1,4 +1,4 @@
-import style from '@/style/ns.min.css?raw'
+import style from '@/style/ns.css?inline'
 import type { INanosplash } from '@/interfaces/INanosplash.ts'
 import type { Func } from '@/types/generic/function.ts'
 import type { INSElement } from '@/interfaces/INSElement.ts'

@@ -1,6 +1,8 @@
 import { defineConfig, type LibraryFormats } from 'vite'
 import path from 'node:path'
 import { config } from 'dotenv'
+import postcss from "postcss";
+import cssnano from "cssnano";
 config()
 
 const name = 'ns'
@@ -21,4 +23,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  plugins: [
+    // @ts-ignore
+    postcss({
+      plugins: [
+        cssnano({
+          preset: 'default', // Use default preset for standard CSS minification
+        }),
+      ],
+    }),
+  ],
 })
