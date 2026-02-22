@@ -12,7 +12,7 @@ const T = '@keyframes nsRotate{to{transform:rotate(360deg)}}@keyframes nsDash{0%
 }, m = {
   ns: "." + r.ns,
   nsText: "." + r.nsText
-}, N = "4.0.8", H = () => {
+}, N = "4.0.9", H = () => {
   const e = () => u(d(), m.ns), o = () => {
     const t = v('<svg viewBox="0 0 50 50"><circle class=path cx=25 cy=25 r=20 fill=none /></svg>'), n = c(
       r.ns,
