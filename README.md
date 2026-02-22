@@ -7,7 +7,12 @@
 
 ---
 
-### Nanosplash is the ultra-lightweight JavaScript library that makes adding a polished loading experience to your web app effortless. Weighing in at just 3KB and with zero dependencies, it’s designed to be blazingly fast and beautifully simple. Whether you need a fullscreen spinner or a branded loading message within a specific container, Nanosplash’s dead-simple 2-function API (show and hide) and full CSS customization make it the perfect tool for any modern web project. Try it today and elevate your app’s loading experience with zero fuss!
+### Nanosplash is a 3KB zero-dependency library for effortless loading screens. Its 2-function API lets you add fullscreen or container-based spinners in seconds, fully customizable with CSS. Fast, beautiful, and simple—Nanosplash makes loading states a breeze.
+
+<div style="text-align: center; font-size: 20px; display: flex; flex-direction: column; align-items: center; gap: 0.5em;">
+  <code>show('Loading', '#my-div')</code>
+  <code>hide()</code>
+</div>
 
 ## Features
 
@@ -41,38 +46,31 @@ The show function displays a Nanosplash loading indicator on your page.
 You can pass in optional text to display with the spinner, and an optional target element (or CSS selector) to control where it appears.
 If no target is provided, Nanosplash will create a fullscreen splash covering the entire viewport.
 
-```txt
+```ts
 show(text?: string, target?: string | Element): number
 ```
 
-#### Parameters
-
-| Parameter | Type                             | Description                                                 |
-|-----------|----------------------------------|-------------------------------------------------------------|
-| `text`    | `string \| undefined`            | Optional. Text to display alongside the spinner.            |
-| `target`  | `string \| Element \| undefined` | Optional. CSS selector or an element to contain the splash. |
-
 #### Examples:
 
-- **Fullscreen spinner only:**
+**Fullscreen spinner only:**
 
   ```js
   ns.show()
   ```
 
-- **Fullscreen text and spinner:**
+**Fullscreen text and spinner:**
 
   ```js
   ns.show('Loading...')
   ```
 
-- **Spinner only within a specific element:**
+**Spinner only within a specific element:**
 
   ```js
   ns.show(null, '#my-div')
   ```
 
-- **Text and spinner within a specific element:**
+**Text and spinner within a specific element:**
 
   ```js
   ns.show('Please wait', '#my-div')
@@ -84,31 +82,25 @@ The hide function removes one or more Nanosplash loading indicators from your pa
 By default, it removes the oldest fullscreen splash (FIFO). If you want to remove a specific splash, you can pass its ID (returned by show).
 You can also remove all splashes at once by passing the wildcard '*'.
 
-```txt
+```ts
 hide(id?: number | '*'): void
 ```
-#### Arguments
-
-| Parameter | Type                  | Description                                                |
-|-----------|-----------------------|------------------------------------------------------------|
-| `id`      | `number \| undefined` | Optional. The ID of the Nanosplash to remove.              |
-
 #### Examples:
 
-- **Remove the oldest (FIFO) fullscreen Nanosplash:**
+**Remove the oldest (FIFO) fullscreen Nanosplash:**
 
   ```js
   ns.hide()
   ```
 
-- **Remove a specific Nanosplash by ID:**
+**Remove a specific Nanosplash by ID:**
 
   ```js
   const id = ns.show() // 1700000000000
   ns.hide(id)
   ```
 
-- **Remove all Nanosplashes:**
+**Remove all Nanosplashes:**
 
   ```js
   ns.hide('*')

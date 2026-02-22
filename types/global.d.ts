@@ -1,4 +1,4 @@
-import type { INanosplash } from '../interfaces/INanosplash.ts'
+import type { INanosplash } from './interfaces/INanosplash.ts'
 
 declare global {
   interface Window {

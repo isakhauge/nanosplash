@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/interfaces/INanosplash.ts</title>
+    <title>Code coverage report for nanosplash/package.json</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../prettify.css" />
-    <link rel="stylesheet" href="../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../sort-arrow-sprite.png);
+            background-image: url(../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/interfaces</a> INanosplash.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">nanosplash</a> package.json</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -32,14 +32,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
@@ -136,7 +136,11 @@
 <a name='L71'></a><a href='#L71'>71</a>
 <a name='L72'></a><a href='#L72'>72</a>
 <a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -209,78 +213,86 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { ElementRef } from '@/types/dom.ts'
-import type { int } from '@/types/semantic/number.ts'
-&nbsp;
-/**
- * # Nanosplash
- * @author Isak Hauge &lt;isakhauge@icloud.com&gt;
- */
-export interface INanosplash {
-  /**
-   * # Show
-   * Display Nanosplash inside the window.
-   * @param {string | null | undefined} text Optional text. Pass falsy to display spinner only.
-   * @param {string | Element | undefined} inside Optional element reference
-   * @returns {number | null} The internal ID of the created Nanosplash.
-   * @example
-   * // Show spinner only
-   * ns.show()
-   * @example
-   * // Show spinner and text
-   * ns.show('Loading ...')
-   * @example
-   * // Show spinner and text inside element
-   * const div = document.createElement('div')
-   * div.id = 'my-div'
-   * document.body.append(div)
-   *
-   * // Alternative 1: Using node
-   * ns.show('Loading ...', div)
-   *
-   * // Alternative 2: Using selector
-   * ns.show('Loading ...', '#my-div')
-   * @example
-   * // Show spinner only, inside element
-   * const div = document.createElement('div')
-   * div.id = 'my-div'
-   * document.body.append(div)
-   *
-   * // Alternative 1: Using node
-   * ns.show(null, div)
-   *
-   * // Alternative 2: Using selector
-   * ns.show(null, '#my-div')
-   */
-  show(
-    text?: string | null | undefined,
-    inside?: ElementRef | HTMLElement
-  ): int | null
-  /**
-   * # Hide
-   * Remove Nanosplash in multiple ways depending on the passed argument.
-   * - Pass ID: Remove specific.
-   * - Pass '*': Remove all in window.
-   * - Pass nothing: Remove in FIFO order.
-   * @param id The internal ID, an asterisk, or nothing.
-   * @example
-   * // Remove the first Nanosplash in the queue (FIFO)
-   * ns.hide()
-   * @example
-   * // Remove specific Nanosplash in case you have multiple
-   * const idA: number = ns.show(null, '#div-a') // 1700000000000
-   * const idB: number = ns.show(null, '#div-b') // 1800000000000
-   * ns.hide(idB) // Only hides Nanosplash inside the element with ID div-b
-   * @example
-   * // Hide all Nanosplash elements in the DOM
-   * ns.hide('*')
-   */
-  hide(id?: int | '*'): void
-  /**
-   * # Version
-   * The current version of Nanosplash.
-   */
-  version: string
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">{
+  "name": "nanosplash",
+  "private": false,
+  "version": "4.0.8",
+  "type": "module",
+  "author": {
+    "name": "Isak K. Hauge",
+    "email": "isakhauge@icloud.com",
+    "url": "https://no.linkedin.com/in/isakhauge"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isakhauge/nanosplash.git"
+  },
+  "description": "The tiny loading screen for web artisans",
+  "homepage": "https://github.com/isakhauge/nanosplash",
+  "keywords": [
+    "loading",
+    "loader",
+    "screen",
+    "splash",
+    "nano",
+    "nanosplash",
+    "small",
+    "tiny",
+    "es",
+    "esm",
+    "ts",
+    "typescript",
+    "iife",
+    "cdn",
+    "vite"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "bun run build:es &amp;&amp; bun run build:cjs &amp;&amp; bun run build:iife",
+    "build:es": "tsc &amp;&amp; cross-env entry=./src/composables/ns.ts format=es vite build -m production --outDir ./dist/es",
+    "build:cjs": "tsc &amp;&amp; cross-env entry=./src/composables/ns.ts format=cjs vite build -m production --outDir ./dist/cjs",
+    "build:iife": "tsc &amp;&amp; cross-env entry=./src/iife.ts format=iife vite build -m production --outDir ./dist/iife",
+    "preview": "vite preview",
+    "lint": "eslint . --fix",
+    "format": "prettier --write ./src/**/*.ts ./vite.config.ts",
+    "test": "bunx vitest --coverage"
+  },
+  "types": "./src/types/global.d.ts",
+  "main": "./dist/es/ns.es.js",
+  "exports": {
+    ".": {
+      "types": "./src/types/global.d.ts",
+      "import": "./dist/es/ns.es.js",
+      "require": "./dist/cjs/ns.cjs.js",
+      "default": "./dist/es/ns.es.js"
+    }
+  },
+  "source": "./dist/es/ns.es.js",
+  "unpkg": "./dist/iife/ns.iife.js",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.0",
+    "@typescript-eslint/parser": "^8.56.0",
+    "@vitest/coverage-v8": "4.0.18",
+    "cross-env": "^10.1.0",
+    "cssnano": "^7.1.2",
+    "dotenv": "^17.3.1",
+    "eslint": "^10.0.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.3.0",
+    "jsdom": "^28.1.0",
+    "postcss": "^8.5.6",
+    "prettier": "3.8.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.0",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  }
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -289,16 +301,16 @@ export interface INanosplash {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-09T13:54:28.777Z
+                at 2026-02-21T20:03:07.962Z
             </div>
-        <script src="../../prettify.js"></script>
+        <script src="../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../sorter.js"></script>
-        <script src="../../block-navigation.js"></script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
     </body>
 </html>
     
