@@ -1,7 +1,7 @@
 import style from '@/style/ns.css?inline'
-import type { INanosplash } from '@/interfaces/INanosplash.ts'
+import type { INanosplash } from '@/types/interfaces/INanosplash'
 import type { Func } from '@/types/generic/function.ts'
-import type { INSElement } from '@/interfaces/INSElement.ts'
+import type { INSElement } from '@/types/interfaces/INSElement'
 import {
   all,
   bod,

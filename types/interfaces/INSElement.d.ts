@@ -1,4 +1,4 @@
-import type { int } from '@/types/semantic/number.ts'
+import type { int } from "../semantic/number";
 
 export interface INSElement extends HTMLDivElement {
   nsId: int

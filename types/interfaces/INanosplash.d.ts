@@ -1,5 +1,5 @@
-import type { ElementRef } from '@/types/dom.ts'
-import type { int } from '@/types/semantic/number.ts'
+import type { ElementRef } from '../dom'
+import type { int } from '../semantic/number'
 
 /**
  * # Nanosplash
