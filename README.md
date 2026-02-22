@@ -9,10 +9,16 @@
 
 ### Nanosplash is a 3KB zero-dependency library for effortless loading screens. Its 2-function API lets you add fullscreen or container-based spinners in seconds, fully customizable with CSS. Fast, beautiful, and simple—Nanosplash makes loading states a breeze.
 
-<div style="text-align: center; font-size: 20px; display: flex; flex-direction: column; align-items: center; gap: 0.5em;">
-  <code>show('Loading', '#my-div')</code>
-  <code>hide()</code>
-</div>
+```js
+// Display spinner fullscreen
+show('Loading')
+
+// Display spinner in target
+show('Loading', '#my-div')
+
+// Hide spinner
+hide()
+```
 
 ## Features
 
