@@ -1,4 +1,3 @@
-# .github/workflows/reusables/bun-npm-publish.yml
 name: Reusable - Bun NPM Publish (Trusted Publisher)
 
 on:
@@ -32,7 +31,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Use Bun for install & build
+      # 1) Use Bun for install & build
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -44,18 +43,27 @@ jobs:
       - name: Build package
         run: bun run build
 
-      # Use Node + latest npm for the publish itself
+      # 2) Use Node 24 + newest npm *just* for publish
       - name: Setup Node for publish
         uses: actions/setup-node@v4
         with:
-          node-version: '24'              # >= 22.14.0 as required
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "24.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Check Node & npm versions
+        run: |
+          node -v
+          npm -v
 
       - name: Upgrade npm (ensure >= 11.5.1)
         run: npm install -g npm@latest
 
+      - name: Check npm version after upgrade
+        run: npm -v
+
+      # 3) Publish via Trusted Publisher
       # IMPORTANT:
-      # - Do NOT set NPM_TOKEN or NODE_AUTH_TOKEN
-      # - Do NOT call npm config set ...:_authToken
-      - name: Publish to npm via Trusted Publisher
+      #   - No NPM_TOKEN / NODE_AUTH_TOKEN
+      #   - No `npm config set ...:_authToken`
+      - name: Publish to npm via Trusted Publishing
         run: npm publish --provenance --access public --tag ${{ inputs.npm-tag }}
