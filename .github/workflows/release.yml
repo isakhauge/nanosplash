@@ -1,0 +1,14 @@
+# .github/workflows/release.yml
+name: Release Nanosplash
+
+on:
+  push:
+    tags:
+      - "v*.*.*"  # e.g. v1.2.3
+
+jobs:
+  publish:
+    uses: ./.github/workflows/reusables/bun-npm-publish.yml
+    with:
+      working-directory: .
+      npm-tag: latest

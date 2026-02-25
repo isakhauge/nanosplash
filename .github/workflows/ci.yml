@@ -1,0 +1,26 @@
+# .github/workflows/ci.yml
+name: Nanosplash CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    uses: ./.github/workflows/reusables/bun-build.yml
+    with:
+      working-directory: .
+
+  test:
+    needs: build
+    uses: ./.github/workflows/reusables/bun-test.yml
+    with:
+      working-directory: .
+
+  lint:
+    needs: build
+    uses: ./.github/workflows/reusables/bun-lint.yml
+    with:
+      working-directory: .
