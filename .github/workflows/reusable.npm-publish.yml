@@ -25,6 +25,10 @@ jobs:
         with:
           node-version: 'latest'
           registry-url: 'https://registry.npmjs.org'  # Specify NPM registry
+          
+      # Install latest npm
+      - name: Install latest npm
+        run: npm install -g npm@latest
 
       # Installing dependencies
       - name: Install Dependencies
@@ -40,8 +44,6 @@ jobs:
       # Publishing to NPM (dry-run for testing purposes)
       - name: Publish to NPM (dry-run)
         run: npm publish --dry-run
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
           
       # Commit the version tag made by NPM
       - name: Commit version tag
@@ -54,12 +56,7 @@ jobs:
           git push origin
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Configure npm for authentication
-        run: echo "https://registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLISH_TOKEN }}" > ~/.npmrc
 
       - name: Publish to NPM
         if: ${{ inputs.persistent }}
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+        run: npm publish --provenance --access public
