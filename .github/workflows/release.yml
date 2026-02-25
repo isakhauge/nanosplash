@@ -8,7 +8,7 @@ on:
 
 jobs:
   publish:
-    uses: ./.github/workflows/reusables/bun-npm-publish.yml
+    uses: ./.github/workflows/reusables/bun-npm-publish.reusable.yml
     with:
       working-directory: .
       npm-tag: latest

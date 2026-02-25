@@ -9,18 +9,18 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/reusables/bun-build.yml
+    uses: ./.github/workflows/reusables/bun-build.reusable.yml
     with:
       working-directory: .
 
   test:
     needs: build
-    uses: ./.github/workflows/reusables/bun-test.yml
+    uses: ./.github/workflows/reusables/bun-test.reusable.yml
     with:
       working-directory: .
 
   lint:
     needs: build
-    uses: ./.github/workflows/reusables/bun-lint.yml
+    uses: ./.github/workflows/reusables/bun-lint.reusable.yml
     with:
       working-directory: .
