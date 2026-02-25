@@ -1,5 +1,4 @@
-# .github/workflows/reusables/bun-test.yml
-name: Reusable - Bun Test
+name: Reusable - Bun Test + Coverage (Coveralls)
 
 on:
   workflow_call:
@@ -9,9 +8,14 @@ on:
         required: false
         type: string
         default: "."
+      upload-to-coveralls:
+        description: "Whether to upload coverage to Coveralls"
+        required: false
+        type: boolean
+        default: true
 
 jobs:
-  test:
+  test-coverage:
     runs-on: ubuntu-latest
 
     defaults:
@@ -28,5 +32,12 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Run tests
-        run: bun test
+      - name: Run tests with coverage
+        run: bun run test
+
+      - name: Upload coverage to Coveralls
+        if: ${{ inputs.upload-to-coveralls }}
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ${{ inputs.working-directory }}/coverage/lcov.info

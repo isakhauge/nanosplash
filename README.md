@@ -2,8 +2,8 @@
 
 **The tiny loading screen for web artisans**
 
-[![CI Production: Build, Test, Publish](https://github.com/isakhauge/nanosplash/actions/workflows/ci.prod.push.yml/badge.svg)](https://github.com/isakhauge/nanosplash/actions/workflows/ci.prod.push.yml)
-[![Coverage Status](https://coveralls.io/repos/github/isakhauge/nanosplash/badge.svg?branch=production)](https://coveralls.io/github/isakhauge/nanosplash?branch=production)
+[![CI Production: Build, Test](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml/badge.svg)](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/isakhauge/nanosplash/badge.svg?branch=main)](https://coveralls.io/github/isakhauge/nanosplash?branch=main)
 
 ---
 
