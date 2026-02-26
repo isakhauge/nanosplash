@@ -8,11 +8,6 @@ on:
         required: false
         type: string
         default: "."
-      npm-tag:
-        description: "npm dist-tag to publish with"
-        required: false
-        type: string
-        default: "latest"
 
 jobs:
   publish:
@@ -43,27 +38,10 @@ jobs:
       - name: Build package
         run: bun run build
 
-      # 2) Use Node 24 + newest npm *just* for publish
+      # 2) Use Node 24 + newest npm *just* for publication
       - name: Setup Node for publish
         uses: actions/setup-node@v4
         with:
           node-version: "24.x"
           registry-url: "https://registry.npmjs.org"
-
-      - name: Check Node & npm versions
-        run: |
-          node -v
-          npm -v
-
-      - name: Upgrade npm (ensure >= 11.5.1)
-        run: npm install -g npm@latest
-
-      - name: Check npm version after upgrade
-        run: npm -v
-
-      # 3) Publish via Trusted Publisher
-      # IMPORTANT:
-      #   - No NPM_TOKEN / NODE_AUTH_TOKEN
-      #   - No `npm config set ...:_authToken`
-      - name: Publish to npm via Trusted Publishing
-        run: npm publish --provenance --access public --tag ${{ inputs.npm-tag }}
+      - run: npm publish
