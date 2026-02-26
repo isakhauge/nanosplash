@@ -42,6 +42,12 @@
     "format": "prettier --write ./src/**/*.ts ./vite.config.ts ./vitest.config.ts",
     "test": "bunx vitest --coverage"
   },
+  "files": [
+    "dist",
+    "types",
+    "README.md",
+    "LICENSE"
+  ],
   "types": "./types/global.d.ts",
   "main": "./dist/es/ns.es.js",
   "exports": {
