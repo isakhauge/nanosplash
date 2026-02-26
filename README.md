@@ -7,7 +7,7 @@
 
 ---
 
-### Nanosplash is a 3KB zero-dependency library for effortless loading screens. Its 2-function API lets you add fullscreen or container-based spinners in seconds, fully customizable with CSS. Fast, beautiful, and simple—Nanosplash makes loading states a breeze.
+### Nanosplash is a 3KB zero-dependency library for effortless loading screens. Its 2-function API lets you add fullscreen or container-based spinners in seconds, fully customizable with CSS. Fast, beautiful, and simple.
 
 ```js
 // Display spinner fullscreen
