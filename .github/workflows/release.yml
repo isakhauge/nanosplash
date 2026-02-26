@@ -11,4 +11,3 @@ jobs:
     uses: ./.github/workflows/bun-npm-publish.reusable.yml
     with:
       working-directory: .
-      npm-tag: latest
