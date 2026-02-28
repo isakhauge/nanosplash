@@ -67,7 +67,7 @@
     backdrop-filter: var(--blur);
     -webkit-backdrop-filter: var(--blur);
     z-index: calc(var(--zIdx) + 1);
-    border-radius: var(--size);
+    border-radius: inherit; /* Inherit border radius from parent */
   }
 }
 
