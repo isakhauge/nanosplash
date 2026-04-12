@@ -31,7 +31,7 @@ export const useNs: Func<INanosplash> = (): INanosplash => {
    * @returns Array of all `INSElement` instances
    */
   const getAllNs: Func<INSElement[]> = () =>
-      all(doc(), Selectors.ns) as INSElement[]
+    all(doc(), Selectors.ns) as INSElement[]
 
   /**
    * Creates a new Nanosplash element with spinner and optional text container.
@@ -42,13 +42,13 @@ export const useNs: Func<INanosplash> = (): INanosplash => {
    */
   const makeNs: Func<INSElement> = () => {
     const circle: HTMLString =
-        '<circle class=path cx=25 cy=25 r=20 fill=none />'
+      '<circle class=path cx=25 cy=25 r=20 fill=none />'
     const svg = parseHtml(`<svg viewBox="0 0 50 50">${circle}</svg>`) as Element
 
     const node = div(
-        ClassNames.ns,
-        div(ClassNames.nsText),
-        div(ClassNames.nsSpinner, svg)
+      ClassNames.ns,
+      div(ClassNames.nsText),
+      div(ClassNames.nsSpinner, svg)
     ) as INSElement
 
     node.nsId = Date.now()
@@ -62,7 +62,7 @@ export const useNs: Func<INanosplash> = (): INanosplash => {
    * @returns Nanosplash elements in creation order
    */
   const nsQueue: Func<INSElement[]> = () =>
-      getAllNs().sort((a, b) => a.nsId - b.nsId)
+    getAllNs().sort((a, b) => a.nsId - b.nsId)
 
   /**
    * Returns the oldest Nanosplash element without removing it (peek operation).
@@ -112,7 +112,7 @@ export const useNs: Func<INanosplash> = (): INanosplash => {
    */
   const getNsInside = (parent: Element): INSElement | undefined => {
     const children = toArray(parent.children) as INSElement[]
-    return children.find((v) => v.classList.contains(ClassNames.ns))
+    return children.find(v => v.classList.contains(ClassNames.ns))
   }
 
   /**
@@ -168,7 +168,7 @@ export const useNs: Func<INanosplash> = (): INanosplash => {
    * @returns The matching Nanosplash element, or `null` if not found
    */
   const findNs = (id: int): INSElement | null =>
-      getAllNs().find((x) => x.nsId === id) ?? null
+    getAllNs().find(x => x.nsId === id) ?? null
 
   /**
    * Hides one or more Nanosplash elements.
@@ -201,7 +201,7 @@ export const useNs: Func<INanosplash> = (): INanosplash => {
     first(doc(), '#ns')?.remove()
 
     const styleElement: HTMLStyleElement = parseHtml(
-        `<style id="ns">${style}</style>`
+      `<style id="ns">${style}</style>`
     ) as HTMLStyleElement
 
     bod().append(styleElement)
