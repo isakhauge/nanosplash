@@ -35,9 +35,9 @@ jobs:
       - name: Run tests with coverage
         run: bun run test
 
-#      - name: Upload coverage to Coveralls
-#        if: ${{ inputs.upload-to-coveralls }}
-#        uses: coverallsapp/github-action@v2
-#        with:
-#          github-token: ${{ secrets.GITHUB_TOKEN }}
-#          path-to-lcov: ${{ inputs.working-directory }}/coverage/lcov.info
+      - name: Upload coverage to Coveralls
+        if: ${{ inputs.upload-to-coveralls }}
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ${{ inputs.working-directory }}/coverage/lcov.info
