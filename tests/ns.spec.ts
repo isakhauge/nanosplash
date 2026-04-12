@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import {useNs} from "@/composables/ns";
-import type {INSElement} from "@/interfaces/INSElement";
+import type {INSElement} from "@/types/interfaces/INSElement";
 import {Selectors} from "@/constants/ns";
 
 const get = (selector: string) => document.querySelector(selector)
