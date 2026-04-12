@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # 1) Use Bun for install & build
       - name: Setup Bun
@@ -40,7 +40,7 @@ jobs:
 
       # 2) Use Node 24 + newest npm *just* for publication
       - name: Setup Node for publish
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "24.x"
           registry-url: "https://registry.npmjs.org"
