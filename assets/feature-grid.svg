@@ -18,12 +18,12 @@
   <g transform="translate(20, 20)">
 
   <!-- Row 1 -->
-  <!-- Card 1: Tiny 3kb -->
+  <!-- Card 1: Tiny 3kb gzipped -->
   <g filter="url(#cardShadow)">
     <rect x="0" y="0" width="317" height="202" rx="22" fill="url(#cardGrad)" stroke="#00000010"/>
   </g>
   <text x="158" y="93" text-anchor="middle" font-size="17" font-weight="510" fill="#6e6e73" letter-spacing="-0.2">Tiny</text>
-  <text x="158" y="130" text-anchor="middle" font-size="34" font-weight="700" fill="#1d1d1f" letter-spacing="-0.5">3kb</text>
+  <text x="158" y="130" text-anchor="middle" font-size="28" font-weight="700" fill="#1d1d1f" letter-spacing="-0.5">3kb gzipped</text>
 
   <!-- Card 2: High performance -->
   <g filter="url(#cardShadow)">

@@ -5,7 +5,7 @@
 [![CI Production: Build, Test](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml/badge.svg)](https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/isakhauge/nanosplash/badge.svg?branch=main)](https://coveralls.io/github/isakhauge/nanosplash?branch=main)
 
-![Nanosplash features: tiny 3kb, high performance, zero dependencies, minimalistic design, exports ES/CJS/IIFE, 3 function API](https://raw.githubusercontent.com/isakhauge/nanosplash/main/assets/feature-grid.svg)
+![Nanosplash features: tiny 3kb gzipped, high performance, zero dependencies, minimalistic design, exports ES/CJS/IIFE, 3 function API](https://raw.githubusercontent.com/isakhauge/nanosplash/main/assets/feature-grid.svg)
 
 ```js
 // Anti-flicker: appear only if slower than 150 ms, stay at least 400 ms

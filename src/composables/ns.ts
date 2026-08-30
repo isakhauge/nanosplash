@@ -247,13 +247,16 @@ export const useNs = (options?: NsOptions): INanosplash => {
    */
   const ensureStyle = (): void => {
     const existing = first(doc(), '#ns') as HTMLStyleElement | null
+    // Compare against a fresh element so `style` has a single textual use;
+    // the minifier would otherwise inline the full CSS string at every site.
+    const fresh = injectStyle()
+
     if (!existing) {
-      doc().head.append(injectStyle())
+      doc().head.append(fresh)
       return
     }
 
-    if (existing.textContent !== style) {
-      const fresh = injectStyle()
+    if (existing.textContent !== fresh.textContent) {
       existing.replaceWith(fresh)
     }
   }
