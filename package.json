@@ -33,6 +33,7 @@
   "source": "./src/composables/ns.ts",
   "files": [
     "dist",
+    "!dist/docs",
     "types",
     "README.md",
     "LICENSE"
