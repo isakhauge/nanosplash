@@ -33,6 +33,12 @@ const [user, posts] = await ns.show([
 
 Still just two functions. Accessible out of the box (`role="status"`, `aria-live="polite"`, `aria-busy`, `prefers-reduced-motion`) and themeable via `--ns-*` CSS custom properties.
 
+## Live demo
+
+**[Try every feature live →](https://raw.githack.com/isakhauge/nanosplash/main/docs/index.html)**
+
+Self-contained, runs the real library, no build step. Prefer to run it yourself? Clone the repo and open [`docs/index.html`](./docs/index.html) directly in a browser — no server required.
+
 ## Installation
 
 ```bash

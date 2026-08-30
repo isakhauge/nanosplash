@@ -43,7 +43,7 @@ Displays a loading indicator — or runs async **jobs** under one. The behavior 
 
 A **job** is a thunk returning a promise — `() => Promise<T>` — so the splash is guaranteed to be visible before the work starts.
 
-If the target container already contains a Nanosplash instance, that instance is **recycled** — its text is updated rather than creating a duplicate. If no container is specified, the indicator is rendered over the document body and automatically positioned at the current scroll offset.
+If the target container already contains a Nanosplash instance, that instance is **recycled** — its text is updated rather than creating a duplicate. If no container is specified, the indicator overlays the whole viewport without disturbing the page's scroll position.
 
 **Signatures**
 
@@ -200,7 +200,7 @@ All active instances are internally ordered by their creation timestamp. When `h
 
 ### Body-Level Positioning
 
-When no container is provided, Nanosplash attaches to the document body and sets a `--ns-top` CSS custom property equal to the current `window.scrollY`. This keeps the overlay anchored to the visible viewport even on scrolled pages.
+When no container is provided, Nanosplash attaches to the document body, but the overlay itself is pinned to the viewport (`position: fixed`) rather than the document. `body` is never taken out of normal flow, so showing or hiding a full-page splash never disturbs `window.scrollY`.
 
 ### Host Class
 

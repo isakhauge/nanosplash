@@ -162,12 +162,6 @@ export const useNs = (options?: NsOptions): INanosplash => {
     applyTiming(ns, parent)
     setNsText(ns, label ?? '')
 
-    // Position body-level splash at current scroll position
-    if (parent === bod()) {
-      const top: string = scrollY + 'px'
-      bod().style.setProperty('--ns-top', top)
-    }
-
     return ns.nsId
   }
 
