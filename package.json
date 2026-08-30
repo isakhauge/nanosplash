@@ -56,7 +56,7 @@
     "build:es": "tsc && cross-env entry=./src/composables/ns.ts format=es vp build -m production --outDir ./dist/es",
     "build:cjs": "tsc && cross-env entry=./src/composables/ns.ts format=cjs vp build -m production --outDir ./dist/cjs",
     "build:iife": "tsc && cross-env entry=./src/iife.ts format=iife vp build -m production --outDir ./dist/iife",
-    "build:docs": "tsc && cross-env entry=./src/docs.ts format=iife vp build -m production --outDir ./dist/docs && node ./scripts/build-docs.mjs",
+    "build:docs": "tsc && cross-env entry=./src/docs.ts format=iife vp build -m production --outDir ./dist/docs && bun ./scripts/build-docs.ts",
     "preview": "vp preview",
     "lint": "vp lint",
     "format": "vp fmt",
