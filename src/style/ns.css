@@ -39,10 +39,6 @@
   }
 }
 
-:root {
-  --ns-top: 0;
-}
-
 /*
  * Public theming defaults.
  *
@@ -96,16 +92,18 @@
   }
 }
 
-/* For when the Nanosplash host is the document body */
-body.nsh {
-  &,
-  &::before {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: var(--ns-top);
-    left: 0;
-  }
+/*
+ * When the host is the document body, pin the overlay pieces to the
+ * viewport instead of the document. Making `body` itself `position: fixed`
+ * (the previous approach) removes it from normal flow, which collapses the
+ * document's scrollable height and snaps `window.scrollY` to 0 the instant
+ * the splash appears. Fixing only the overlay avoids touching body's layout
+ * or the page's scroll position at all.
+ */
+body.nsh::before,
+body.nsh > .ns {
+  position: fixed;
+  inset: 0;
 }
 
 /* Nanosplash main element */

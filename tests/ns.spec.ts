@@ -544,6 +544,38 @@ describe('useNs', () => {
     })
   })
 
+  describe('scroll position', () => {
+    it('never reads or writes window.scrollY when showing a body-level splash', () => {
+      const scrollYSpy = vi.spyOn(window, 'scrollY', 'get')
+      const scrollToSpy = vi.spyOn(window, 'scrollTo')
+
+      ns.show('Loading…')
+
+      expect(scrollYSpy).not.toHaveBeenCalled()
+      expect(scrollToSpy).not.toHaveBeenCalled()
+
+      scrollYSpy.mockRestore()
+      scrollToSpy.mockRestore()
+    })
+
+    it('does not set a --ns-top (or any scroll-derived) property on the host', () => {
+      ns.show('Loading…')
+      expect(document.body.style.getPropertyValue('--ns-top')).toBe('')
+    })
+
+    it('pins the overlay to the viewport for a body-level splash without touching body layout', () => {
+      ns.show('Loading…')
+      const css = get('style#ns')?.textContent ?? ''
+
+      // Neither the whole `body.nsh` host nor its backdrop should be forced
+      // out of normal flow — only the overlay pieces (::before and .ns).
+      expect(css).not.toMatch(/body\.nsh\s*,/)
+      expect(css).toMatch(
+        /body\.nsh::before\s*,\s*body\.nsh\s*>\s*\.ns\s*\{[^}]*position:\s*fixed/,
+      )
+    })
+  })
+
   describe('robustness', () => {
     it('safely removes foreign .ns elements it did not create', () => {
       const rogue = document.createElement('div')

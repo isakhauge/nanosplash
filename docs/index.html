@@ -1,0 +1,1302 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Nanosplash Workbench</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <style>
+      :root {
+        --bg: #ffffff;
+        --surface: #ffffff;
+        --stage: #fafafa;
+        --text: #09090b;
+        --muted: #71717a;
+        --accent: #18181b;
+        --accent-deep: #18181b;
+        --accent-soft: #f4f4f5;
+        --line: #e4e4e7;
+        --primary: #18181b;
+        --primary-fg: #fafafa;
+        --ring: #a1a1aa;
+        --code-bg: #09090b;
+        --code-border: #09090b;
+        --code-text: #d4d4d8;
+        --code-str: #fafafa;
+        --code-kw: #fafafa;
+        --code-fn: #fafafa;
+        --code-cm: #52525b;
+        --good: #09090b;
+        --bad: #dc2626;
+        --shadow: 0 1px 2px #09090b0a;
+        /* theme the splash itself via its public API */
+        --ns-bg: #ffffffe6;
+        --ns-color: #18181b;
+        --ns-font: 'Inter', sans-serif;
+      }
+      :root:not([data-theme='light']) {
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) {
+          --bg: #09090b;
+          --surface: #0f0f11;
+          --stage: #18181b;
+          --text: #fafafa;
+          --muted: #a1a1aa;
+          --accent: #e4e4e7;
+          --accent-deep: #e4e4e7;
+          --accent-soft: #27272a;
+          --line: #27272a;
+          --primary: #fafafa;
+          --primary-fg: #18181b;
+          --ring: #52525b;
+          --code-bg: #0f0f11;
+          --code-border: #27272a;
+          --code-text: #d4d4d8;
+          --code-str: #fafafa;
+          --code-kw: #fafafa;
+          --code-fn: #fafafa;
+          --code-cm: #63636b;
+          --good: #fafafa;
+          --bad: #f87171;
+          --shadow: none;
+          --ns-bg: #09090bd9;
+          --ns-color: #fafafa;
+        }
+      }
+      :root[data-theme='dark'] {
+        --bg: #09090b;
+        --surface: #0f0f11;
+        --stage: #18181b;
+        --text: #fafafa;
+        --muted: #a1a1aa;
+        --accent: #e4e4e7;
+        --accent-deep: #e4e4e7;
+        --accent-soft: #27272a;
+        --line: #27272a;
+        --primary: #fafafa;
+        --primary-fg: #18181b;
+        --ring: #52525b;
+        --code-bg: #0f0f11;
+        --code-border: #27272a;
+        --code-text: #d4d4d8;
+        --code-str: #fafafa;
+        --code-kw: #fafafa;
+        --code-fn: #fafafa;
+        --code-cm: #63636b;
+        --good: #fafafa;
+        --bad: #f87171;
+        --shadow: none;
+        --ns-bg: #09090bd9;
+        --ns-color: #fafafa;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          'Inter',
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 24px 96px;
+      }
+
+      /* ---------- Hero ---------- */
+      .hero {
+        position: relative;
+        padding: 64px 0 64px;
+      }
+      .topbar {
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 20px;
+      }
+      .hero-kicker {
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 12.5px;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+      }
+      h1 {
+        font-family:
+          'Inter',
+          -apple-system,
+          sans-serif;
+        font-weight: 700;
+        font-size: clamp(38px, 6.5vw, 64px);
+        line-height: 1.08;
+        letter-spacing: -0.035em;
+        margin: 10px 0 18px;
+        text-wrap: balance;
+        position: relative;
+      }
+      .hero-sub {
+        max-width: 34em;
+        color: var(--muted);
+        font-size: 18px;
+        margin: 0 0 32px;
+      }
+      .hero-sub strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+      .hero-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .stat-row {
+        display: flex;
+        gap: 24px;
+        margin-top: 40px;
+        flex-wrap: wrap;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .stat-row b {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      /* ---------- Buttons ---------- */
+      button {
+        font:
+          500 14px/1 'Inter',
+          sans-serif;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 9px 14px;
+        cursor: pointer;
+        box-shadow: 0 1px 2px #09090b08;
+        transition: background 0.15s;
+      }
+      button:hover {
+        background: var(--stage);
+      }
+      button:active {
+        transform: translateY(1px);
+      }
+      button:focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+      }
+      button.primary {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: var(--primary-fg);
+        font-size: 14px;
+        padding: 12px 20px;
+      }
+      button.primary:hover {
+        background: var(--primary);
+        opacity: 0.9;
+      }
+      button.ghost {
+        background: transparent;
+        box-shadow: none;
+      }
+      button.icon-btn {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        display: grid;
+        place-items: center;
+      }
+      button.icon-btn svg {
+        width: 16px;
+        height: 16px;
+        stroke: var(--text);
+      }
+      [hidden] {
+        display: none !important;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        button {
+          transition: none;
+        }
+      }
+
+      /* ---------- Panels ---------- */
+      section.panel {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 28px;
+        margin-top: 20px;
+      }
+      .eyebrow {
+        display: inline-block;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 12px;
+        letter-spacing: 0.01em;
+        color: var(--muted);
+        background: var(--stage);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 3px 10px;
+        margin-bottom: 12px;
+      }
+      h2 {
+        font-family:
+          'Inter',
+          -apple-system,
+          sans-serif;
+        font-weight: 700;
+        font-size: 24px;
+        letter-spacing: -0.025em;
+        margin: 0 0 6px;
+        text-wrap: balance;
+      }
+      .panel > p {
+        color: var(--muted);
+        max-width: 44em;
+        margin: 0 0 20px;
+      }
+      .panel > p code,
+      .note code {
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 0.88em;
+        background: var(--accent-soft);
+        border-radius: 4px;
+        padding: 1px 5px;
+        color: var(--accent-deep);
+      }
+      .controls {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+
+      .stage {
+        position: relative;
+        background: var(--stage);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        min-height: 150px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .stage .hint {
+        opacity: 0.8;
+      }
+
+      /* fake widgets */
+      .widget-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+      }
+      .widget {
+        position: relative;
+        background: var(--stage);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        overflow: hidden;
+        min-height: 170px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .widget h3 {
+        margin: 0;
+        font:
+          600 14px 'Inter',
+          sans-serif;
+      }
+      .widget .sub {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 6px;
+        height: 52px;
+        margin-top: auto;
+      }
+      .bars i {
+        flex: 1;
+        background: var(--accent);
+        opacity: 0.75;
+        border-radius: 3px 3px 0 0;
+      }
+      .rows {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        margin-top: auto;
+      }
+      .rows i {
+        height: 9px;
+        border-radius: 4px;
+        background: var(--line);
+      }
+      .rows i:nth-child(odd) {
+        width: 85%;
+      }
+      .widget button {
+        align-self: flex-start;
+        padding: 7px 12px;
+        font-size: 13px;
+      }
+
+      /* logs & output */
+      .log,
+      .out {
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 13px;
+        line-height: 1.7;
+        background: var(--code-bg);
+        color: var(--code-text);
+        border: 1px solid var(--code-border);
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin-top: 14px;
+        min-height: 46px;
+        overflow-x: auto;
+        white-space: pre;
+      }
+      .log:empty::before,
+      .out:empty::before {
+        content: '· awaiting input';
+        color: var(--code-cm);
+      }
+      .log .ok {
+        color: var(--code-fn);
+      }
+      .log .err {
+        color: var(--bad);
+      }
+      .log .dim {
+        color: var(--code-cm);
+      }
+
+      /* code snippets */
+      pre.code {
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 13px;
+        line-height: 1.65;
+        background: var(--code-bg);
+        color: var(--code-text);
+        border: 1px solid var(--code-border);
+        border-radius: 8px;
+        padding: 16px 18px;
+        overflow-x: auto;
+        margin: 16px 0 0;
+      }
+      pre.code .s {
+        color: var(--code-str);
+      }
+      pre.code .k {
+        color: var(--code-kw);
+        font-weight: 500;
+      }
+      pre.code .f {
+        color: var(--code-fn);
+      }
+      pre.code .c {
+        color: var(--code-cm);
+      }
+
+      /* anti-flicker twin stages */
+      .twin {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      @media (max-width: 640px) {
+        .twin {
+          grid-template-columns: 1fr;
+        }
+      }
+      .twin .cell {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .cell-label {
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* theming controls */
+      .theme-controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 14px 18px;
+        margin: 4px 0 16px;
+      }
+      .theme-controls label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font:
+          500 12.5px 'Inter',
+          sans-serif;
+        color: var(--muted);
+      }
+      .theme-controls input,
+      .theme-controls select {
+        font:
+          500 13px 'Inter',
+          sans-serif;
+        color: var(--text);
+        background: var(--stage);
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 7px 9px;
+        width: 100%;
+      }
+      .theme-controls input[type='color'] {
+        padding: 3px;
+        height: 34px;
+        cursor: pointer;
+      }
+      .theme-controls input[type='range'] {
+        padding: 0;
+        accent-color: var(--accent);
+      }
+      .preset-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      .preset-row button {
+        font-size: 13px;
+        padding: 7px 13px;
+      }
+
+      /* a11y chips */
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .chip {
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 12.5px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 5px 12px;
+        color: var(--muted);
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+      .chip.lit {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: var(--primary-fg);
+      }
+      .note {
+        font-size: 14px;
+        color: var(--muted);
+        margin-top: 14px;
+        max-width: 46em;
+      }
+
+      /* footer */
+      footer {
+        margin-top: 64px;
+        padding-top: 28px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-family: 'JetBrains Mono', ui-monospace, monospace;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      footer a {
+        color: var(--accent-deep);
+        text-decoration: none;
+      }
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <button class="icon-btn" id="theme-btn" aria-label="Toggle color theme">
+          <svg
+            id="icon-moon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+          <svg
+            id="icon-sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            hidden
+          >
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+            />
+          </svg>
+        </button>
+      </div>
+      <header class="hero">
+        <div class="hero-kicker">nanosplash@4.1.2 · live on this page</div>
+        <h1>The tiny loading screen for web artisans.</h1>
+        <p class="hero-sub">
+          Every demo below runs the <strong>real library</strong> — the same ~2
+          kB gzipped bundle that ships from npm. Two functions, zero
+          dependencies, full control.
+        </p>
+        <div class="hero-actions">
+          <button class="primary" id="hero-splash">Make a splash</button>
+          <button class="ghost" id="hero-splash-scroll">
+            Scroll down &amp; splash
+          </button>
+        </div>
+        <div class="stat-row">
+          <span><b>2.1 kB</b> gzipped</span>
+          <span><b>2</b> functions</span>
+          <span><b>0</b> dependencies</span>
+          <span><b>100%</b> test coverage</span>
+        </div>
+      </header>
+
+      <section class="panel">
+        <span class="eyebrow">show(label?) · hide(id?)</span>
+        <h2>Show it, hide it</h2>
+        <p>
+          A splash over the whole page covers the viewport — nothing beneath it
+          moves, and neither does your scroll position.
+          <code>show()</code> returns a monotonic <code>nsId</code> you can hand
+          back to <code>hide(id)</code>. These demos hide themselves after two
+          seconds so you get the page back.
+        </p>
+        <div class="controls">
+          <button data-demo="show-label">show('Brewing coffee…')</button>
+          <button data-demo="show-bare">show() — spinner only</button>
+        </div>
+        <div class="log" id="log-basic" aria-live="polite"></div>
+        <pre
+          class="code"
+        ><span class="k">const</span> id = ns.<span class="f">show</span>(<span class="s">'Brewing coffee…'</span>) <span class="c">// → nsId</span>
+ns.<span class="f">hide</span>(id)  <span class="c">// or ns.hide() for oldest, ns.hide('*') for all</span></pre>
+      </section>
+
+      <section class="panel">
+        <span class="eyebrow">show(label, inside)</span>
+        <h2>Scoped to any container</h2>
+        <p>
+          Pass an element, a CSS selector, or a ref as the second argument. A
+          container that already holds a splash <strong>recycles</strong> it —
+          reload a widget twice and the label updates instead of stacking a
+          duplicate.
+        </p>
+        <div class="widget-grid">
+          <div class="widget" id="w-revenue">
+            <h3>Revenue</h3>
+            <div class="sub">last 7 days</div>
+            <div class="bars" aria-hidden="true">
+              <i style="height: 40%"></i><i style="height: 65%"></i
+              ><i style="height: 50%"></i><i style="height: 80%"></i
+              ><i style="height: 58%"></i><i style="height: 95%"></i
+              ><i style="height: 72%"></i>
+            </div>
+            <button data-widget="#w-revenue" data-label="Crunching numbers…">
+              Reload
+            </button>
+          </div>
+          <div class="widget" id="w-orders">
+            <h3>Orders</h3>
+            <div class="sub">latest 5</div>
+            <div class="rows" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <button data-widget="#w-orders" data-label="Fetching orders…">
+              Reload
+            </button>
+          </div>
+          <div class="widget" id="w-activity">
+            <h3>Activity</h3>
+            <div class="sub">team feed</div>
+            <div class="rows" aria-hidden="true">
+              <i></i><i></i><i></i><i></i>
+            </div>
+            <button data-widget="#w-activity" data-label="Syncing feed…">
+              Reload
+            </button>
+          </div>
+        </div>
+        <div class="controls" style="margin-top: 14px; margin-bottom: 0">
+          <button data-demo="scoped-hide">hide() — oldest first</button>
+          <button data-demo="scoped-hide-all">hide('*')</button>
+        </div>
+        <pre
+          class="code"
+        >ns.<span class="f">show</span>(<span class="s">'Crunching numbers…'</span>, <span class="s">'#w-revenue'</span>)
+ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span class="s">'#w-revenue'</span>) <span class="c">// recycled — text updates, no duplicate</span></pre>
+      </section>
+
+      <section class="panel">
+        <span class="eyebrow">show([label, job])</span>
+        <h2>Labeled jobs</h2>
+        <p>
+          Hand <code>show()</code> a <code>[label, job]</code> pair and it runs
+          the work under the splash, auto-hiding when it settles. An array of
+          pairs runs <strong>sequentially</strong> under one splash — the label
+          updates per step, and results come back as a typed tuple. Sequences
+          are fail-fast; rejections propagate after the splash hides.
+        </p>
+        <div class="controls">
+          <button data-demo="job-one">Run one job</button>
+          <button data-demo="job-seq">Run a sequence of three</button>
+          <button data-demo="job-fail">Fail fast</button>
+        </div>
+        <div class="stage" id="stage-jobs" style="min-height: 130px">
+          <span class="hint">jobs run in here</span>
+        </div>
+        <div class="log" id="log-jobs" aria-live="polite"></div>
+        <pre
+          class="code"
+        ><span class="k">const</span> [user, posts, ok] = <span class="k">await</span> ns.<span class="f">show</span>([
+  [<span class="s">'Loading user…'</span>,  () =&gt; <span class="f">fetchUser</span>()],
+  [<span class="s">'Loading posts…'</span>, () =&gt; <span class="f">fetchPosts</span>()],
+  [<span class="s">'Verifying…'</span>,     () =&gt; <span class="f">verify</span>()],
+], <span class="s">'#stage-jobs'</span>) <span class="c">// typed tuple, in order</span></pre>
+      </section>
+
+      <section class="panel">
+        <span class="eyebrow">useNs({ showDelay, minDuration })</span>
+        <h2>Anti-flicker timing</h2>
+        <p>
+          Two sins of loading screens: the flash of spinner on a fast operation,
+          and the sub-100&nbsp;ms blink. <code>showDelay</code> keeps the splash
+          invisible for operations that finish quickly;
+          <code>minDuration</code> holds it long enough to register. Run the
+          same task through both instances and watch the right one behave.
+        </p>
+        <div class="controls">
+          <button data-demo="flick-fast">Run a 90 ms task in both</button>
+          <button data-demo="flick-slow">Run a 900 ms task in both</button>
+        </div>
+        <div class="twin">
+          <div class="cell">
+            <span class="cell-label">useNs() — no timing</span>
+            <div class="stage" id="stage-raw">
+              <span class="hint">flickers on fast tasks</span>
+            </div>
+          </div>
+          <div class="cell">
+            <span class="cell-label"
+              >useNs({ showDelay: 250, minDuration: 600 })</span
+            >
+            <div class="stage" id="stage-timed">
+              <span class="hint">stays calm</span>
+            </div>
+          </div>
+        </div>
+        <div class="log" id="log-flicker" aria-live="polite"></div>
+        <pre
+          class="code"
+        ><span class="k">const</span> ns = <span class="f">useNs</span>({ showDelay: <span class="s">250</span>, minDuration: <span class="s">600</span> })
+<span class="c">// &lt;250 ms task → splash never becomes visible</span>
+<span class="c">// visible splash → held ≥600 ms, no blink</span></pre>
+      </section>
+
+      <section class="panel">
+        <span class="eyebrow">--ns-* custom properties</span>
+        <h2>Theming</h2>
+        <p>
+          Every visual knob is a public CSS custom property with defaults
+          declared on <code>:where(:root)</code> — zero specificity, so your
+          overrides always win. Adjust these while the splash is showing;
+          changes apply live.
+        </p>
+        <div class="preset-row">
+          <button data-preset="default">Default</button>
+          <button data-preset="ink">Ink</button>
+          <button data-preset="glass">Glass</button>
+          <button data-preset="terminal">Terminal</button>
+        </div>
+        <div class="theme-controls">
+          <label
+            >--ns-bg <input type="color" id="t-bg" value="#ffffff"
+          /></label>
+          <label
+            >backdrop opacity
+            <input type="range" id="t-alpha" min="10" max="100" value="90"
+          /></label>
+          <label
+            >--ns-color <input type="color" id="t-color" value="#2f4f4f"
+          /></label>
+          <label
+            >--ns-size
+            <input type="range" id="t-size" min="13" max="34" value="20"
+          /></label>
+          <label
+            >--ns-blur
+            <input type="range" id="t-blur" min="0" max="16" value="5"
+          /></label>
+          <label
+            >--ns-font
+            <select id="t-font">
+              <option value='"Inter", sans-serif'>Public Sans</option>
+              <option value='"Inter", -apple-system, sans-serif'>
+                Bricolage Grotesque
+              </option>
+              <option value='"JetBrains Mono", ui-monospace, monospace'>
+                Spline Sans Mono
+              </option>
+            </select>
+          </label>
+        </div>
+        <div class="controls">
+          <button data-demo="theme-toggle" id="theme-toggle-btn">
+            Show splash
+          </button>
+        </div>
+        <div class="stage" id="stage-theme" style="min-height: 190px">
+          <span class="hint">your theme, live</span>
+        </div>
+        <pre class="code"><span class="c">/* your stylesheet */</span>
+:root {
+  <span class="f">--ns-bg</span>: <span class="s">#0b151bcc</span>;
+  <span class="f">--ns-color</span>: <span class="s">#3bc6ef</span>;
+  <span class="f">--ns-blur</span>: <span class="s">blur(8px)</span>;
+}</pre>
+      </section>
+
+      <section class="panel">
+        <span class="eyebrow">role="status" · aria-live · aria-busy</span>
+        <h2>Accessible by default</h2>
+        <p>
+          The splash is a proper live region — no configuration required. Press
+          the button and the chips below light up as each attribute is verified
+          on the <em>live DOM element</em>, not hard-coded.
+        </p>
+        <div class="controls">
+          <button data-demo="a11y-inspect">Show &amp; inspect the DOM</button>
+        </div>
+        <div class="stage" id="stage-a11y" style="min-height: 130px">
+          <span class="hint">inspection target</span>
+        </div>
+        <div class="chips" id="a11y-chips">
+          <span class="chip" data-check="role">role="status"</span>
+          <span class="chip" data-check="live">aria-live="polite"</span>
+          <span class="chip" data-check="busy">aria-busy="true" on host</span>
+          <span class="chip" data-check="hidden">aria-hidden spinner</span>
+        </div>
+        <p class="note">
+          The spinner animation also respects
+          <code>prefers-reduced-motion</code> — with it enabled, the dash
+          animation is replaced by a slow, steady rotation.
+        </p>
+      </section>
+
+      <footer>
+        <span>ns.version → <b id="ver">…</b></span>
+        <span>
+          <a href="https://github.com/isakhauge/nanosplash">GitHub</a> ·
+          <a href="https://www.npmjs.com/package/nanosplash">npm</a> · MIT ©
+          Isak K. Hauge
+        </span>
+      </footer>
+    </div>
+
+    <script src="ns.iife.js"></script>
+    <script>
+      ;(function () {
+        'use strict'
+
+        var useNs = window.NanosplashLib.useNs
+
+        /* ---------- page theme: localStorage cache, system fallback ---------- */
+        var root = document.documentElement
+        var mq = window.matchMedia('(prefers-color-scheme: dark)')
+        function storedTheme() {
+          try {
+            return localStorage.getItem('nanosplash-demo-theme')
+          } catch (e) {
+            return null
+          }
+        }
+        function effectiveTheme() {
+          var t = storedTheme()
+          return t === 'dark' || t === 'light'
+            ? t
+            : mq.matches
+              ? 'dark'
+              : 'light'
+        }
+        function renderTheme() {
+          var t = storedTheme()
+          if (t === 'dark' || t === 'light') root.setAttribute('data-theme', t)
+          else root.removeAttribute('data-theme')
+          var dark = effectiveTheme() === 'dark'
+          document.getElementById('icon-sun').hidden = !dark
+          document.getElementById('icon-moon').hidden = dark
+        }
+        document
+          .getElementById('theme-btn')
+          .addEventListener('click', function () {
+            var next = effectiveTheme() === 'dark' ? 'light' : 'dark'
+            try {
+              localStorage.setItem('nanosplash-demo-theme', next)
+            } catch (e) {}
+            renderTheme()
+          })
+        if (mq.addEventListener) mq.addEventListener('change', renderTheme)
+        renderTheme()
+
+        var ns = useNs()
+        var nsTimed = useNs({ showDelay: 250, minDuration: 600 })
+
+        document.getElementById('ver').textContent = '"' + ns.version + '"'
+
+        var wait = function (ms) {
+          return new Promise(function (r) {
+            setTimeout(r, ms)
+          })
+        }
+        var logTo = function (id, html, cls) {
+          var el = document.getElementById(id)
+          var line = document.createElement('div')
+          if (cls) line.className = cls
+          line.innerHTML = html
+          el.appendChild(line)
+          while (el.children.length > 6) el.removeChild(el.firstChild)
+          el.scrollTop = el.scrollHeight
+        }
+
+        /* ---------- hero ---------- */
+        function pageSplash(label, ms, done) {
+          var id = ns.show(label)
+          setTimeout(function () {
+            ns.hide(id)
+            if (done) done(id)
+          }, ms)
+          return id
+        }
+        function afterScrollSettles(cb) {
+          var last = -1,
+            still = 0
+          ;(function poll() {
+            if (Math.abs(window.scrollY - last) < 1) {
+              if (++still >= 5) return cb()
+            } else still = 0
+            last = window.scrollY
+            requestAnimationFrame(poll)
+          })()
+        }
+
+        document
+          .getElementById('hero-splash')
+          .addEventListener('click', function () {
+            pageSplash('Hello, artisan.', 1400)
+          })
+        document
+          .getElementById('hero-splash-scroll')
+          .addEventListener('click', function () {
+            window.scrollTo({ top: 700, behavior: 'smooth' })
+            afterScrollSettles(function () {
+              pageSplash('Shown at your scroll position', 1600)
+            })
+          })
+
+        /* ---------- panel 1: show/hide ---------- */
+        var demos = {
+          'show-label': function () {
+            var id = pageSplash('Brewing coffee…', 2000, function (id) {
+              logTo(
+                'log-basic',
+                'hide(' +
+                  id +
+                  ")  <span class='dim'>// that exact instance</span>",
+              )
+            })
+            logTo(
+              'log-basic',
+              "show(<span class='ok'>'Brewing coffee…'</span>) → nsId <span class='ok'>" +
+                id +
+                '</span>',
+            )
+          },
+          'show-bare': function () {
+            var id = pageSplash(undefined, 2000, function (id) {
+              logTo('log-basic', 'hide(' + id + ')')
+            })
+            logTo(
+              'log-basic',
+              "show() → nsId <span class='ok'>" +
+                id +
+                '</span>  <span class="dim">// spinner only</span>',
+            )
+          },
+
+          /* ---------- panel 2: scoped ---------- */
+          'scoped-hide': function () {
+            ns.hide()
+          },
+          'scoped-hide-all': function () {
+            ns.hide('*')
+          },
+
+          /* ---------- panel 3: jobs ---------- */
+          'job-one': function (btn) {
+            btn.disabled = true
+            ns.show(
+              [
+                'Fetching user…',
+                function () {
+                  return wait(1000).then(function () {
+                    return { name: 'Isak', role: 'artisan' }
+                  })
+                },
+              ],
+              '#stage-jobs',
+            )
+              .then(function (user) {
+                logTo(
+                  'log-jobs',
+                  "→ <span class='ok'>" + JSON.stringify(user) + '</span>',
+                )
+              })
+              .finally(function () {
+                btn.disabled = false
+              })
+          },
+          'job-seq': function (btn) {
+            btn.disabled = true
+            ns.show(
+              [
+                [
+                  'Loading user…',
+                  function () {
+                    return wait(900).then(function () {
+                      return '@isakhauge'
+                    })
+                  },
+                ],
+                [
+                  'Loading posts…',
+                  function () {
+                    return wait(900).then(function () {
+                      return 42
+                    })
+                  },
+                ],
+                [
+                  'Verifying…',
+                  function () {
+                    return wait(700).then(function () {
+                      return true
+                    })
+                  },
+                ],
+              ],
+              '#stage-jobs',
+            )
+              .then(function (results) {
+                logTo(
+                  'log-jobs',
+                  "→ <span class='ok'>" +
+                    JSON.stringify(results) +
+                    "</span>  <span class='dim'>// [user, posts, ok]</span>",
+                )
+              })
+              .finally(function () {
+                btn.disabled = false
+              })
+          },
+          'job-fail': function (btn) {
+            btn.disabled = true
+            ns.show(
+              [
+                [
+                  'Step one…',
+                  function () {
+                    return wait(800).then(function () {
+                      return 'ok'
+                    })
+                  },
+                ],
+                [
+                  'Step two…',
+                  function () {
+                    return wait(800).then(function () {
+                      throw new Error('418: I’m a teapot')
+                    })
+                  },
+                ],
+                [
+                  'Never runs…',
+                  function () {
+                    return wait(800)
+                  },
+                ],
+              ],
+              '#stage-jobs',
+            )
+              .then(function (r) {
+                logTo('log-jobs', '→ ' + JSON.stringify(r))
+              })
+              .catch(function (e) {
+                logTo(
+                  'log-jobs',
+                  "✗ caught <span class='err'>" +
+                    e.message +
+                    "</span>  <span class='dim'>// splash hidden, job 3 never started</span>",
+                )
+              })
+              .finally(function () {
+                btn.disabled = false
+              })
+          },
+
+          /* ---------- panel 4: anti-flicker ---------- */
+          'flick-fast': function (btn) {
+            runFlicker(btn, 90)
+          },
+          'flick-slow': function (btn) {
+            runFlicker(btn, 900)
+          },
+
+          /* ---------- panel 5: theming ---------- */
+          'theme-toggle': function (btn) {
+            if (themeId === null) {
+              applyTheme()
+              themeId = ns.show('Your theme, live', '#stage-theme')
+              btn.textContent = 'Hide splash'
+            } else {
+              ns.hide(themeId)
+              themeId = null
+              btn.textContent = 'Show splash'
+            }
+          },
+
+          /* ---------- panel 6: a11y ---------- */
+          'a11y-inspect': function (btn) {
+            btn.disabled = true
+            var stage = document.getElementById('stage-a11y')
+            var id = ns.show('Inspect me', '#stage-a11y')
+            requestAnimationFrame(function () {
+              var el = stage.querySelector('.ns')
+              var checks = {
+                role: el && el.getAttribute('role') === 'status',
+                live: el && el.getAttribute('aria-live') === 'polite',
+                busy: stage.getAttribute('aria-busy') === 'true',
+                hidden: !!(el && el.querySelector('[aria-hidden="true"]')),
+              }
+              document
+                .querySelectorAll('#a11y-chips .chip')
+                .forEach(function (chip) {
+                  if (checks[chip.dataset.check]) chip.classList.add('lit')
+                })
+            })
+            setTimeout(function () {
+              ns.hide(id)
+              btn.disabled = false
+            }, 2200)
+          },
+        }
+
+        var themeId = null
+
+        function runFlicker(btn, ms) {
+          btn.disabled = true
+          var idRaw = ns.show('Working…', '#stage-raw')
+          var t0 = performance.now()
+          nsTimed
+            .show(
+              [
+                'Working…',
+                function () {
+                  return wait(ms)
+                },
+              ],
+              '#stage-timed',
+            )
+            .then(function () {
+              var elapsed = Math.round(performance.now() - t0)
+              if (ms < 250) {
+                logTo(
+                  'log-flicker',
+                  ms +
+                    " ms task · left <span class='err'>flickered</span> · right <span class='ok'>never became visible</span> (showDelay 250)",
+                )
+              } else {
+                logTo(
+                  'log-flicker',
+                  ms +
+                    " ms task · right visible <span class='ok'>" +
+                    elapsed +
+                    ' ms</span> — held to minDuration 600',
+                )
+              }
+              btn.disabled = false
+            })
+          wait(ms).then(function () {
+            ns.hide(idRaw)
+          })
+        }
+
+        function hexToRgba(hex, alpha) {
+          var n = parseInt(hex.slice(1), 16)
+          return (
+            'rgba(' +
+            ((n >> 16) & 255) +
+            ',' +
+            ((n >> 8) & 255) +
+            ',' +
+            (n & 255) +
+            ',' +
+            alpha +
+            ')'
+          )
+        }
+
+        var stageTheme = document.getElementById('stage-theme')
+        function applyTheme() {
+          stageTheme.style.setProperty(
+            '--ns-bg',
+            hexToRgba(
+              document.getElementById('t-bg').value,
+              document.getElementById('t-alpha').value / 100,
+            ),
+          )
+          stageTheme.style.setProperty(
+            '--ns-color',
+            document.getElementById('t-color').value,
+          )
+          stageTheme.style.setProperty(
+            '--ns-size',
+            document.getElementById('t-size').value + 'px',
+          )
+          stageTheme.style.setProperty(
+            '--ns-blur',
+            'blur(' + document.getElementById('t-blur').value + 'px)',
+          )
+          stageTheme.style.setProperty(
+            '--ns-font',
+            document.getElementById('t-font').value,
+          )
+        }
+        ;['t-bg', 't-alpha', 't-color', 't-size', 't-blur', 't-font'].forEach(
+          function (id) {
+            document.getElementById(id).addEventListener('input', applyTheme)
+          },
+        )
+
+        var presets = {
+          default: {
+            bg: '#ffffff',
+            alpha: 90,
+            color: '#2f4f4f',
+            size: 20,
+            blur: 5,
+            font: '"Inter", sans-serif',
+          },
+          ink: {
+            bg: '#0b151b',
+            alpha: 88,
+            color: '#3bc6ef',
+            size: 22,
+            blur: 8,
+            font: '"Inter", -apple-system, sans-serif',
+          },
+          glass: {
+            bg: '#ffffff',
+            alpha: 35,
+            color: '#132430',
+            size: 19,
+            blur: 14,
+            font: '"Inter", sans-serif',
+          },
+          terminal: {
+            bg: '#04110a',
+            alpha: 94,
+            color: '#4cc98a',
+            size: 17,
+            blur: 0,
+            font: '"JetBrains Mono", ui-monospace, monospace',
+          },
+        }
+        document.querySelectorAll('[data-preset]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var p = presets[btn.dataset.preset]
+            document.getElementById('t-bg').value = p.bg
+            document.getElementById('t-alpha').value = p.alpha
+            document.getElementById('t-color').value = p.color
+            document.getElementById('t-size').value = p.size
+            document.getElementById('t-blur').value = p.blur
+            document.getElementById('t-font').value = p.font
+            applyTheme()
+            if (themeId === null)
+              demos['theme-toggle'](document.getElementById('theme-toggle-btn'))
+          })
+        })
+
+        /* widget reload buttons (recycling demo) */
+        document.querySelectorAll('[data-widget]').forEach(function (btn) {
+          var clicks = 0
+          btn.addEventListener('click', function () {
+            clicks++
+            var label =
+              clicks % 2 === 1
+                ? btn.dataset.label
+                : 'Still ' +
+                  btn.dataset.label.toLowerCase().replace('…', '') +
+                  '…'
+            ns.show(label, btn.dataset.widget)
+          })
+        })
+
+        /* generic demo dispatch */
+        document.querySelectorAll('[data-demo]').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            demos[btn.dataset.demo](btn)
+          })
+        })
+      })()
+    </script>
+  </body>
+</html>

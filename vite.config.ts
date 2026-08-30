@@ -16,6 +16,9 @@ export default defineConfig({
     tabWidth: 2,
     printWidth: 80,
   },
+  lint: {
+    ignorePatterns: ['docs/ns.iife.js'],
+  },
   test: {
     environment: 'jsdom',
     css: true,
