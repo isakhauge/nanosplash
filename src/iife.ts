@@ -7,6 +7,6 @@ declare global {
   }
 }
 
-window.addEventListener('load', function () {
-  this.ns = useNs()
+window.addEventListener('load', () => {
+  window.ns = useNs()
 })

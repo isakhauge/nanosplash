@@ -3,49 +3,43 @@ import type { HTMLString, NodeSelector } from '@/types/semantic/string.ts'
 import type { ElementRef } from '@/types/dom.ts'
 
 /**
- * Shortened Document getter
+ * Get the document.
  */
 export const doc: Func<Document> = (): Document => globalThis.document
 
 /**
- * Shortened Body getter
+ * Get the document body.
  */
 export const bod: Func<HTMLElement> = (): HTMLElement =>
   globalThis.document.body
 
 /**
- * Convert iterables and array-like structures into an array
- * @param x
+ * Convert an iterable or array-like into an array.
  */
 export const toArray = <T>(x: Iterable<T> | ArrayLike<T>) => Array.from(x)
 
 /**
- * Scoped node selector
- * @param node Current scope
- * @param ref Selector
+ * Get all descendants of `scope` matching `selector`.
  */
-export const all = (node: ParentNode, ref: NodeSelector) =>
-  toArray(node.querySelectorAll(ref))
+export const all = (scope: ParentNode, selector: NodeSelector) =>
+  toArray(scope.querySelectorAll(selector))
 
 /**
- * Scoped node selector returning the first match
- * @param node Current scope
- * @param ref Selector
+ * Get the first descendant of `scope` matching `selector`, or `null`.
  */
-export const first = (node: ParentNode, ref: NodeSelector): Element | null =>
-  all(node, ref)[0] ?? null
+export const first = (
+  scope: ParentNode,
+  selector: NodeSelector
+): Element | null => all(scope, selector)[0] ?? null
 
 /**
- * Parse an ambiguous element reference into an actual element
- * @param ref Element reference
+ * Resolve an element-or-selector reference to an element, or `null`.
  */
 export const parseRef = <T extends Element>(ref: ElementRef): T | null =>
   ref instanceof Element ? (ref as T) : (first(doc(), ref) as T)
 
 /**
- * Create div
- * @param className Optional CSS class name
- * @param children Optional children
+ * Create a `<div>` with an optional class and children.
  */
 export const div = (
   className?: string,
@@ -58,8 +52,7 @@ export const div = (
 }
 
 /**
- * Parse HTML code into HTML elements
- * @param html
+ * Parse an HTML string and return its first element.
  */
 export const parseHtml = <T extends HTMLElement>(html: HTMLString): T => {
   const node: HTMLDivElement = div()
