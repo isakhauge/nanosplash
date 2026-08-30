@@ -17,7 +17,7 @@ export default defineConfig({
     printWidth: 80,
   },
   lint: {
-    ignorePatterns: ['docs/ns.iife.js'],
+    ignorePatterns: ['docs/index.html'],
   },
   test: {
     environment: 'jsdom',

@@ -58,7 +58,30 @@
   --ns-bg: rgba(255, 255, 255, 0.9);
   --ns-z-index: 9999999999;
   --ns-blur: blur(5px);
+  --ns-shadow-color: rgba(0, 0, 0, 0.25);
   --ns-show-delay: 0s;
+}
+
+/*
+ * Dark scheme defaults.
+ *
+ * Follows the OS preference, with an explicit `data-theme` attribute on the
+ * root element taking precedence: `data-theme="light"` opts out of the dark
+ * defaults, `data-theme="dark"` forces them regardless of OS preference.
+ * :where() keeps these at zero specificity as well, so any user override of
+ * `--ns-bg`/`--ns-color` still wins.
+ */
+@media (prefers-color-scheme: dark) {
+  :where(:root:not([data-theme='light'])) {
+    --ns-color: #fafafa;
+    --ns-bg: rgba(9, 9, 11, 0.85);
+    --ns-shadow-color: rgba(255, 255, 255, 0.35);
+  }
+}
+:where(:root[data-theme='dark']) {
+  --ns-color: #fafafa;
+  --ns-bg: rgba(9, 9, 11, 0.85);
+  --ns-shadow-color: rgba(255, 255, 255, 0.35);
 }
 
 /* Nanosplash host */
@@ -71,6 +94,7 @@
   --bg: var(--ns-bg);
   --zIdx: var(--ns-z-index);
   --blur: var(--ns-blur);
+  --shadowColor: var(--ns-shadow-color);
 
   position: relative;
   z-index: var(--zIdx);
@@ -86,7 +110,6 @@
     content: '';
     background-color: var(--bg);
     backdrop-filter: var(--blur);
-    -webkit-backdrop-filter: var(--blur);
     z-index: calc(var(--zIdx) + 1);
     border-radius: inherit; /* Inherit border radius from parent */
   }
@@ -133,8 +156,8 @@ body.nsh > .ns {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  text-shadow: 0 0 0.06rem rgba(0, 0, 0, 0.25);
-  filter: drop-shadow(0 0 0.07rem rgba(0, 0, 0, 0.25));
+  text-shadow: 0 0 0.06rem var(--shadowColor);
+  filter: drop-shadow(0 0 0.07rem var(--shadowColor));
   animation: nsAscend 0.5s backwards;
   animation-delay: var(--ns-show-delay);
 }
@@ -146,6 +169,7 @@ body.nsh > .ns {
   height: var(--relSize);
   animation: nsAscend 0.5s backwards;
   animation-delay: var(--ns-show-delay);
+  filter: drop-shadow(0 0 0.07rem var(--shadowColor));
   & > svg {
     animation: nsRotate 2s linear infinite;
     position: relative;
