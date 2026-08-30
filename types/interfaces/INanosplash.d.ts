@@ -91,7 +91,7 @@ export interface INanosplash {
    */
   show<T>(
     job: NsLabeledJob<T>,
-    inside?: ElementRef | HTMLElement
+    inside?: ElementRef | HTMLElement,
   ): Promise<Awaited<T>>
   /**
    * # Show (job sequence)
@@ -110,7 +110,7 @@ export interface INanosplash {
    */
   show<Jobs extends readonly NsLabeledJob<unknown>[]>(
     jobs: readonly [...Jobs],
-    inside?: ElementRef | HTMLElement
+    inside?: ElementRef | HTMLElement,
   ): Promise<NsJobResults<Jobs>>
   /**
    * # Hide

@@ -65,7 +65,7 @@ export const useNs = (options?: NsOptions): INanosplash => {
     const node = div(
       ClassNames.ns,
       div(ClassNames.nsText),
-      div(ClassNames.nsSpinner, svg)
+      div(ClassNames.nsSpinner, svg),
     ) as INSElement
 
     node.setAttribute('role', 'status')
@@ -79,7 +79,7 @@ export const useNs = (options?: NsOptions): INanosplash => {
    */
   const nsQueue: Func<INSElement[]> = () =>
     getAllNs()
-      .filter(x => x.nsHideTimer === undefined)
+      .filter((x) => x.nsHideTimer === undefined)
       .sort((a, b) => a.nsId - b.nsId)
 
   /**
@@ -123,7 +123,7 @@ export const useNs = (options?: NsOptions): INanosplash => {
     ns.nsMinDuration = options?.minDuration ?? 0
     ;(parent as HTMLElement).style.setProperty(
       '--ns-show-delay',
-      ns.nsShowDelay + 'ms'
+      ns.nsShowDelay + 'ms',
     )
   }
 
@@ -132,7 +132,7 @@ export const useNs = (options?: NsOptions): INanosplash => {
    */
   const getNsInside = (parent: Element): INSElement | undefined => {
     const children = toArray(parent.children) as INSElement[]
-    return children.find(v => v.classList.contains(ClassNames.ns))
+    return children.find((v) => v.classList.contains(ClassNames.ns))
   }
 
   /**
@@ -215,7 +215,7 @@ export const useNs = (options?: NsOptions): INanosplash => {
    * Find the Nanosplash element with the given `nsId`; `null` if not found.
    */
   const findNs = (id: int): INSElement | null =>
-    getAllNs().find(x => x.nsId === id) ?? null
+    getAllNs().find((x) => x.nsId === id) ?? null
 
   /**
    * Hide one or more Nanosplash elements.
@@ -268,7 +268,7 @@ export const useNs = (options?: NsOptions): INanosplash => {
    */
   const runJobs = async (
     jobs: readonly NsLabeledJob<unknown>[],
-    inside?: ElementRef
+    inside?: ElementRef,
   ): Promise<unknown[]> => {
     if (jobs.length === 0) return []
 
@@ -297,7 +297,7 @@ export const useNs = (options?: NsOptions): INanosplash => {
    */
   const show = ((input?: NsShowInput, inside?: ElementRef) => {
     if (isLabeledJob(input)) {
-      return runJobs([input], inside).then(results => results[0])
+      return runJobs([input], inside).then((results) => results[0])
     }
     if (Array.isArray(input)) {
       return runJobs(input as readonly NsLabeledJob<unknown>[], inside)

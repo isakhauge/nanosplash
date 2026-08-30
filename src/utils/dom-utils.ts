@@ -29,7 +29,7 @@ export const all = (scope: ParentNode, selector: NodeSelector) =>
  */
 export const first = (
   scope: ParentNode,
-  selector: NodeSelector
+  selector: NodeSelector,
 ): Element | null => all(scope, selector)[0] ?? null
 
 /**

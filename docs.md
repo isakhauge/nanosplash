@@ -21,9 +21,9 @@ const ns = useNs({ showDelay: 150, minDuration: 400 })
 
 **Parameters**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `options` | `NsOptions` | No | Configuration (anti-flicker timing) applied to every splash shown through this instance. |
+| Parameter | Type        | Required | Description                                                                              |
+| --------- | ----------- | -------- | ---------------------------------------------------------------------------------------- |
+| `options` | `NsOptions` | No       | Configuration (anti-flicker timing) applied to every splash shown through this instance. |
 
 **Returns:** `INanosplash`
 
@@ -35,11 +35,11 @@ const ns = useNs({ showDelay: 150, minDuration: 400 })
 
 Displays a loading indicator — or runs async **jobs** under one. The behavior depends on the first argument:
 
-| First argument | Behavior | Returns |
-|----------------|----------|---------|
-| Plain text (or nothing) | Shows a splash; hide it yourself. | `int \| null` (the `nsId`) |
-| One `[label, job]` pair | Shows a splash with the label, runs the job, auto-hides when it settles. | `Promise` of the job's result |
-| Array of pairs | Runs the jobs **sequentially** under one splash, updating the label as each job starts. | `Promise` of a typed tuple of results, in order |
+| First argument          | Behavior                                                                                | Returns                                         |
+| ----------------------- | --------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| Plain text (or nothing) | Shows a splash; hide it yourself.                                                       | `int \| null` (the `nsId`)                      |
+| One `[label, job]` pair | Shows a splash with the label, runs the job, auto-hides when it settles.                | `Promise` of the job's result                   |
+| Array of pairs          | Runs the jobs **sequentially** under one splash, updating the label as each job starts. | `Promise` of a typed tuple of results, in order |
 
 A **job** is a thunk returning a promise — `() => Promise<T>` — so the splash is guaranteed to be visible before the work starts.
 
@@ -58,10 +58,10 @@ show<Jobs extends readonly NsLabeledJob<unknown>[]>(
 
 **Parameters**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `label` / `job` / `jobs` | `NsShowInput` | No | A label (falsy for spinner only), a `[label, job]` labeled job, or an array of labeled jobs. |
-| `inside` | `ElementRef` | No | The target container. Accepts an `Element`, a CSS selector string, or an element ref. Omit to target the document body. |
+| Parameter                | Type          | Required | Description                                                                                                             |
+| ------------------------ | ------------- | -------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `label` / `job` / `jobs` | `NsShowInput` | No       | A label (falsy for spinner only), a `[label, job]` labeled job, or an array of labeled jobs.                            |
+| `inside`                 | `ElementRef`  | No       | The target container. Accepts an `Element`, a CSS selector string, or an element ref. Omit to target the document body. |
 
 **Returns**
 
@@ -93,11 +93,14 @@ const user = await ns.show(['Loading user…', () => fetchUser()])
 
 // A sequence of labeled jobs under one splash — label updates per step,
 // results come back as a typed tuple in order: [User, Post[], boolean]
-const [user, posts, ok] = await ns.show([
-  ['Loading user…',  () => fetchUser()],
-  ['Loading posts…', () => fetchPosts()],
-  ['Verifying…',     () => verify()],
-], '#dashboard')
+const [user, posts, ok] = await ns.show(
+  [
+    ['Loading user…', () => fetchUser()],
+    ['Loading posts…', () => fetchPosts()],
+    ['Verifying…', () => verify()],
+  ],
+  '#dashboard',
+)
 ```
 
 **Job sequence semantics**
@@ -123,17 +126,17 @@ hide(id?: int | '*'): void
 
 **Parameters**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | `int` \| `'*'` | No | Controls which instance to remove. See behaviour table below. |
+| Parameter | Type           | Required | Description                                                   |
+| --------- | -------------- | -------- | ------------------------------------------------------------- |
+| `id`      | `int` \| `'*'` | No       | Controls which instance to remove. See behaviour table below. |
 
 **Behaviour by argument**
 
-| Value | Effect |
-|-------|--------|
-| Omitted / `undefined` | Removes the **oldest** active instance (FIFO order). |
-| `number` | Removes the instance whose `nsId` matches the provided value. |
-| `'*'` | Removes **all** active instances from the DOM. |
+| Value                 | Effect                                                        |
+| --------------------- | ------------------------------------------------------------- |
+| Omitted / `undefined` | Removes the **oldest** active instance (FIFO order).          |
+| `number`              | Removes the instance whose `nsId` matches the provided value. |
+| `'*'`                 | Removes **all** active instances from the DOM.                |
 
 If the target instance was shown with `minDuration` and has not been visible long enough, removal is deferred until the minimum has elapsed. An instance still inside its `showDelay` window is removed immediately and never becomes visible.
 
@@ -172,7 +175,7 @@ console.log(ns.version) // e.g. "1.4.2"
 Every call to `show()` that creates a new instance assigns it a unique numeric ID (`nsId`) from an internal monotonic counter. This ID is returned by `show()` and can be passed to `hide()` to remove that exact instance, which is especially useful when multiple loaders are active simultaneously.
 
 ```ts
-const pageId   = ns.show('Loading page…')
+const pageId = ns.show('Loading page…')
 const widgetId = ns.show('Refreshing widget…', '#widget')
 
 // Hide only the widget loader, leave the page loader active
@@ -209,7 +212,7 @@ Whenever a Nanosplash is mounted inside a container, a CSS host class is added t
 
 ```ts
 interface NsOptions {
-  showDelay?: number   // ms to stay invisible after show()
+  showDelay?: number // ms to stay invisible after show()
   minDuration?: number // minimum ms visible once shown
 }
 ```
@@ -239,13 +242,18 @@ The injected stylesheet defines its theming defaults on `:where(:root)` — zero
 
 ```css
 :root {
-  --ns-color: tomato;                /* spinner + text color (default: DarkSlateGray) */
-  --ns-size: 24px;                   /* base size; spinner scales from it (default: 20px) */
-  --ns-font: 'Inter', 'Helvetica';   /* text font stack */
-  --ns-weight: 500;                  /* text font weight (default: 400) */
-  --ns-bg: rgba(0, 0, 0, 0.8);       /* overlay background (default: rgba(255,255,255,0.9)) */
-  --ns-z-index: 100;                 /* overlay z-index (default: 9999999999) */
-  --ns-blur: blur(2px);              /* backdrop blur (default: blur(5px)) */
+  --ns-color: tomato; /* spinner + text color (default: DarkSlateGray) */
+  --ns-size: 24px; /* base size; spinner scales from it (default: 20px) */
+  --ns-font: 'Inter', 'Helvetica'; /* text font stack */
+  --ns-weight: 500; /* text font weight (default: 400) */
+  --ns-bg: rgba(
+    0,
+    0,
+    0,
+    0.8
+  ); /* overlay background (default: rgba(255,255,255,0.9)) */
+  --ns-z-index: 100; /* overlay z-index (default: 9999999999) */
+  --ns-blur: blur(2px); /* backdrop blur (default: blur(5px)) */
 }
 
 /* Scoped: theme only the loaders inside one panel */

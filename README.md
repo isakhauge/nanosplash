@@ -26,7 +26,7 @@ const data = await ns.show(['Loading', () => fetchData()])
 // Run labeled jobs sequentially under one splash — label updates per step,
 // results come back as a typed tuple in order
 const [user, posts] = await ns.show([
-  ['Loading user',  () => fetchUser()],
+  ['Loading user', () => fetchUser()],
   ['Loading posts', () => fetchPosts()],
 ])
 ```
@@ -34,6 +34,7 @@ const [user, posts] = await ns.show([
 Still just two functions. Accessible out of the box (`role="status"`, `aria-live="polite"`, `aria-busy`, `prefers-reduced-motion`) and themeable via `--ns-*` CSS custom properties.
 
 ## Installation
+
 ```bash
 npm install nanosplash
 ```
@@ -43,4 +44,5 @@ npm install nanosplash
 ```
 
 ## Documentation
+
 [Read the full docs here](./docs.md)

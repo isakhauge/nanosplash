@@ -1,4 +1,4 @@
-import { defineConfig, type LibraryFormats } from 'vite'
+import { defineConfig, type LibraryFormats } from 'vite-plus'
 import path from 'node:path'
 import { config } from 'dotenv'
 import postcss from 'postcss'
@@ -10,12 +10,36 @@ const format = (process.env?.format ?? '') as LibraryFormats
 const entry = (process.env?.entry ?? '') as string
 
 export default defineConfig({
+  fmt: {
+    semi: false,
+    singleQuote: true,
+    tabWidth: 2,
+    printWidth: 80,
+  },
+  test: {
+    environment: 'jsdom',
+    css: true,
+    coverage: {
+      enabled: true,
+      provider: 'v8',
+      reporter: ['lcov', 'text'],
+      reportsDirectory: './coverage',
+      include: ['src/**/*.ts'],
+      exclude: ['**/*.d.ts'],
+      thresholds: {
+        statements: 100,
+        branches: 100,
+        functions: 100,
+        lines: 100,
+      },
+    },
+  },
   build: {
     lib: {
       entry: entry, // Path to your library's entry point
       name: name,
       formats: [format], // ESM, CommonJS, IIFE
-      fileName: format => `${name}.${format}.js`,
+      fileName: (format) => `${name}.${format}.js`,
     },
   },
   resolve: {

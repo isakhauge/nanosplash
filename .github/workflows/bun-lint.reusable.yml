@@ -5,10 +5,10 @@ on:
   workflow_call:
     inputs:
       working-directory:
-        description: "Directory of the project (if not repo root)"
+        description: 'Directory of the project (if not repo root)'
         required: false
         type: string
-        default: "."
+        default: '.'
 
 jobs:
   lint:

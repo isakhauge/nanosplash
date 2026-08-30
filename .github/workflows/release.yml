@@ -4,7 +4,7 @@ name: Release Nanosplash
 on:
   push:
     tags:
-      - "v*.*.*"  # e.g. v1.2.3
+      - 'v*.*.*' # e.g. v1.2.3
 
 jobs:
   publish:

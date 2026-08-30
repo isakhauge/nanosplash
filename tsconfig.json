@@ -12,7 +12,7 @@
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
-    
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -20,14 +20,9 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*",
-      ],
-      "@/types/*": [
-        "./types/*"
-      ],
+      "@/*": ["./src/*"],
+      "@/types/*": ["./types/*"]
     }
   },
   "include": ["src"]
