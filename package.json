@@ -83,7 +83,7 @@
     "packageManager": {
       "name": "bun",
       "version": "1.4.0",
-      "onFail": "download"
+      "onFail": "warn"
     }
   }
 }

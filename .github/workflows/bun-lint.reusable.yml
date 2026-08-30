@@ -1,5 +1,5 @@
 # .github/workflows/reusables/bun-lint.yml
-name: Reusable - Bun Lint
+name: Reusable - Bun Check (Format + Lint)
 
 on:
   workflow_call:
@@ -28,5 +28,5 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Lint
-        run: bun run lint
+      - name: Check (format + lint)
+        run: bun run check

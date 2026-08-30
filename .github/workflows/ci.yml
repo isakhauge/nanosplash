@@ -3,9 +3,9 @@ name: Nanosplash CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, production]
   pull_request:
-    branches: [main, develop]
+    branches: [main, production]
 
 jobs:
   build:
