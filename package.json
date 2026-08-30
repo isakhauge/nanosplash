@@ -1,6 +1,6 @@
 {
   "name": "nanosplash",
-  "version": "4.1.2",
+  "version": "4.1.3",
   "private": false,
   "description": "The tiny loading screen for web artisans",
   "keywords": [
@@ -33,6 +33,7 @@
   "source": "./src/composables/ns.ts",
   "files": [
     "dist",
+    "!dist/docs",
     "types",
     "README.md",
     "LICENSE"
@@ -52,10 +53,11 @@
   },
   "scripts": {
     "dev": "vp dev",
-    "build": "bun run build:es && bun run build:cjs && bun run build:iife",
+    "build": "bun run build:es && bun run build:cjs && bun run build:iife && bun run build:docs",
     "build:es": "tsc && cross-env entry=./src/composables/ns.ts format=es vp build -m production --outDir ./dist/es",
     "build:cjs": "tsc && cross-env entry=./src/composables/ns.ts format=cjs vp build -m production --outDir ./dist/cjs",
     "build:iife": "tsc && cross-env entry=./src/iife.ts format=iife vp build -m production --outDir ./dist/iife",
+    "build:docs": "tsc && cross-env entry=./src/docs.ts format=iife vp build -m production --outDir ./dist/docs && bun ./scripts/build-docs.ts",
     "preview": "vp preview",
     "lint": "vp lint",
     "format": "vp fmt",
@@ -66,10 +68,8 @@
     "@types/node": "^25.3.0",
     "@vitest/coverage-v8": "4.1.11",
     "cross-env": "^10.1.0",
-    "cssnano": "^7.1.2",
     "dotenv": "^17.3.1",
     "jsdom": "^28.1.0",
-    "postcss": "^8.5.6",
     "typescript": "7.0.2",
     "vite": "npm:@voidzero-dev/vite-plus-core@0.3.0",
     "vite-plus": "0.3.0",
