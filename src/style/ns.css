@@ -43,24 +43,49 @@
   --ns-top: 0;
 }
 
+/*
+ * Public theming defaults.
+ *
+ * Theme by overriding the `--ns-*` custom properties, e.g.
+ *   :root { --ns-color: tomato; --ns-size: 24px; }
+ * or per container:
+ *   #my-panel { --ns-bg: rgba(0, 0, 0, 0.8); }
+ *
+ * :where() keeps specificity at zero, so any user rule wins
+ * regardless of stylesheet load order.
+ */
+:where(:root) {
+  --ns-color: DarkSlateGray;
+  --ns-size: 20px;
+  --ns-font: 'Inter', 'Helvetica', 'Arial';
+  --ns-weight: 400;
+  --ns-bg: rgba(255, 255, 255, 0.9);
+  --ns-z-index: 9999999999;
+  --ns-blur: blur(5px);
+  --ns-show-delay: 0s;
+}
+
 /* Nanosplash host */
 .nsh {
-  --color: DarkSlateGray;
-  --size: 20px;
+  --color: var(--ns-color);
+  --size: var(--ns-size);
   --relSize: calc(var(--size) * 0.9);
-  --font: 'Inter', 'Helvetica', 'Arial';
-  --weight: 400;
-  --bg: rgba(255, 255, 255, 0.9);
-  --zIdx: 9999999999;
-  --blur: blur(5px);
+  --font: var(--ns-font);
+  --weight: var(--ns-weight);
+  --bg: var(--ns-bg);
+  --zIdx: var(--ns-z-index);
+  --blur: var(--ns-blur);
 
   position: relative;
   z-index: var(--zIdx);
   &::before {
+    animation: nsFade 0.2s linear backwards;
+    animation-delay: var(--ns-show-delay);
     width: 100%;
     height: 100%;
-    bottom: 0; /* Not sure why */
-    right: 0; /* Not sure why */
+    /* Pin the full-size overlay to the host */
+    bottom: 0;
+    right: 0;
     position: absolute;
     content: '';
     background-color: var(--bg);
@@ -87,14 +112,16 @@ body.nsh {
 .ns {
   width: 100%;
   height: 100%;
-  bottom: 0; /* Not sure why */
-  right: 0; /* Not sure why */
+  /* Pin the full-size overlay to the host */
+  bottom: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
   z-index: calc(var(--zIdx) + 2);
-  animation: nsFade 2s;
+  animation: nsFade 2s backwards;
+  animation-delay: var(--ns-show-delay);
   gap: var(--relSize);
 }
 
@@ -110,7 +137,8 @@ body.nsh {
   overflow: hidden;
   text-shadow: 0 0 0.06rem rgba(0, 0, 0, 0.25);
   filter: drop-shadow(0 0 0.07rem rgba(0, 0, 0, 0.25));
-  animation: nsAscend 0.5s;
+  animation: nsAscend 0.5s backwards;
+  animation-delay: var(--ns-show-delay);
 }
 
 /* Nanosplash spinner */
@@ -118,7 +146,8 @@ body.nsh {
   display: block;
   width: var(--relSize);
   height: var(--relSize);
-  animation: nsAscend 0.5s;
+  animation: nsAscend 0.5s backwards;
+  animation-delay: var(--ns-show-delay);
   & > svg {
     animation: nsRotate 2s linear infinite;
     position: relative;
@@ -130,5 +159,23 @@ body.nsh {
     stroke: var(--color);
     stroke-linecap: round;
     animation: nsDash 1.5s ease-in-out infinite;
+  }
+}
+
+/* Reduced motion: no fades or ascends, slow steady rotation, static arc */
+@media (prefers-reduced-motion: reduce) {
+  .ns,
+  .nst,
+  .nss,
+  .nsh::before {
+    animation-duration: 0s;
+  }
+  .nss > svg {
+    animation: nsRotate 6s linear infinite;
+  }
+  .nss .path {
+    animation: none;
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
   }
 }

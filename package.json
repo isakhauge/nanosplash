@@ -1,8 +1,26 @@
 {
   "name": "nanosplash",
+  "version": "4.1.1",
   "private": false,
-  "version": "4.0.20",
-  "type": "module",
+  "description": "The tiny loading screen for web artisans",
+  "keywords": [
+    "cdn",
+    "es",
+    "esm",
+    "iife",
+    "loader",
+    "loading",
+    "nano",
+    "nanosplash",
+    "screen",
+    "small",
+    "splash",
+    "tiny",
+    "ts",
+    "typescript",
+    "vite"
+  ],
+  "homepage": "https://github.com/isakhauge/nanosplash",
   "author": {
     "name": "Isak K. Hauge",
     "email": "isakhauge@icloud.com",
@@ -12,44 +30,18 @@
     "type": "git",
     "url": "git+https://github.com/isakhauge/nanosplash.git"
   },
-  "description": "The tiny loading screen for web artisans",
-  "homepage": "https://github.com/isakhauge/nanosplash",
-  "keywords": [
-    "loading",
-    "loader",
-    "screen",
-    "splash",
-    "nano",
-    "nanosplash",
-    "small",
-    "tiny",
-    "es",
-    "esm",
-    "ts",
-    "typescript",
-    "iife",
-    "cdn",
-    "vite"
-  ],
-  "scripts": {
-    "dev": "vite",
-    "build": "bun run build:es && bun run build:cjs && bun run build:iife",
-    "build:es": "tsc && cross-env entry=./src/composables/ns.ts format=es vite build -m production --outDir ./dist/es",
-    "build:cjs": "tsc && cross-env entry=./src/composables/ns.ts format=cjs vite build -m production --outDir ./dist/cjs",
-    "build:iife": "tsc && cross-env entry=./src/iife.ts format=iife vite build -m production --outDir ./dist/iife",
-    "preview": "vite preview",
-    "lint": "eslint . --fix",
-    "format": "prettier --write ./src/**/*.ts ./vite.config.ts ./vitest.config.ts",
-    "test": "bunx vitest --coverage"
-  },
+  "source": "./src/composables/ns.ts",
   "files": [
     "dist",
     "types",
     "README.md",
     "LICENSE"
   ],
-  "types": "./types/global.d.ts",
+  "type": "module",
   "main": "./dist/es/ns.es.js",
+  "types": "./types/global.d.ts",
+  "unpkg": "./dist/iife/ns.iife.js",
+  "jsdelivr": "./dist/iife/ns.iife.js",
   "exports": {
     ".": {
       "types": "./types/global.d.ts",
@@ -58,27 +50,40 @@
       "default": "./dist/es/ns.es.js"
     }
   },
-  "source": "./src/composables/ns.ts",
-  "unpkg": "./dist/iife/ns.iife.js",
-  "jsdelivr": "./dist/iife/ns.iife.js",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "bun run build:es && bun run build:cjs && bun run build:iife",
+    "build:es": "tsc && cross-env entry=./src/composables/ns.ts format=es vp build -m production --outDir ./dist/es",
+    "build:cjs": "tsc && cross-env entry=./src/composables/ns.ts format=cjs vp build -m production --outDir ./dist/cjs",
+    "build:iife": "tsc && cross-env entry=./src/iife.ts format=iife vp build -m production --outDir ./dist/iife",
+    "preview": "vp preview",
+    "lint": "vp lint",
+    "format": "vp fmt",
+    "test": "vp test --coverage",
+    "check": "vp check"
+  },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
     "@types/node": "^25.3.0",
-    "@typescript-eslint/eslint-plugin": "^8.56.0",
-    "@typescript-eslint/parser": "^8.56.0",
-    "@vitest/coverage-v8": "4.0.18",
+    "@vitest/coverage-v8": "4.1.11",
     "cross-env": "^10.1.0",
     "cssnano": "^7.1.2",
     "dotenv": "^17.3.1",
-    "eslint": "^10.0.1",
-    "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.3.0",
     "jsdom": "^28.1.0",
     "postcss": "^8.5.6",
-    "prettier": "3.8.1",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.0",
-    "vite": "^7.3.1",
-    "vitest": "^4.0.18"
+    "typescript": "7.0.2",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.0",
+    "vite-plus": "0.3.0",
+    "vitest": "4.1.11"
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.0",
+    "vitest": "4.1.11"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "bun",
+      "version": "1.4.0",
+      "onFail": "warn"
+    }
   }
 }

@@ -1,0 +1,78 @@
+<svg viewBox="0 0 1020 464" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <linearGradient id="cardGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f5f5f7"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#34c759"/>
+      <stop offset="100%" stop-color="#30b855"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- transparent background: no background rect -->
+
+  <g transform="translate(20, 20)">
+
+  <!-- Row 1 -->
+  <!-- Card 1: Tiny 3kb gzipped -->
+  <g filter="url(#cardShadow)">
+    <rect x="0" y="0" width="317" height="202" rx="22" fill="url(#cardGrad)" stroke="#00000010"/>
+  </g>
+  <text x="158" y="93" text-anchor="middle" font-size="17" font-weight="510" fill="#6e6e73" letter-spacing="-0.2">Tiny</text>
+  <text x="158" y="130" text-anchor="middle" font-size="28" font-weight="700" fill="#1d1d1f" letter-spacing="-0.5">3kb gzipped</text>
+
+  <!-- Card 2: High performance -->
+  <g filter="url(#cardShadow)">
+    <rect x="331" y="0" width="317" height="202" rx="22" fill="url(#cardGrad)" stroke="#00000010"/>
+  </g>
+  <g transform="translate(469, 55) scale(1.725)">
+    <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="#86868b"/>
+  </g>
+  <text x="489" y="131" text-anchor="middle" font-size="19" font-weight="400" fill="#1d1d1f">High</text>
+  <text x="489" y="153" text-anchor="middle" font-size="19" font-weight="400" fill="#1d1d1f">performance</text>
+
+  <!-- Card 3: Zero dependencies -->
+  <g filter="url(#cardShadow)">
+    <rect x="663" y="0" width="317" height="202" rx="22" fill="url(#cardGrad)" stroke="#00000010"/>
+  </g>
+  <text x="821" y="100" text-anchor="middle" font-size="30" font-weight="700" fill="url(#greenGrad)" letter-spacing="-0.4">Zero</text>
+  <text x="821" y="130" text-anchor="middle" font-size="19" font-weight="400" fill="#1d1d1f">dependencies</text>
+
+  <!-- Row 2 -->
+  <!-- Card 4: Minimalistic Design -->
+  <g filter="url(#cardShadow)">
+    <rect x="0" y="222" width="317" height="202" rx="22" fill="url(#cardGrad)" stroke="#00000010"/>
+  </g>
+  <circle cx="158" cy="258" r="4" fill="#86868b"/>
+  <g stroke="#86868b" stroke-width="1.8" stroke-linecap="round" fill="none">
+    <line x1="158" y1="262" x2="142" y2="316"/>
+    <line x1="158" y1="262" x2="174" y2="316"/>
+    <line x1="150" y1="289" x2="166" y2="289"/>
+  </g>
+  <text x="158" y="352" text-anchor="middle" font-size="19" font-weight="400" fill="#1d1d1f">Minimalistic</text>
+  <text x="158" y="374" text-anchor="middle" font-size="19" font-weight="400" fill="#1d1d1f">Design</text>
+
+  <!-- Card 5: Exports ES, CJS, IIFE -->
+  <g filter="url(#cardShadow)">
+    <rect x="331" y="222" width="317" height="202" rx="22" fill="url(#cardGrad)" stroke="#00000010"/>
+  </g>
+  <rect x="441" y="280" width="44" height="30" rx="6" fill="#f0c419"/>
+  <text x="463" y="299" text-anchor="middle" font-size="12" font-weight="700" fill="#3a2e00">ESM</text>
+  <rect x="493" y="280" width="44" height="30" rx="6" fill="#3178c6"/>
+  <text x="515" y="299" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">TS</text>
+  <text x="489" y="340" text-anchor="middle" font-size="19" font-weight="650" fill="#1d1d1f">Exports</text>
+  <text x="489" y="363" text-anchor="middle" font-size="17" font-weight="400" fill="#1d1d1f">ES, CJS, IIFE</text>
+
+  <!-- Card 6: 2 Function API -->
+  <g filter="url(#cardShadow)">
+    <rect x="663" y="222" width="317" height="202" rx="22" fill="url(#cardGrad)" stroke="#00000010"/>
+  </g>
+  <text x="821" y="315" text-anchor="middle" font-size="20" font-weight="700" fill="#1d1d1f">2 Function</text>
+  <text x="821" y="340" text-anchor="middle" font-size="19" font-weight="400" fill="#1d1d1f">API</text>
+
+  </g>
+</svg>

@@ -4,10 +4,10 @@ on:
   workflow_call:
     inputs:
       working-directory:
-        description: "Directory of the package"
+        description: 'Directory of the package'
         required: false
         type: string
-        default: "."
+        default: '.'
 
 jobs:
   publish:
@@ -42,6 +42,6 @@ jobs:
       - name: Setup Node for publish
         uses: actions/setup-node@v6
         with:
-          node-version: "24.x"
-          registry-url: "https://registry.npmjs.org"
+          node-version: '24.x'
+          registry-url: 'https://registry.npmjs.org'
       - run: npm publish

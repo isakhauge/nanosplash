@@ -1,5 +1,11 @@
 import style from '@/style/ns.css?inline'
-import type { INanosplash } from '@/types/interfaces/INanosplash'
+import type {
+  INanosplash,
+  NsLabel,
+  NsLabeledJob,
+  NsOptions,
+  NsShowInput,
+} from '@/types/interfaces/INanosplash'
 import type { Func } from '@/types/generic/function.ts'
 import type { INSElement } from '@/types/interfaces/INSElement'
 import {
@@ -18,64 +24,71 @@ import type { ElementRef } from '@/types/dom.ts'
 import type { int } from '@/types/semantic/number.ts'
 import { version } from '@/../package.json'
 
+let nextNsId = 1
+
 /**
- * Creates and returns the Nanosplash (NS) API.
+ * Narrow a `show()` input to a single labeled job.
  *
- * Nanosplash is a lightweight, non-blocking loading indicator that can be shown
- * globally or inside specific containers, with optional text.
+ * An array of labeled jobs never matches: its second element is another
+ * labeled job (or `undefined`), not a function.
  */
-export const useNs: Func<INanosplash> = (): INanosplash => {
+const isLabeledJob = (input?: NsShowInput): input is NsLabeledJob<unknown> =>
+  Array.isArray(input) && typeof input[1] === 'function'
+
+/**
+ * Create the Nanosplash (NS) API.
+ *
+ * Nanosplash is a lightweight, non-blocking loading indicator shown globally
+ * or inside specific containers, with an optional label.
+ *
+ * @param options - Anti-flicker timing applied to every splash shown through
+ *                  this instance
+ */
+export const useNs = (options?: NsOptions): INanosplash => {
   /**
-   * Retrieves all Nanosplash elements currently in the DOM.
-   *
-   * @returns Array of all `INSElement` instances
+   * Get all Nanosplash elements currently in the DOM.
    */
   const getAllNs: Func<INSElement[]> = () =>
     all(doc(), Selectors.ns) as INSElement[]
 
   /**
-   * Creates a new Nanosplash element with spinner and optional text container.
-   *
-   * The element is assigned a unique `nsId` based on the current timestamp.
-   *
-   * @returns A new `INSElement` ready to be inserted into the DOM
+   * Create a new Nanosplash element (spinner plus empty text slot) with a
+   * unique monotonic `nsId`.
    */
   const makeNs: Func<INSElement> = () => {
     const circle: HTMLString =
       '<circle class=path cx=25 cy=25 r=20 fill=none />'
     const svg = parseHtml(`<svg viewBox="0 0 50 50">${circle}</svg>`) as Element
 
+    svg.setAttribute('aria-hidden', 'true')
+
     const node = div(
       ClassNames.ns,
       div(ClassNames.nsText),
-      div(ClassNames.nsSpinner, svg)
+      div(ClassNames.nsSpinner, svg),
     ) as INSElement
 
-    node.nsId = Date.now()
+    node.setAttribute('role', 'status')
+    node.setAttribute('aria-live', 'polite')
+    node.nsId = nextNsId++
     return node
   }
 
   /**
-   * Returns all Nanosplash elements sorted in FIFO order (oldest first)
-   * based on their `nsId`.
-   *
-   * @returns Nanosplash elements in creation order
+   * Get the active Nanosplash elements (excluding those pending removal), oldest first.
    */
   const nsQueue: Func<INSElement[]> = () =>
-    getAllNs().sort((a, b) => a.nsId - b.nsId)
+    getAllNs()
+      .filter((x) => x.nsHideTimer === undefined)
+      .sort((a, b) => a.nsId - b.nsId)
 
   /**
-   * Returns the oldest Nanosplash element without removing it (peek operation).
-   *
-   * @returns The first (oldest) Nanosplash element, or `null` if none exist
+   * Get the oldest active Nanosplash element, or `null` if none exist.
    */
   const peekNsQueue: Func<INSElement | null> = () => nsQueue()[0] ?? null
 
   /**
-   * Sets or clears the text content of a Nanosplash element.
-   *
-   * @param ns - The target Nanosplash element
-   * @param text - Text to display next to the spinner. Pass `undefined`, `null`, or empty string to hide text.
+   * Set a Nanosplash element's text, or remove it when `text` is falsy.
    */
   const setNsText = (ns: INSElement, text?: string): void => {
     first(ns, Selectors.nsText)?.remove()
@@ -86,15 +99,10 @@ export const useNs: Func<INanosplash> = (): INanosplash => {
   }
 
   /**
-   * Sets the parent container for a Nanosplash element and marks it as a host.
-   *
-   * If the parent already has children, the Nanosplash is inserted before the first child
-   * to ensure it appears on top.
-   *
-   * @param ns - The Nanosplash element to position
-   * @param parent - The container element that will hold the Nanosplash
+   * Insert the Nanosplash above the parent's children and mark the parent
+   * as a busy host (class + `aria-busy`).
    */
-  const setNsParent = (ns: INSElement, parent: Element): void => {
+  const mountNs = (ns: INSElement, parent: Element): void => {
     const child = parent.firstElementChild
     if (child) {
       parent.insertBefore(ns, child)
@@ -102,44 +110,57 @@ export const useNs: Func<INanosplash> = (): INanosplash => {
       parent.append(ns)
     }
     parent.classList.add(ClassNames.nsHost)
+    parent.setAttribute('aria-busy', 'true')
   }
 
   /**
-   * Finds an existing Nanosplash element inside a given parent.
-   *
-   * @param parent - The container to search within
-   * @returns The Nanosplash element if found, otherwise `undefined`
+   * Stamp the timing state on a Nanosplash element and expose the show
+   * delay to CSS via `--ns-show-delay` on the host.
+   */
+  const applyTiming = (ns: INSElement, parent: Element): void => {
+    ns.nsShownAt = performance.now()
+    ns.nsShowDelay = options?.showDelay ?? 0
+    ns.nsMinDuration = options?.minDuration ?? 0
+    ;(parent as HTMLElement).style.setProperty(
+      '--ns-show-delay',
+      ns.nsShowDelay + 'ms',
+    )
+  }
+
+  /**
+   * Get the Nanosplash element directly inside `parent`, if any.
    */
   const getNsInside = (parent: Element): INSElement | undefined => {
     const children = toArray(parent.children) as INSElement[]
-    return children.find(v => v.classList.contains(ClassNames.ns))
+    return children.find((v) => v.classList.contains(ClassNames.ns))
   }
 
   /**
-   * Displays a Nanosplash loading indicator.
+   * Show a splash, recycling any existing one in the same container.
    *
-   * If a Nanosplash already exists inside the target container, it will be reused
-   * (recycled) instead of creating a new one.
-   *
-   * @param text - Optional text to display next to the spinner.
-   *               Pass `false`, `undefined`, or empty string to show only the spinner.
-   * @param inside - Optional target container (Element, selector string, or ref).
-   *                 If omitted, the Nanosplash is shown on the document body.
-   * @returns The unique `nsId` of the shown Nanosplash, or `null` if failed
+   * @param label - Label beside the spinner; falsy shows the spinner only
+   * @param inside - Target container; the document body when omitted
+   * @returns The splash's `nsId`, or `null` if `inside` could not be resolved
    */
-  const show = (text?: string, inside?: ElementRef): int | null => {
-    const parent: Element = inside ? (parseRef(inside) ?? bod()) : bod()
+  const showPlain = (label?: NsLabel, inside?: ElementRef): int | null => {
+    const parent = inside ? parseRef(inside) : bod()
+    if (!parent) return null
+
+    ensureStyle()
     let ns: INSElement
 
     const recycled = getNsInside(parent)
     if (recycled) {
       ns = recycled
+      clearTimeout(ns.nsHideTimer)
+      ns.nsHideTimer = undefined
     } else {
       ns = makeNs()
-      setNsParent(ns, parent)
+      mountNs(ns, parent)
     }
 
-    setNsText(ns, text ?? '')
+    applyTiming(ns, parent)
+    setNsText(ns, label ?? '')
 
     // Position body-level splash at current scroll position
     if (parent === bod()) {
@@ -151,34 +172,57 @@ export const useNs: Func<INanosplash> = (): INanosplash => {
   }
 
   /**
-   * Removes a Nanosplash element from the DOM and cleans up its host class.
-   *
-   * @param ns - The Nanosplash element to remove (can be `null` or `undefined`)
+   * Remove a Nanosplash from the DOM immediately and clear its host's
+   * class, `aria-busy`, and `--ns-show-delay`.
    */
-  const removeNs = (ns?: Element | INSElement | null): void => {
-    if (!ns) return
-    ns.parentElement?.classList.remove(ClassNames.nsHost)
+  const removeNsNow = (ns: INSElement): void => {
+    const host = ns.parentElement
+    if (host) {
+      host.classList.remove(ClassNames.nsHost)
+      host.removeAttribute('aria-busy')
+      host.style.removeProperty('--ns-show-delay')
+    }
     ns.remove()
   }
 
   /**
-   * Finds a Nanosplash element by its unique ID.
+   * Remove a Nanosplash element, honoring its timing state.
    *
-   * @param id - The `nsId` of the Nanosplash to find
-   * @returns The matching Nanosplash element, or `null` if not found
+   * - Nothing to remove, or removal already pending → do nothing
+   * - Still inside its `showDelay` window (never visible) → remove now
+   * - Visible for less than `minDuration` → defer removal until it has
+   *   been visible long enough
+   * - Otherwise → remove now
    */
-  const findNs = (id: int): INSElement | null =>
-    getAllNs().find(x => x.nsId === id) ?? null
+  const removeNs = (ns?: INSElement | null): void => {
+    if (!ns) return
+    if (ns.nsHideTimer !== undefined) return
+
+    const showDelay = ns.nsShowDelay ?? 0
+    const visibleFor = performance.now() - ((ns.nsShownAt ?? 0) + showDelay)
+    const stillHidden = showDelay > 0 && visibleFor < 0
+    const wait = (ns.nsMinDuration ?? 0) - visibleFor
+
+    if (!stillHidden && wait > 0) {
+      ns.nsHideTimer = setTimeout(() => removeNsNow(ns), wait)
+      return
+    }
+
+    removeNsNow(ns)
+  }
 
   /**
-   * Hides one or more Nanosplash elements.
+   * Find the Nanosplash element with the given `nsId`; `null` if not found.
+   */
+  const findNs = (id: int): INSElement | null =>
+    getAllNs().find((x) => x.nsId === id) ?? null
+
+  /**
+   * Hide one or more Nanosplash elements.
    *
-   * Behavior depends on the argument:
-   * - `undefined` or omitted → hides the oldest Nanosplash (FIFO)
-   * - `number` → hides the Nanosplash with the matching `nsId`
-   * - `'*'` → hides **all** Nanosplash elements in the DOM
-   *
-   * @param id - ID of specific Nanosplash, `'*'` for all, or omitted for oldest
+   * - Omitted → hide the oldest active splash (FIFO)
+   * - `number` → hide the splash with that `nsId`
+   * - `'*'` → hide every splash in the DOM
    */
   const hide = (id?: int | '*'): void => {
     const selectAll = id === '*'
@@ -193,22 +237,76 @@ export const useNs: Func<INanosplash> = (): INanosplash => {
   }
 
   /**
-   * Injects the latest Nanosplash CSS styles into the document.
-   *
-   * Removes any previously injected styles first to ensure updates take effect.
+   * Build the Nanosplash `<style>` element.
    */
-  const injectStyle = () => {
-    first(doc(), '#ns')?.remove()
+  const injectStyle = (): HTMLStyleElement =>
+    parseHtml(`<style id="ns">${style}</style>`) as HTMLStyleElement
 
-    const styleElement: HTMLStyleElement = parseHtml(
-      `<style id="ns">${style}</style>`
-    ) as HTMLStyleElement
+  /**
+   * Inject the stylesheet on first render; replace it when stale.
+   */
+  const ensureStyle = (): void => {
+    const existing = first(doc(), '#ns') as HTMLStyleElement | null
+    // Compare against a fresh element so `style` has a single textual use;
+    // the minifier would otherwise inline the full CSS string at every site.
+    const fresh = injectStyle()
 
-    bod().append(styleElement)
+    if (!existing) {
+      doc().head.append(fresh)
+      return
+    }
+
+    if (existing.textContent !== fresh.textContent) {
+      existing.replaceWith(fresh)
+    }
   }
 
-  // Inject styles every time `useNs` is called (supports HMR / style updates)
-  injectStyle()
+  /**
+   * Run labeled jobs sequentially under one splash, updating the label as
+   * each job starts. Fail fast: the first rejection hides the splash,
+   * propagates, and skips the remaining jobs. Hide the splash once the
+   * sequence settles either way.
+   *
+   * @returns Each job's resolved value, in input order
+   */
+  const runJobs = async (
+    jobs: readonly NsLabeledJob<unknown>[],
+    inside?: ElementRef,
+  ): Promise<unknown[]> => {
+    if (jobs.length === 0) return []
+
+    const results: unknown[] = []
+    let id: int | null = null
+
+    try {
+      for (const [label, job] of jobs) {
+        id = showPlain(label, inside)
+        results.push(await job())
+      }
+    } finally {
+      if (id !== null) hide(id)
+    }
+
+    return results
+  }
+
+  /**
+   * Show a splash, or run jobs under one.
+   *
+   * - Label (or nothing) → show a splash, return its `nsId`
+   * - One labeled job → show a splash for the job's lifetime, resolve with its result
+   * - Array of labeled jobs → run sequential jobs under one splash, resolve
+   *   with their results in order
+   */
+  const show = ((input?: NsShowInput, inside?: ElementRef) => {
+    if (isLabeledJob(input)) {
+      return runJobs([input], inside).then((results) => results[0])
+    }
+    if (Array.isArray(input)) {
+      return runJobs(input as readonly NsLabeledJob<unknown>[], inside)
+    }
+    return showPlain(input as NsLabel, inside)
+  }) as INanosplash['show']
 
   return {
     show,

@@ -1,5 +1,5 @@
 import { useNs } from '@/composables/ns.ts'
-import type { INanosplash } from "@/types/interfaces/INanosplash"
+import type { INanosplash } from '@/types/interfaces/INanosplash'
 
 declare global {
   interface Window {
@@ -7,6 +7,6 @@ declare global {
   }
 }
 
-window.addEventListener('load', function () {
-  this.ns = useNs()
+window.addEventListener('load', () => {
+  window.ns = useNs()
 })

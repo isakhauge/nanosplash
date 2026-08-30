@@ -1,4 +1,4 @@
-import type { INanosplash } from './interfaces/INanosplash.ts'
+import type { INanosplash, NsOptions } from './interfaces/INanosplash.ts'
 
 declare global {
   interface Window {
@@ -11,9 +11,11 @@ declare global {
  *
  * **The tiny loading screen for web artisans**
  *
- * `useNs` is the main hook, which will inject the style into the DOM and return
- * an instance of the Nanosplash API.
- * We recommend that you add Nanosplash to the Window.
+ * Create the Nanosplash API. `useNs` is the sole entry point; styles inject
+ * lazily on the first `show()`.
+ * We recommend adding Nanosplash to the Window.
+ * @param options Anti-flicker timing applied to every splash shown through
+ * this instance.
  * @returns Instance of Nanosplash API
  * @example The short and easy way.
  * window.ns = useNs()
@@ -21,6 +23,8 @@ declare global {
  * window.addEventListener('load', function() {
  *     this.ns = useNs()
  * })
+ * @example With anti-flicker timing.
+ * const ns = useNs({ showDelay: 150, minDuration: 400 })
  * @author Isak Hauge <https://www.linkedin.com/in/isakhauge/>
  */
-export const useNs: () => INanosplash
+export const useNs: (options?: NsOptions) => INanosplash
