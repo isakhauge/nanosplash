@@ -24,6 +24,4 @@ const [user, posts] = await ns.show([
 ])
 ```
 
-[Live demo](https://raw.githack.com/isakhauge/nanosplash/main/docs/index.html)
-
-[See full docs](./docs.md)
+[Live demo](https://raw.githack.com/isakhauge/nanosplash/main/docs/index.html) | [See full docs](./docs.md)
