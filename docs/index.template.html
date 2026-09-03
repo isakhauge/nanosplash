@@ -1273,14 +1273,8 @@ ns.<span class="f">show</span>(<span class="s">'Almost there'</span>, <span clas
 
         /* widget reload buttons (recycling demo) */
         document.querySelectorAll('[data-widget]').forEach(function (btn) {
-          var clicks = 0
           btn.addEventListener('click', function () {
-            clicks++
-            var label =
-              clicks % 2 === 1
-                ? btn.dataset.label
-                : 'Still ' + btn.dataset.label.toLowerCase()
-            ns.show(label, btn.dataset.widget)
+            ns.show(btn.dataset.label, btn.dataset.widget)
           })
         })
 
