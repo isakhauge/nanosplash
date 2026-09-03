@@ -4,6 +4,22 @@ Nanosplash is a lightweight, non-blocking loading indicator. It can be displayed
 
 ---
 
+## Installation
+
+```bash
+npm install nanosplash
+```
+
+Or via CDN, no build step:
+
+```html
+<script src="https://unpkg.com/nanosplash/dist/iife/ns.iife.js"></script>
+```
+
+This exposes a global `useNs` function.
+
+---
+
 ## `useNs(options?)`
 
 The sole entry point for the Nanosplash API. Call this function to obtain an API object exposing `show`, `hide`, and `version`.

@@ -23,8 +23,4 @@ const data = await ns.show(['Loading', () => fetchData()])
 npm install nanosplash
 ```
 
-```html
-<script src="https://unpkg.com/nanosplash/dist/iife/ns.iife.js"></script>
-```
-
-[Full docs →](./docs.md)
+CDN available, see [docs](./docs.md).
