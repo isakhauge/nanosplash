@@ -2,6 +2,16 @@
 
 All notable changes to Nanosplash are documented here.
 
+## [4.1.4] — 2026-09-03
+
+### Fixed
+
+- **Spinner wobble in Chrome on Windows.** The rotating spinner `<svg>` inherited an integer-snapped compositing layer from its filtered (`drop-shadow`) ancestor. On fractional-DPR displays (e.g. Windows 125%/150% scaling), the unsnapped rotation origin flipped between neighboring snapped pixels each frame, causing a visible oscillating wobble in Chromium. The spinner now gets its own compositing layer with an explicit center transform-origin, decoupling it from the ancestor's snapped bounds. ([#52](https://github.com/isakhauge/nanosplash/issues/52))
+
+### Changed
+
+- **README simplified.** Trimmed to title, badges, feature-grid image, install/usage snippets, and links to the live demo and full docs — all timing/accessibility/theming detail already lived in `docs.md`. `docs.md` gained an Installation section (npm + CDN).
+
 ## [4.1.3] — 2026-08-30
 
 ### Added
@@ -35,5 +45,6 @@ All notable changes to Nanosplash are documented here.
 
 See the [GitHub releases](https://github.com/isakhauge/nanosplash/releases).
 
+[4.1.4]: https://github.com/isakhauge/nanosplash/compare/v4.1.3...v4.1.4
 [4.1.3]: https://github.com/isakhauge/nanosplash/compare/v4.1.1...v4.1.3
 [4.1.2]: https://github.com/isakhauge/nanosplash/commit/b9d9f8a
