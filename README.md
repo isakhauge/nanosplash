@@ -7,6 +7,10 @@
 
 ![Nanosplash features: tiny 3kb gzipped, high performance, zero dependencies, minimalistic design, exports ES/CJS/IIFE, 3 function API](https://raw.githubusercontent.com/isakhauge/nanosplash/main/assets/feature-grid.svg)
 
+```bash
+npm install nanosplash
+```
+
 ```js
 const ns = useNs()
 
@@ -21,9 +25,5 @@ const [user, posts] = await ns.show([
 ```
 
 [Live demo](https://raw.githack.com/isakhauge/nanosplash/main/docs/index.html)
-
-```bash
-npm install nanosplash
-```
 
 [See full docs](./docs.md)
