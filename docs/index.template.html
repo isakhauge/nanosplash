@@ -608,13 +608,13 @@
           seconds so you get the page back.
         </p>
         <div class="controls">
-          <button data-demo="show-label">show('Brewing coffee…')</button>
+          <button data-demo="show-label">show('Brewing coffee')</button>
           <button data-demo="show-bare">show() — spinner only</button>
         </div>
         <div class="log" id="log-basic" aria-live="polite"></div>
         <pre
           class="code"
-        ><span class="k">const</span> id = ns.<span class="f">show</span>(<span class="s">'Brewing coffee…'</span>) <span class="c">// → nsId</span>
+        ><span class="k">const</span> id = ns.<span class="f">show</span>(<span class="s">'Brewing coffee'</span>) <span class="c">// → nsId</span>
 ns.<span class="f">hide</span>(id)  <span class="c">// or ns.hide() for oldest, ns.hide('*') for all</span></pre>
       </section>
 
@@ -637,7 +637,7 @@ ns.<span class="f">hide</span>(id)  <span class="c">// or ns.hide() for oldest, 
               ><i style="height: 58%"></i><i style="height: 95%"></i
               ><i style="height: 72%"></i>
             </div>
-            <button data-widget="#w-revenue" data-label="Crunching numbers…">
+            <button data-widget="#w-revenue" data-label="Crunching numbers">
               Reload
             </button>
           </div>
@@ -647,7 +647,7 @@ ns.<span class="f">hide</span>(id)  <span class="c">// or ns.hide() for oldest, 
             <div class="rows" aria-hidden="true">
               <i></i><i></i><i></i><i></i><i></i>
             </div>
-            <button data-widget="#w-orders" data-label="Fetching orders…">
+            <button data-widget="#w-orders" data-label="Fetching orders">
               Reload
             </button>
           </div>
@@ -657,7 +657,7 @@ ns.<span class="f">hide</span>(id)  <span class="c">// or ns.hide() for oldest, 
             <div class="rows" aria-hidden="true">
               <i></i><i></i><i></i><i></i>
             </div>
-            <button data-widget="#w-activity" data-label="Syncing feed…">
+            <button data-widget="#w-activity" data-label="Syncing feed">
               Reload
             </button>
           </div>
@@ -668,8 +668,8 @@ ns.<span class="f">hide</span>(id)  <span class="c">// or ns.hide() for oldest, 
         </div>
         <pre
           class="code"
-        >ns.<span class="f">show</span>(<span class="s">'Crunching numbers…'</span>, <span class="s">'#w-revenue'</span>)
-ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span class="s">'#w-revenue'</span>) <span class="c">// recycled — text updates, no duplicate</span></pre>
+        >ns.<span class="f">show</span>(<span class="s">'Crunching numbers'</span>, <span class="s">'#w-revenue'</span>)
+ns.<span class="f">show</span>(<span class="s">'Almost there'</span>, <span class="s">'#w-revenue'</span>) <span class="c">// recycled — text updates, no duplicate</span></pre>
       </section>
 
       <section class="panel">
@@ -694,9 +694,9 @@ ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span c
         <pre
           class="code"
         ><span class="k">const</span> [user, posts, ok] = <span class="k">await</span> ns.<span class="f">show</span>([
-  [<span class="s">'Loading user…'</span>,  () =&gt; <span class="f">fetchUser</span>()],
-  [<span class="s">'Loading posts…'</span>, () =&gt; <span class="f">fetchPosts</span>()],
-  [<span class="s">'Verifying…'</span>,     () =&gt; <span class="f">verify</span>()],
+  [<span class="s">'Loading user'</span>,  () =&gt; <span class="f">fetchUser</span>()],
+  [<span class="s">'Loading posts'</span>, () =&gt; <span class="f">fetchPosts</span>()],
+  [<span class="s">'Verifying'</span>,     () =&gt; <span class="f">verify</span>()],
 ], <span class="s">'#stage-jobs'</span>) <span class="c">// typed tuple, in order</span></pre>
       </section>
 
@@ -941,7 +941,7 @@ ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span c
         /* ---------- panel 1: show/hide ---------- */
         var demos = {
           'show-label': function () {
-            var id = pageSplash('Brewing coffee…', 2000, function (id) {
+            var id = pageSplash('Brewing coffee', 2000, function (id) {
               logTo(
                 'log-basic',
                 'hide(' +
@@ -951,7 +951,7 @@ ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span c
             })
             logTo(
               'log-basic',
-              "show(<span class='ok'>'Brewing coffee…'</span>) → nsId <span class='ok'>" +
+              "show(<span class='ok'>'Brewing coffee'</span>) → nsId <span class='ok'>" +
                 id +
                 '</span>',
             )
@@ -981,7 +981,7 @@ ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span c
             btn.disabled = true
             ns.show(
               [
-                'Fetching user…',
+                'Fetching user',
                 function () {
                   return wait(1000).then(function () {
                     return { name: 'Isak', role: 'artisan' }
@@ -1005,7 +1005,7 @@ ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span c
             ns.show(
               [
                 [
-                  'Loading user…',
+                  'Loading user',
                   function () {
                     return wait(900).then(function () {
                       return '@isakhauge'
@@ -1013,7 +1013,7 @@ ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span c
                   },
                 ],
                 [
-                  'Loading posts…',
+                  'Loading posts',
                   function () {
                     return wait(900).then(function () {
                       return 42
@@ -1021,7 +1021,7 @@ ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span c
                   },
                 ],
                 [
-                  'Verifying…',
+                  'Verifying',
                   function () {
                     return wait(700).then(function () {
                       return true
@@ -1048,7 +1048,7 @@ ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span c
             ns.show(
               [
                 [
-                  'Step one…',
+                  'Step one',
                   function () {
                     return wait(800).then(function () {
                       return 'ok'
@@ -1056,7 +1056,7 @@ ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span c
                   },
                 ],
                 [
-                  'Step two…',
+                  'Step two',
                   function () {
                     return wait(800).then(function () {
                       throw new Error('418: I’m a teapot')
@@ -1064,7 +1064,7 @@ ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span c
                   },
                 ],
                 [
-                  'Never runs…',
+                  'Never runs',
                   function () {
                     return wait(800)
                   },
@@ -1139,12 +1139,12 @@ ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span c
 
         function runFlicker(btn, ms) {
           btn.disabled = true
-          var idRaw = ns.show('Working…', '#stage-raw')
+          var idRaw = ns.show('Working', '#stage-raw')
           var t0 = performance.now()
           nsTimed
             .show(
               [
-                'Working…',
+                'Working',
                 function () {
                   return wait(ms)
                 },
@@ -1279,9 +1279,7 @@ ns.<span class="f">show</span>(<span class="s">'Almost there…'</span>, <span c
             var label =
               clicks % 2 === 1
                 ? btn.dataset.label
-                : 'Still ' +
-                  btn.dataset.label.toLowerCase().replace('…', '') +
-                  '…'
+                : 'Still ' + btn.dataset.label.toLowerCase()
             ns.show(label, btn.dataset.widget)
           })
         })

@@ -20,10 +20,10 @@ const [user, posts] = await ns.show([
 ])
 ```
 
-**[Try it live →](https://raw.githack.com/isakhauge/nanosplash/main/docs/index.html)**
+[Live demo](https://raw.githack.com/isakhauge/nanosplash/main/docs/index.html)
 
 ```bash
 npm install nanosplash
 ```
 
-[See full docs →](./docs.md)
+[See full docs](./docs.md)
