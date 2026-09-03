@@ -14,7 +14,10 @@ ns.show('Loading')
 ns.show('Loading', '#my-div')
 ns.hide()
 
-const data = await ns.show(['Loading', () => fetchData()])
+const [user, posts] = await ns.show([
+  ['Loading user', () => fetchUser()],
+  ['Loading posts', () => fetchPosts()],
+])
 ```
 
 **[Try it live →](https://raw.githack.com/isakhauge/nanosplash/main/docs/index.html)**
@@ -23,4 +26,4 @@ const data = await ns.show(['Loading', () => fetchData()])
 npm install nanosplash
 ```
 
-CDN available, see [docs](./docs.md).
+[See full docs →](./docs.md)
