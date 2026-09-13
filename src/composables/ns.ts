@@ -62,10 +62,11 @@ export const useNs = (options?: NsOptions): INanosplash => {
 
     svg.setAttribute('aria-hidden', 'true')
 
+    // Spinner first, text after: the spinner always sits to the left.
     const node = div(
       ClassNames.ns,
-      div(ClassNames.nsText),
       div(ClassNames.nsSpinner, svg),
+      div(ClassNames.nsText),
     ) as INSElement
 
     node.setAttribute('role', 'status')
@@ -95,7 +96,7 @@ export const useNs = (options?: NsOptions): INanosplash => {
     if (!text) return
 
     const newNsText = div(ClassNames.nsText, text)
-    ns.insertBefore(newNsText, ns.firstChild)
+    ns.append(newNsText) // after the spinner, so the spinner stays on the left
   }
 
   /**

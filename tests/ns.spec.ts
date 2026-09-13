@@ -51,6 +51,19 @@ describe('useNs', () => {
       expect(typeof id).toBe('number')
     })
 
+    it('keeps the spinner to the left of the text, also after recycling', () => {
+      const container = div('container')
+      document.body.append(container)
+      ns.show('Step 1', container)
+      ns.show('Step 2', container)
+      const nsElement = container.querySelector(Selectors.ns)
+      const [firstChild, secondChild] = Array.from(nsElement?.children ?? [])
+
+      expect(firstChild?.matches(Selectors.nsSpinner)).toBe(true)
+      expect(secondChild?.matches(Selectors.nsText)).toBe(true)
+      expect(secondChild?.textContent).toBe('Step 2')
+    })
+
     it('creates a new Nanosplash without text', () => {
       const id = ns.show()
       const nsElement = get(Selectors.ns)
