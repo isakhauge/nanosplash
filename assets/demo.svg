@@ -11,7 +11,7 @@
      *   0.0-0.2 s  overlay fades in           (nsFade 0.2s)
      *   0.0-0.5 s  spinner ascends            (nsAscend 0.5s)
      *   each label: 1.5 s per label. The previous label disappears and the
-     *               new one fades in with a 5px rise over 0.3 s, as the
+     *               new one fades in with a 10px rise over 0.3 s, as the
      *               library does on a label change.
      *   6.3-6.5 s  overlay + splash fade out
      *   6.5-8.0 s  page idle
@@ -38,11 +38,11 @@
     }
     /* One label lifetime = 1.5 s of the 8 s loop; phase-shifted per label */
     @keyframes labelAscend {
-      0%      { opacity: 0; transform: translateY(5px); }
+      0%      { opacity: 0; transform: translateY(10px); }
       3.75%   { opacity: 1; transform: translateY(0); }
       18.75%  { opacity: 1; transform: translateY(0); }
-      18.751% { opacity: 0; transform: translateY(5px); }
-      100%    { opacity: 0; transform: translateY(5px); }
+      18.751% { opacity: 0; transform: translateY(10px); }
+      100%    { opacity: 0; transform: translateY(10px); }
     }
     .overlay { animation: overlay 8s linear infinite; }
     .spinner { animation: spinnerAscend 8s ease-out infinite; }

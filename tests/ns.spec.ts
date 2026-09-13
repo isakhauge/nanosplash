@@ -114,7 +114,7 @@ describe('useNs', () => {
         )
         expect(frames[0]?.[0]).toMatchObject({
           opacity: 0,
-          transform: 'translateY(5px)',
+          transform: 'translateY(10px)',
         })
         expect(frames[1]?.[0]).toHaveProperty('width')
       })

@@ -153,7 +153,7 @@ export const useNs = (options?: NsOptions): INanosplash => {
     void animate(
       current,
       [
-        { opacity: 0, transform: 'translateY(5px)' },
+        { opacity: 0, transform: 'translateY(10px)' },
         { opacity: 1, transform: 'none' },
       ],
       'ease-out',
