@@ -77,7 +77,7 @@
 
   <!-- Spinner + label, centered on the card -->
   <g class="splash" transform="translate(0 0)">
-    <g transform="translate(302.75 162.75) scale(0.81)">
+    <g transform="translate(304.775 164.775) scale(0.729)">
       <g class="spin">
         <circle class="path" cx="25" cy="25" r="20"/>
       </g>
