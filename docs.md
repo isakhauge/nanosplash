@@ -210,6 +210,8 @@ ns.show('Step 1…', '#panel')
 ns.show('Step 2…', '#panel') // Updates the text; does not create a second spinner
 ```
 
+A label change animates: the new text fades in with a short rise, and the label's width slides between the old and new value so the centered spinner glides to its new position rather than jumping. This is what a sequence of labeled jobs looks like between steps. An unchanged label does not re-animate, the change is not subject to `showDelay`, and under `prefers-reduced-motion: reduce` the swap is instant.
+
 ### FIFO Queue
 
 All active instances are internally ordered by their creation timestamp. When `hide()` is called without arguments, it always removes the oldest instance first, enabling a natural first-in, first-out dismissal pattern for sequenced operations.

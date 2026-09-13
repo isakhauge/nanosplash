@@ -51,6 +51,156 @@ describe('useNs', () => {
       expect(typeof id).toBe('number')
     })
 
+    it('keeps the spinner to the left of the text, also after recycling', () => {
+      const container = div('container')
+      document.body.append(container)
+      ns.show('Step 1', container)
+      ns.show('Step 2', container)
+      const nsElement = container.querySelector(Selectors.ns)
+      const [firstChild, secondChild] = Array.from(nsElement?.children ?? [])
+
+      expect(firstChild?.matches(Selectors.nsSpinner)).toBe(true)
+      expect(secondChild?.matches(Selectors.nsText)).toBe(true)
+      expect(secondChild?.textContent).toBe('Step 2')
+    })
+
+    describe('label change on a live splash', () => {
+      type Animatable = { animate?: unknown }
+      const proto = Element.prototype as unknown as Animatable
+      const hadAnimate = 'animate' in proto
+      const originalAnimate = proto.animate
+      let animateSpy: ReturnType<typeof vi.fn>
+
+      beforeEach(() => {
+        animateSpy = vi.fn(() => ({ finished: Promise.resolve() }))
+        proto.animate = animateSpy
+      })
+
+      afterEach(() => {
+        if (hadAnimate) proto.animate = originalAnimate
+        else delete proto.animate
+        vi.unstubAllGlobals()
+      })
+
+      it('keeps the same text element and updates it in place', () => {
+        ns.show('A')
+        const textElement = get(Selectors.nsText)
+        ns.show('B')
+
+        expect(get(Selectors.nsText)).toBe(textElement)
+        expect(textElement?.textContent).toBe('B')
+        expect(
+          get(Selectors.ns)?.firstElementChild?.matches(Selectors.nsSpinner),
+        ).toBe(true)
+      })
+
+      it('does nothing when the label is unchanged', () => {
+        ns.show('A')
+        const textElement = get(Selectors.nsText)
+        ns.show('A')
+
+        expect(get(Selectors.nsText)).toBe(textElement)
+        expect(animateSpy).not.toHaveBeenCalled()
+      })
+
+      it('fades the new label in with a short rise and slides the width', () => {
+        ns.show('A')
+        ns.show('Much longer label')
+
+        expect(get(Selectors.nsText)?.textContent).toBe('Much longer label')
+        expect(animateSpy).toHaveBeenCalledTimes(2)
+        const frames = animateSpy.mock.calls.map(
+          (call) => call[0] as Keyframe[],
+        )
+        expect(frames[0]?.[0]).toMatchObject({
+          opacity: 0,
+          transform: 'translateY(10px)',
+        })
+        expect(frames[1]?.[0]).toHaveProperty('width')
+      })
+
+      it('lets the text overflow during the slide, then clips again', async () => {
+        ns.show('A')
+        ns.show('B')
+        const textElement = get(Selectors.nsText) as HTMLElement
+
+        expect(textElement.style.overflow).toBe('visible')
+        await new Promise((resolve) => setTimeout(resolve))
+        expect(textElement.style.overflow).toBe('')
+      })
+
+      it('keeps overflow visible while a newer label change is still sliding', async () => {
+        ns.show('A')
+        ns.show('B')
+        const textElement = get(Selectors.nsText) as HTMLElement
+        let finishSecond!: () => void
+        animateSpy.mockImplementationOnce(() => ({
+          finished: new Promise<void>((resolve) => (finishSecond = resolve)),
+        }))
+        animateSpy.mockImplementationOnce(() => ({
+          finished: new Promise<void>((resolve) => (finishSecond = resolve)),
+        }))
+        ns.show('C')
+
+        await new Promise((resolve) => setTimeout(resolve))
+        expect(textElement.style.overflow).toBe('visible')
+        finishSecond()
+        await new Promise((resolve) => setTimeout(resolve))
+        expect(textElement.style.overflow).toBe('')
+      })
+
+      it('skips animation where Element.animate is unavailable', () => {
+        delete proto.animate
+        ns.show('A')
+        ns.show('B')
+
+        expect(get(Selectors.nsText)?.textContent).toBe('B')
+      })
+
+      it('skips animation under prefers-reduced-motion', () => {
+        vi.stubGlobal('matchMedia', () => ({ matches: true }))
+        ns.show('A')
+        ns.show('B')
+
+        expect(animateSpy).not.toHaveBeenCalled()
+        expect(get(Selectors.nsText)?.textContent).toBe('B')
+      })
+
+      it('removes the label when the new label is empty', () => {
+        ns.show('A')
+        ns.show()
+
+        expect(get(Selectors.nsText)).toBeNull()
+      })
+
+      it('appends a fresh label after the spinner when none is present', () => {
+        ns.show()
+        expect(get(Selectors.nsText)).toBeNull()
+
+        ns.show('A')
+        const nsElement = get(Selectors.ns)
+
+        expect(nsElement?.lastElementChild?.matches(Selectors.nsText)).toBe(
+          true,
+        )
+        expect(get(Selectors.nsText)?.textContent).toBe('A')
+        expect(animateSpy).not.toHaveBeenCalled()
+      })
+
+      it('still restores clipping when the slide is cancelled', async () => {
+        animateSpy.mockImplementation(() => ({
+          finished: Promise.reject(new Error('cancelled')),
+        }))
+        ns.show('A')
+        ns.show('B')
+        const textElement = get(Selectors.nsText) as HTMLElement
+
+        expect(textElement.style.overflow).toBe('visible')
+        await new Promise((resolve) => setTimeout(resolve))
+        expect(textElement.style.overflow).toBe('')
+      })
+    })
+
     it('creates a new Nanosplash without text', () => {
       const id = ns.show()
       const nsElement = get(Selectors.ns)

@@ -10,8 +10,7 @@ export const doc: Func<Document> = (): Document => globalThis.document
 /**
  * Get the document body.
  */
-export const bod: Func<HTMLElement> = (): HTMLElement =>
-  globalThis.document.body
+export const bod: Func<HTMLElement> = (): HTMLElement => doc().body
 
 /**
  * Convert an iterable or array-like into an array.

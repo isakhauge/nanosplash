@@ -152,7 +152,8 @@ body.nsh > .ns {
   font-size: var(--size);
   font-family: var(--font), sans-serif;
   font-weight: var(--weight);
-  max-width: 80dvw;
+  /* 80% of the .ns host, minus the spinner beside it */
+  max-width: calc(80% - var(--relSize));
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -160,6 +161,11 @@ body.nsh > .ns {
   filter: drop-shadow(0 0 0.07rem var(--shadowColor));
   animation: nsAscend 0.5s backwards;
   animation-delay: var(--ns-show-delay);
+}
+
+/* Fullscreen: cap the label at a fixed width, but never wider than the viewport */
+body.nsh > .ns .nst {
+  max-width: min(40rem, 80dvw);
 }
 
 /* Nanosplash spinner */

@@ -35,6 +35,35 @@ let nextNsId = 1
 const isLabeledJob = (input?: NsShowInput): input is NsLabeledJob<unknown> =>
   Array.isArray(input) && typeof input[1] === 'function'
 
+/** Duration of the label crossfade and width slide on a label change, in ms. */
+const SWAP_MS = 300
+
+/**
+ * Whether the user prefers reduced motion. `matchMedia` is missing in some
+ * environments (e.g. jsdom); motion is then not reduced.
+ */
+const prefersReducedMotion = (): boolean =>
+  globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+
+/**
+ * Run a Web Animations API animation on `el` and resolve when it finishes.
+ *
+ * Resolves immediately where `Element.animate` is unavailable or the user
+ * prefers reduced motion, so callers can chain cleanup either way.
+ */
+const animate = (
+  el: HTMLElement,
+  frames: Keyframe[],
+  easing: string,
+): Promise<unknown> => {
+  if (typeof el.animate !== 'function' || prefersReducedMotion()) {
+    return Promise.resolve()
+  }
+  return el
+    .animate(frames, { duration: SWAP_MS, easing })
+    .finished.catch(() => undefined)
+}
+
 /**
  * Create the Nanosplash (NS) API.
  *
@@ -62,10 +91,11 @@ export const useNs = (options?: NsOptions): INanosplash => {
 
     svg.setAttribute('aria-hidden', 'true')
 
+    // Spinner first, text after: the spinner always sits to the left.
     const node = div(
       ClassNames.ns,
-      div(ClassNames.nsText),
       div(ClassNames.nsSpinner, svg),
+      div(ClassNames.nsText),
     ) as INSElement
 
     node.setAttribute('role', 'status')
@@ -89,13 +119,56 @@ export const useNs = (options?: NsOptions): INanosplash => {
 
   /**
    * Set a Nanosplash element's text, or remove it when `text` is falsy.
+   *
+   * A label change on a live splash keeps the same `.nst` element, so
+   * nothing blinks: the new text fades in with a short rise, and the label's
+   * width slides from the old to the new value so the flex-centered spinner
+   * glides to its new position instead of jumping.
    */
   const setNsText = (ns: INSElement, text?: string): void => {
-    first(ns, Selectors.nsText)?.remove()
-    if (!text) return
+    const current = first(ns, Selectors.nsText) as HTMLElement | null
+    if (!text) {
+      current?.remove()
+      return
+    }
+    if (!current) {
+      // First label: appended after the spinner so the spinner stays on the
+      // left; enters via the CSS `nsAscend` animation (honoring showDelay).
+      ns.append(div(ClassNames.nsText, text))
+      return
+    }
+    if (!current.textContent) {
+      // Empty slot from makeNs: fill it, entry is still the CSS `nsAscend`.
+      current.textContent = text
+      return
+    }
+    if (current.textContent === text) return
 
-    const newNsText = div(ClassNames.nsText, text)
-    ns.insertBefore(newNsText, ns.firstChild)
+    // Old text simply disappears; the new text fades in with a short rise
+    // while the width slides, so the centered spinner glides.
+    const fromWidth = current.offsetWidth
+    current.textContent = text
+    const toWidth = current.offsetWidth
+
+    void animate(
+      current,
+      [
+        { opacity: 0, transform: 'translateY(10px)' },
+        { opacity: 1, transform: 'none' },
+      ],
+      'ease-out',
+    )
+    // Let the text overflow while the box is still growing, so no ellipsis
+    // flashes mid-slide; restore clipping (and ellipsis at max-width) after.
+    current.style.overflow = 'visible'
+    void animate(
+      current,
+      [{ width: `${fromWidth}px` }, { width: `${toWidth}px` }],
+      'ease',
+    ).then(() => {
+      // A newer label change owns the reset now
+      if (current.textContent === text) current.style.overflow = ''
+    })
   }
 
   /**
