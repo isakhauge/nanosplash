@@ -146,29 +146,21 @@ body.nsh > .ns {
   gap: var(--relSize);
 }
 
-/* Nanosplash text, and the ghost of an outgoing label during a label change */
-.nst,
-.nsx {
+/* Nanosplash text */
+.nst {
   color: var(--color);
   font-size: var(--size);
   font-family: var(--font), sans-serif;
   font-weight: var(--weight);
+  /* 80% of the .ns host, minus the spinner beside it */
+  max-width: calc(80% - var(--relSize));
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   text-shadow: 0 0 0.06rem var(--shadowColor);
   filter: drop-shadow(0 0 0.07rem var(--shadowColor));
-}
-.nst {
-  /* 80% of the .ns host, minus the spinner beside it */
-  max-width: calc(80% - var(--relSize));
   animation: nsAscend 0.5s backwards;
   animation-delay: var(--ns-show-delay);
-}
-/* Outgoing label: pinned where the label was (left/top/width set inline) */
-.nsx {
-  position: absolute;
-  pointer-events: none;
 }
 
 /* Fullscreen: cap the label at a fixed width, but never wider than the viewport */

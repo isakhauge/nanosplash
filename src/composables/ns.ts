@@ -121,10 +121,9 @@ export const useNs = (options?: NsOptions): INanosplash => {
    * Set a Nanosplash element's text, or remove it when `text` is falsy.
    *
    * A label change on a live splash keeps the same `.nst` element, so
-   * nothing blinks: the old text leaves as an absolutely positioned ghost
-   * ascending out, the new text ascends in, and the label's width slides
-   * from the old to the new value so the flex-centered spinner glides to its
-   * new position instead of jumping.
+   * nothing blinks: the new text fades in with a short rise, and the label's
+   * width slides from the old to the new value so the flex-centered spinner
+   * glides to its new position instead of jumping.
    */
   const setNsText = (ns: INSElement, text?: string): void => {
     const current = first(ns, Selectors.nsText) as HTMLElement | null
@@ -145,26 +144,16 @@ export const useNs = (options?: NsOptions): INanosplash => {
     }
     if (current.textContent === text) return
 
+    // Old text simply disappears; the new text fades in with a short rise
+    // while the width slides, so the centered spinner glides.
     const fromWidth = current.offsetWidth
-    const ghost = div(ClassNames.nsExit, current.textContent ?? '')
-    ghost.style.cssText = `left:${current.offsetLeft}px;top:${current.offsetTop}px;width:${fromWidth}px`
-    ns.append(ghost)
-
     current.textContent = text
     const toWidth = current.offsetWidth
 
     void animate(
-      ghost,
-      [
-        { opacity: 1, transform: 'none' },
-        { opacity: 0, transform: 'translateY(-13px)' },
-      ],
-      'ease-in',
-    ).then(() => ghost.remove())
-    void animate(
       current,
       [
-        { opacity: 0, transform: 'translateY(13px)' },
+        { opacity: 0, transform: 'translateY(5px)' },
         { opacity: 1, transform: 'none' },
       ],
       'ease-out',

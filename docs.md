@@ -210,7 +210,7 @@ ns.show('Step 1…', '#panel')
 ns.show('Step 2…', '#panel') // Updates the text; does not create a second spinner
 ```
 
-A label change animates: the old text ascends out while the new text ascends in, and the label's width slides between the two so the centered spinner glides to its new position rather than jumping. This is what a sequence of labeled jobs looks like between steps. An unchanged label does not re-animate, the change is not subject to `showDelay`, and under `prefers-reduced-motion: reduce` the swap is instant.
+A label change animates: the new text fades in with a short rise, and the label's width slides between the old and new value so the centered spinner glides to its new position rather than jumping. This is what a sequence of labeled jobs looks like between steps. An unchanged label does not re-animate, the change is not subject to `showDelay`, and under `prefers-reduced-motion: reduce` the swap is instant.
 
 ### FIFO Queue
 

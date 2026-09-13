@@ -100,44 +100,39 @@ describe('useNs', () => {
         ns.show('A')
 
         expect(get(Selectors.nsText)).toBe(textElement)
-        expect(get(Selectors.nsExit)).toBeNull()
         expect(animateSpy).not.toHaveBeenCalled()
       })
 
-      it('crossfades via a ghost of the old label and slides the width', async () => {
+      it('fades the new label in with a short rise and slides the width', () => {
         ns.show('A')
         ns.show('Much longer label')
 
-        const ghost = get(Selectors.nsExit)
-        expect(ghost?.textContent).toBe('A')
         expect(get(Selectors.nsText)?.textContent).toBe('Much longer label')
-        expect(animateSpy).toHaveBeenCalledTimes(3)
-        const frames = animateSpy.mock.calls.map((call) => call[0])
-        expect(frames.some((f) => 'width' in (f as Keyframe[])[0]!)).toBe(true)
-
-        // Removal is chained after `finished`, a few microtasks deep
-        await new Promise((resolve) => setTimeout(resolve))
-        expect(get(Selectors.nsExit)).toBeNull()
+        expect(animateSpy).toHaveBeenCalledTimes(2)
+        const frames = animateSpy.mock.calls.map(
+          (call) => call[0] as Keyframe[],
+        )
+        expect(frames[0]?.[0]).toMatchObject({
+          opacity: 0,
+          transform: 'translateY(5px)',
+        })
+        expect(frames[1]?.[0]).toHaveProperty('width')
       })
 
-      it('skips animation where Element.animate is unavailable', async () => {
+      it('skips animation where Element.animate is unavailable', () => {
         delete proto.animate
         ns.show('A')
         ns.show('B')
 
-        await Promise.resolve()
-        expect(get(Selectors.nsExit)).toBeNull()
         expect(get(Selectors.nsText)?.textContent).toBe('B')
       })
 
-      it('skips animation under prefers-reduced-motion', async () => {
+      it('skips animation under prefers-reduced-motion', () => {
         vi.stubGlobal('matchMedia', () => ({ matches: true }))
         ns.show('A')
         ns.show('B')
 
         expect(animateSpy).not.toHaveBeenCalled()
-        await Promise.resolve()
-        expect(get(Selectors.nsExit)).toBeNull()
         expect(get(Selectors.nsText)?.textContent).toBe('B')
       })
 
@@ -146,7 +141,6 @@ describe('useNs', () => {
         ns.show()
 
         expect(get(Selectors.nsText)).toBeNull()
-        expect(get(Selectors.nsExit)).toBeNull()
       })
     })
 
