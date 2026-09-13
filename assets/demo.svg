@@ -93,18 +93,19 @@
     <rect class="overlay" x="60" y="30" width="680" height="300" fill="#ffffff" fill-opacity="0.9"/>
   </g>
 
-  <!-- Spinner, centered on the card -->
+  <!-- Labels first, spinner after: same DOM order as the library (.nst, .nss) -->
+  <!-- Each label is a fresh element in the library, so each ascends in -->
+  <text class="label l1" x="456" y="192" text-anchor="end">Loading user</text>
+  <text class="label l2" x="456" y="192" text-anchor="end">Loading posts</text>
+  <text class="label l3" x="456" y="192" text-anchor="end">Loading comments</text>
+  <text class="label l4" x="456" y="192" text-anchor="end">Almost done</text>
+
+  <!-- Spinner, to the right of the label -->
   <g class="spinner">
-    <g transform="translate(304.775 164.775) scale(0.729)">
+    <g transform="translate(473.8 164.775) scale(0.729)">
       <g class="spin">
         <circle class="path" cx="25" cy="25" r="20"/>
       </g>
     </g>
   </g>
-
-  <!-- Labels: each a fresh element in the library, so each ascends in -->
-  <text class="label l1" x="366" y="192">Loading user</text>
-  <text class="label l2" x="366" y="192">Loading posts</text>
-  <text class="label l3" x="366" y="192">Loading comments</text>
-  <text class="label l4" x="366" y="192">Almost done</text>
 </svg>
