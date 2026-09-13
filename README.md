@@ -3,8 +3,8 @@
 <p align="center"><strong>The tiny loading screen for web artisans</strong></p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/nanosplash"><img src="https://img.shields.io/npm/v/nanosplash?color=cb3837&label=npm" alt="npm version"></a>
-  <a href="https://www.npmjs.com/package/nanosplash"><img src="https://img.shields.io/npm/dw/nanosplash?color=cb3837" alt="npm downloads per week"></a>
+  <a href="https://www.npmjs.com/package/nanosplash"><img src="https://img.shields.io/npm/v/nanosplash?label=npm" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/nanosplash"><img src="https://img.shields.io/npm/dw/nanosplash" alt="npm downloads per week"></a>
   <a href="https://bundlephobia.com/package/nanosplash"><img src="https://img.shields.io/bundlephobia/minzip/nanosplash?label=gzipped" alt="bundle size, minified and gzipped"></a>
   <a href="https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml"><img src="https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
   <a href="https://coveralls.io/github/isakhauge/nanosplash?branch=main"><img src="https://coveralls.io/repos/github/isakhauge/nanosplash/badge.svg?branch=main" alt="Coverage status"></a>
