@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', Arial, sans-serif" role="img" aria-label="Nanosplash demo: a translucent overlay with a spinner and the labels 'Loading user' and 'Loading posts' appears over a page, then fades away">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.12"/>
+    </filter>
+    <clipPath id="card"><rect x="60" y="30" width="680" height="300" rx="18"/></clipPath>
+  </defs>
+  <style>
+    @keyframes rotate { to { transform: rotate(360deg); } }
+    @keyframes dash {
+      0%   { stroke-dasharray: 1, 150;  stroke-dashoffset: 0; }
+      50%  { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
+      100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
+    }
+    /* 6 s loop: 0-0.3 s overlay fades in, 4.6-5.0 s fades out, rest idle */
+    @keyframes overlay {
+      0%   { opacity: 0; }
+      5%   { opacity: 1; }
+      76%  { opacity: 1; }
+      83%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    @keyframes ascend {
+      0%   { opacity: 0; transform: translateY(13px); }
+      8%   { opacity: 1; transform: translateY(0); }
+      76%  { opacity: 1; transform: translateY(0); }
+      83%  { opacity: 0; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(13px); }
+    }
+    @keyframes labelA { 0% { opacity: 0; } 8% { opacity: 1; } 40% { opacity: 1; } 43% { opacity: 0; } 100% { opacity: 0; } }
+    @keyframes labelB { 0% { opacity: 0; } 43% { opacity: 0; } 46% { opacity: 1; } 76% { opacity: 1; } 83% { opacity: 0; } 100% { opacity: 0; } }
+    .overlay { animation: overlay 6s linear infinite; }
+    .splash  { animation: ascend 6s ease-out infinite; }
+    .spin    { transform-origin: 25px 25px; animation: rotate 2s linear infinite; }
+    .path    { stroke: #2f4f4f; stroke-width: 8; stroke-linecap: round; fill: none; animation: dash 1.5s ease-in-out infinite; }
+    .label   { fill: #2f4f4f; font-size: 26px; font-weight: 400; }
+    .a { animation: labelA 6s linear infinite; }
+    .b { animation: labelB 6s linear infinite; }
+    @media (prefers-reduced-motion: reduce) {
+      .overlay, .splash, .a { animation: none; opacity: 1; }
+      .b { animation: none; opacity: 0; }
+      .spin { animation-duration: 6s; }
+      .path { animation: none; stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
+    }
+  </style>
+
+  <!-- Mock page -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="30" width="680" height="300" rx="18" fill="#ffffff" stroke="#e5e5ea"/>
+  </g>
+  <g clip-path="url(#card)">
+    <!-- top bar -->
+    <rect x="60" y="30" width="680" height="52" fill="#f5f5f7"/>
+    <circle cx="90" cy="56" r="7" fill="#ff5f57"/>
+    <circle cx="112" cy="56" r="7" fill="#febc2e"/>
+    <circle cx="134" cy="56" r="7" fill="#28c840"/>
+    <rect x="300" y="46" width="200" height="20" rx="10" fill="#e5e5ea"/>
+    <!-- sidebar -->
+    <rect x="60" y="82" width="170" height="248" fill="#fafafa"/>
+    <rect x="84" y="110" width="110" height="12" rx="6" fill="#d1d1d6"/>
+    <rect x="84" y="140" width="90" height="12" rx="6" fill="#e5e5ea"/>
+    <rect x="84" y="170" width="120" height="12" rx="6" fill="#e5e5ea"/>
+    <rect x="84" y="200" width="80" height="12" rx="6" fill="#e5e5ea"/>
+    <!-- content -->
+    <rect x="262" y="112" width="300" height="20" rx="10" fill="#d1d1d6"/>
+    <rect x="262" y="150" width="440" height="12" rx="6" fill="#e5e5ea"/>
+    <rect x="262" y="174" width="400" height="12" rx="6" fill="#e5e5ea"/>
+    <rect x="262" y="198" width="420" height="12" rx="6" fill="#e5e5ea"/>
+    <rect x="262" y="236" width="200" height="70" rx="12" fill="#f0f0f3"/>
+    <rect x="482" y="236" width="200" height="70" rx="12" fill="#f0f0f3"/>
+  </g>
+
+  <!-- Nanosplash overlay -->
+  <g clip-path="url(#card)">
+    <rect class="overlay" x="60" y="30" width="680" height="300" fill="#ffffff" fill-opacity="0.9"/>
+  </g>
+
+  <!-- Spinner + label, centered on the card -->
+  <g class="splash" transform="translate(0 0)">
+    <g transform="translate(298 158)">
+      <g class="spin">
+        <circle class="path" cx="25" cy="25" r="20"/>
+      </g>
+    </g>
+    <text class="label a" x="366" y="192">Loading user</text>
+    <text class="label b" x="366" y="192">Loading posts</text>
+  </g>
+</svg>
