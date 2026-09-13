@@ -3,7 +3,6 @@
   "version": "4.1.5",
   "private": false,
   "description": "The tiny loading screen for web artisans",
-  "license": "MIT",
   "keywords": [
     "cdn",
     "es",
@@ -22,6 +21,7 @@
     "vite"
   ],
   "homepage": "https://github.com/isakhauge/nanosplash",
+  "license": "MIT",
   "author": {
     "name": "Isak K. Hauge",
     "email": "isakhauge@icloud.com",
