@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/nanosplash"><img src="https://img.shields.io/npm/v/nanosplash?label=npm" alt="npm version"></a>
   <a href="https://www.npmjs.com/package/nanosplash"><img src="https://img.shields.io/npm/dw/nanosplash" alt="npm downloads per week"></a>
-  <a href="https://bundlephobia.com/package/nanosplash"><img src="https://img.shields.io/bundlephobia/minzip/nanosplash?label=gzipped" alt="bundle size, minified and gzipped"></a>
+  <a href="https://bundlejs.com/?q=nanosplash"><img src="https://img.shields.io/bundlejs/size/nanosplash?label=gzipped" alt="bundle size, minified and gzipped"></a>
   <a href="https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml"><img src="https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
   <a href="https://coveralls.io/github/isakhauge/nanosplash?branch=main"><img src="https://coveralls.io/repos/github/isakhauge/nanosplash/badge.svg?branch=main" alt="Coverage status"></a>
   <a href="./types/global.d.ts"><img src="https://img.shields.io/badge/TypeScript-ready-3178c6?logo=typescript&logoColor=white" alt="TypeScript ready"></a>
