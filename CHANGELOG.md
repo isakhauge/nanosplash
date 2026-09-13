@@ -6,7 +6,7 @@ All notable changes to Nanosplash are documented here.
 
 ### Added
 
-- **Smooth label changes.** Updating the label of a live splash (recycling, or each step of a labeled-jobs sequence) no longer replaces the text element. The new text fades in with a short rise, and the label's width animates between the old and new value, so the centered spinner glides to its new position instead of jumping. Unchanged labels do not re-animate, the swap ignores `showDelay` (which previously hid the label again on every change), and everything is instant under `prefers-reduced-motion`. Uses the Web Animations API; falls back to an instant swap where it is unavailable.
+- **Smooth label changes.** Updating the label of a live splash (recycling, or each step of a labeled-jobs sequence) no longer replaces the text element. The old text disappears, the new text fades in rising 10px, and the label's width animates between the old and new value, all over 300 ms, so the centered spinner glides to its new position instead of jumping. The label may overflow while its box is still growing, so no ellipsis flashes mid-slide; clipping and ellipsis at `max-width` apply again once the slide ends. Unchanged labels do not re-animate, the change ignores `showDelay` (which previously hid the label again on every change), and everything is instant under `prefers-reduced-motion`. Uses the Web Animations API; falls back to an instant swap where it is unavailable.
 
 ### Fixed
 
