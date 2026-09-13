@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', Arial, sans-serif" role="img" aria-label="Nanosplash demo: a translucent overlay with a spinner and the labels 'Loading user' and 'Loading posts' appears over a page, then fades away">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', Arial, sans-serif" role="img" aria-label="Nanosplash demo: a translucent overlay with a spinner appears over a page, the label steps through 'Loading user', 'Loading posts', 'Loading comments' and 'Almost done', then the overlay fades away">
   <defs>
     <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
       <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.12"/>
@@ -6,39 +6,57 @@
     <clipPath id="card"><rect x="60" y="30" width="680" height="300" rx="18"/></clipPath>
   </defs>
   <style>
+    /*
+     * 8 s loop, mirroring src/style/ns.css:
+     *   0.0-0.2 s  overlay fades in           (nsFade 0.2s)
+     *   0.0-0.5 s  spinner ascends            (nsAscend 0.5s)
+     *   each label: replaced element, so it ascends in over 0.5 s and
+     *               the previous one vanishes instantly. 1.5 s per label.
+     *   6.3-6.5 s  overlay + splash fade out
+     *   6.5-8.0 s  page idle
+     */
     @keyframes rotate { to { transform: rotate(360deg); } }
     @keyframes dash {
       0%   { stroke-dasharray: 1, 150;  stroke-dashoffset: 0; }
       50%  { stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
       100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124; }
     }
-    /* 6 s loop: 0-0.3 s overlay fades in, 4.6-5.0 s fades out, rest idle */
     @keyframes overlay {
-      0%   { opacity: 0; }
-      5%   { opacity: 1; }
-      76%  { opacity: 1; }
-      83%  { opacity: 0; }
-      100% { opacity: 0; }
+      0%     { opacity: 0; }
+      2.5%   { opacity: 1; }
+      78.75% { opacity: 1; }
+      81.25% { opacity: 0; }
+      100%   { opacity: 0; }
     }
-    @keyframes ascend {
-      0%   { opacity: 0; transform: translateY(13px); }
-      8%   { opacity: 1; transform: translateY(0); }
-      76%  { opacity: 1; transform: translateY(0); }
-      83%  { opacity: 0; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(13px); }
+    @keyframes spinnerAscend {
+      0%     { opacity: 0; transform: translateY(13px); }
+      6.25%  { opacity: 1; transform: translateY(0); }
+      78.75% { opacity: 1; transform: translateY(0); }
+      81.25% { opacity: 0; transform: translateY(0); }
+      100%   { opacity: 0; transform: translateY(13px); }
     }
-    @keyframes labelA { 0% { opacity: 0; } 8% { opacity: 1; } 40% { opacity: 1; } 43% { opacity: 0; } 100% { opacity: 0; } }
-    @keyframes labelB { 0% { opacity: 0; } 43% { opacity: 0; } 46% { opacity: 1; } 76% { opacity: 1; } 83% { opacity: 0; } 100% { opacity: 0; } }
-    .overlay { animation: overlay 6s linear infinite; }
-    .splash  { animation: ascend 6s ease-out infinite; }
+    /* One label lifetime = 1.5 s of the 8 s loop; phase-shifted per label */
+    @keyframes labelAscend {
+      0%      { opacity: 0; transform: translateY(13px); }
+      6.25%   { opacity: 1; transform: translateY(0); }
+      18.75%  { opacity: 1; transform: translateY(0); }
+      18.751% { opacity: 0; transform: translateY(13px); }
+      100%    { opacity: 0; transform: translateY(13px); }
+    }
+    .overlay { animation: overlay 8s linear infinite; }
+    .spinner { animation: spinnerAscend 8s ease-out infinite; }
     .spin    { transform-origin: 25px 25px; animation: rotate 2s linear infinite; }
     .path    { stroke: #2f4f4f; stroke-width: 8; stroke-linecap: round; fill: none; animation: dash 1.5s ease-in-out infinite; }
-    .label   { fill: #2f4f4f; font-size: 26px; font-weight: 400; }
-    .a { animation: labelA 6s linear infinite; }
-    .b { animation: labelB 6s linear infinite; }
+    .label   { fill: #2f4f4f; font-size: 26px; font-weight: 400; opacity: 0; animation: labelAscend 8s ease-out infinite; }
+    /* Negative delay = start mid-cycle, so label n begins at 0.3 s + 1.5 s * n */
+    .l1 { animation-delay: -7.7s; }
+    .l2 { animation-delay: -6.2s; }
+    .l3 { animation-delay: -4.7s; }
+    .l4 { animation-delay: -3.2s; }
     @media (prefers-reduced-motion: reduce) {
-      .overlay, .splash, .a { animation: none; opacity: 1; }
-      .b { animation: none; opacity: 0; }
+      .overlay, .spinner, .label { animation: none; }
+      .overlay, .spinner, .l1 { opacity: 1; }
+      .l2, .l3, .l4 { opacity: 0; }
       .spin { animation-duration: 6s; }
       .path { animation: none; stroke-dasharray: 90, 150; stroke-dashoffset: -35; }
     }
@@ -75,14 +93,18 @@
     <rect class="overlay" x="60" y="30" width="680" height="300" fill="#ffffff" fill-opacity="0.9"/>
   </g>
 
-  <!-- Spinner + label, centered on the card -->
-  <g class="splash" transform="translate(0 0)">
+  <!-- Spinner, centered on the card -->
+  <g class="spinner">
     <g transform="translate(304.775 164.775) scale(0.729)">
       <g class="spin">
         <circle class="path" cx="25" cy="25" r="20"/>
       </g>
     </g>
-    <text class="label a" x="366" y="192">Loading user</text>
-    <text class="label b" x="366" y="192">Loading posts</text>
   </g>
+
+  <!-- Labels: each a fresh element in the library, so each ascends in -->
+  <text class="label l1" x="366" y="192">Loading user</text>
+  <text class="label l2" x="366" y="192">Loading posts</text>
+  <text class="label l3" x="366" y="192">Loading comments</text>
+  <text class="label l4" x="366" y="192">Almost done</text>
 </svg>
