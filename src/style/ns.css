@@ -182,6 +182,9 @@ body.nsh > .ns .nst {
     width: inherit;
     height: inherit;
     stroke-width: 8;
+    transform-origin: 50% 50%;
+    will-change: transform;
+    backface-visibility: hidden;
   }
   & .path {
     stroke: var(--color);
@@ -200,6 +203,9 @@ body.nsh > .ns .nst {
   }
   .nss > svg {
     animation: nsRotate 6s linear infinite;
+    transform-origin: 50% 50%;
+    will-change: transform;
+    backface-visibility: hidden;
   }
   .nss .path {
     animation: none;
