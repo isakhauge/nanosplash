@@ -172,6 +172,33 @@ describe('useNs', () => {
 
         expect(get(Selectors.nsText)).toBeNull()
       })
+
+      it('appends a fresh label after the spinner when none is present', () => {
+        ns.show()
+        expect(get(Selectors.nsText)).toBeNull()
+
+        ns.show('A')
+        const nsElement = get(Selectors.ns)
+
+        expect(nsElement?.lastElementChild?.matches(Selectors.nsText)).toBe(
+          true,
+        )
+        expect(get(Selectors.nsText)?.textContent).toBe('A')
+        expect(animateSpy).not.toHaveBeenCalled()
+      })
+
+      it('still restores clipping when the slide is cancelled', async () => {
+        animateSpy.mockImplementation(() => ({
+          finished: Promise.reject(new Error('cancelled')),
+        }))
+        ns.show('A')
+        ns.show('B')
+        const textElement = get(Selectors.nsText) as HTMLElement
+
+        expect(textElement.style.overflow).toBe('visible')
+        await new Promise((resolve) => setTimeout(resolve))
+        expect(textElement.style.overflow).toBe('')
+      })
     })
 
     it('creates a new Nanosplash without text', () => {
