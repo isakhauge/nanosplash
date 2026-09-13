@@ -21,6 +21,7 @@
     "vite"
   ],
   "homepage": "https://github.com/isakhauge/nanosplash",
+  "license": "MIT",
   "author": {
     "name": "Isak K. Hauge",
     "email": "isakhauge@icloud.com",
