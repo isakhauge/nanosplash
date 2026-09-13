@@ -158,11 +158,17 @@ export const useNs = (options?: NsOptions): INanosplash => {
       ],
       'ease-out',
     )
+    // Let the text overflow while the box is still growing, so no ellipsis
+    // flashes mid-slide; restore clipping (and ellipsis at max-width) after.
+    current.style.overflow = 'visible'
     void animate(
       current,
       [{ width: `${fromWidth}px` }, { width: `${toWidth}px` }],
       'ease',
-    )
+    ).then(() => {
+      // A newer label change owns the reset now
+      if (current.textContent === text) current.style.overflow = ''
+    })
   }
 
   /**

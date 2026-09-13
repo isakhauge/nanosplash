@@ -119,6 +119,36 @@ describe('useNs', () => {
         expect(frames[1]?.[0]).toHaveProperty('width')
       })
 
+      it('lets the text overflow during the slide, then clips again', async () => {
+        ns.show('A')
+        ns.show('B')
+        const textElement = get(Selectors.nsText) as HTMLElement
+
+        expect(textElement.style.overflow).toBe('visible')
+        await new Promise((resolve) => setTimeout(resolve))
+        expect(textElement.style.overflow).toBe('')
+      })
+
+      it('keeps overflow visible while a newer label change is still sliding', async () => {
+        ns.show('A')
+        ns.show('B')
+        const textElement = get(Selectors.nsText) as HTMLElement
+        let finishSecond!: () => void
+        animateSpy.mockImplementationOnce(() => ({
+          finished: new Promise<void>((resolve) => (finishSecond = resolve)),
+        }))
+        animateSpy.mockImplementationOnce(() => ({
+          finished: new Promise<void>((resolve) => (finishSecond = resolve)),
+        }))
+        ns.show('C')
+
+        await new Promise((resolve) => setTimeout(resolve))
+        expect(textElement.style.overflow).toBe('visible')
+        finishSecond()
+        await new Promise((resolve) => setTimeout(resolve))
+        expect(textElement.style.overflow).toBe('')
+      })
+
       it('skips animation where Element.animate is unavailable', () => {
         delete proto.animate
         ns.show('A')
