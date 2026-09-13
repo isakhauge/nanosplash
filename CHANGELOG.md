@@ -2,6 +2,19 @@
 
 All notable changes to Nanosplash are documented here.
 
+## [4.1.5] — 2026-09-13
+
+### Fixed
+
+- **Spinner is now always to the left of the label.** `makeNs` rendered the text element before the spinner, and every label update re-inserted the text as the first child, so the spinner sat to the right. The spinner is now rendered first and new labels are appended after it, including when a splash is recycled. Covered by a new test.
+- **Label width follows the host.** `.nst` had a flat `max-width: 80dvw`, so a splash scoped to a narrow container could overflow it. It is now `calc(80% - var(--relSize))`: 80% of the `.ns` host minus the spinner beside it. Fullscreen splashes (`body.nsh > .ns .nst`) get a fixed cap of `min(40rem, 80dvw)` instead.
+
+### Changed
+
+- **README rewritten to convert visitors.** Restores what the 4.1.4 trim removed and more: npm version, weekly downloads, gzipped size, CI, coverage, TypeScript and license badges; a "Why Nanosplash" list; install (npm + CDN); quick start with the import line; usage sections for scoped splashes, labeled jobs, hide and anti-flicker timing; a theming table of every `--ns-*` property; accessibility notes; an API-at-a-glance table; module formats; contributing and license. Size claim is now a measured ~2.3 kB gzipped. `docs.md` remains the full reference.
+- **Animated demo hero.** New `assets/demo.svg` (hand-built, ~4 kB, no scripts or external references) mirrors the real spinner geometry and `nsDash`/`nsRotate` timing over a mock page, steps through four labels with the library's per-label `nsAscend` entrance, and has a `prefers-reduced-motion` fallback. Replaces the static feature grid in the README.
+- `docs/index.html` rebuilt with the fixes above.
+
 ## [4.1.4] — 2026-09-03
 
 ### Fixed
@@ -45,6 +58,7 @@ All notable changes to Nanosplash are documented here.
 
 See the [GitHub releases](https://github.com/isakhauge/nanosplash/releases).
 
+[4.1.5]: https://github.com/isakhauge/nanosplash/compare/v4.1.4...v4.1.5
 [4.1.4]: https://github.com/isakhauge/nanosplash/compare/v4.1.3...v4.1.4
 [4.1.3]: https://github.com/isakhauge/nanosplash/compare/v4.1.1...v4.1.3
 [4.1.2]: https://github.com/isakhauge/nanosplash/commit/b9d9f8a
