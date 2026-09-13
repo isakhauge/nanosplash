@@ -9,7 +9,7 @@
   <a href="https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml"><img src="https://github.com/isakhauge/nanosplash/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
   <a href="https://coveralls.io/github/isakhauge/nanosplash?branch=main"><img src="https://coveralls.io/repos/github/isakhauge/nanosplash/badge.svg?branch=main" alt="Coverage status"></a>
   <a href="./types/global.d.ts"><img src="https://img.shields.io/badge/TypeScript-ready-3178c6?logo=typescript&logoColor=white" alt="TypeScript ready"></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/npm/l/nanosplash?color=green" alt="MIT license"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/github/license/isakhauge/nanosplash?color=green" alt="MIT license"></a>
 </p>
 
 <p align="center">
