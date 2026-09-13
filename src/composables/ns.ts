@@ -35,6 +35,35 @@ let nextNsId = 1
 const isLabeledJob = (input?: NsShowInput): input is NsLabeledJob<unknown> =>
   Array.isArray(input) && typeof input[1] === 'function'
 
+/** Duration of the label crossfade and width slide on a label change, in ms. */
+const SWAP_MS = 300
+
+/**
+ * Whether the user prefers reduced motion. `matchMedia` is missing in some
+ * environments (e.g. jsdom); motion is then not reduced.
+ */
+const prefersReducedMotion = (): boolean =>
+  globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+
+/**
+ * Run a Web Animations API animation on `el` and resolve when it finishes.
+ *
+ * Resolves immediately where `Element.animate` is unavailable or the user
+ * prefers reduced motion, so callers can chain cleanup either way.
+ */
+const animate = (
+  el: HTMLElement,
+  frames: Keyframe[],
+  easing: string,
+): Promise<unknown> => {
+  if (typeof el.animate !== 'function' || prefersReducedMotion()) {
+    return Promise.resolve()
+  }
+  return el
+    .animate(frames, { duration: SWAP_MS, easing })
+    .finished.catch(() => undefined)
+}
+
 /**
  * Create the Nanosplash (NS) API.
  *
@@ -90,13 +119,61 @@ export const useNs = (options?: NsOptions): INanosplash => {
 
   /**
    * Set a Nanosplash element's text, or remove it when `text` is falsy.
+   *
+   * A label change on a live splash keeps the same `.nst` element, so
+   * nothing blinks: the old text leaves as an absolutely positioned ghost
+   * ascending out, the new text ascends in, and the label's width slides
+   * from the old to the new value so the flex-centered spinner glides to its
+   * new position instead of jumping.
    */
   const setNsText = (ns: INSElement, text?: string): void => {
-    first(ns, Selectors.nsText)?.remove()
-    if (!text) return
+    const current = first(ns, Selectors.nsText) as HTMLElement | null
+    if (!text) {
+      current?.remove()
+      return
+    }
+    if (!current) {
+      // First label: appended after the spinner so the spinner stays on the
+      // left; enters via the CSS `nsAscend` animation (honoring showDelay).
+      ns.append(div(ClassNames.nsText, text))
+      return
+    }
+    if (!current.textContent) {
+      // Empty slot from makeNs: fill it, entry is still the CSS `nsAscend`.
+      current.textContent = text
+      return
+    }
+    if (current.textContent === text) return
 
-    const newNsText = div(ClassNames.nsText, text)
-    ns.append(newNsText) // after the spinner, so the spinner stays on the left
+    const fromWidth = current.offsetWidth
+    const ghost = div(ClassNames.nsExit, current.textContent ?? '')
+    ghost.style.cssText = `left:${current.offsetLeft}px;top:${current.offsetTop}px;width:${fromWidth}px`
+    ns.append(ghost)
+
+    current.textContent = text
+    const toWidth = current.offsetWidth
+
+    void animate(
+      ghost,
+      [
+        { opacity: 1, transform: 'none' },
+        { opacity: 0, transform: 'translateY(-13px)' },
+      ],
+      'ease-in',
+    ).then(() => ghost.remove())
+    void animate(
+      current,
+      [
+        { opacity: 0, transform: 'translateY(13px)' },
+        { opacity: 1, transform: 'none' },
+      ],
+      'ease-out',
+    )
+    void animate(
+      current,
+      [{ width: `${fromWidth}px` }, { width: `${toWidth}px` }],
+      'ease',
+    )
   }
 
   /**

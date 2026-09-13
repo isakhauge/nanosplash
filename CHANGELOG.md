@@ -4,6 +4,10 @@ All notable changes to Nanosplash are documented here.
 
 ## [4.1.5] — 2026-09-13
 
+### Added
+
+- **Smooth label changes.** Updating the label of a live splash (recycling, or each step of a labeled-jobs sequence) no longer replaces the text element. The old text ascends out as a ghost while the new text ascends in, and the label's width animates between the two, so the centered spinner glides to its new position instead of jumping. Unchanged labels do not re-animate, the swap ignores `showDelay` (which previously hid the label again on every change), and everything is instant under `prefers-reduced-motion`. Uses the Web Animations API; falls back to an instant swap where it is unavailable.
+
 ### Fixed
 
 - **Spinner is now always to the left of the label.** `makeNs` rendered the text element before the spinner, and every label update re-inserted the text as the first child, so the spinner sat to the right. The spinner is now rendered first and new labels are appended after it, including when a splash is recycled. Covered by a new test.
@@ -11,7 +15,7 @@ All notable changes to Nanosplash are documented here.
 
 ### Changed
 
-- **README rewritten to convert visitors.** Restores what the 4.1.4 trim removed and more: npm version, weekly downloads, gzipped size, CI, coverage, TypeScript and license badges; a "Why Nanosplash" list; install (npm + CDN); quick start with the import line; usage sections for scoped splashes, labeled jobs, hide and anti-flicker timing; a theming table of every `--ns-*` property; accessibility notes; an API-at-a-glance table; module formats; contributing and license. Size claim is now a measured ~2.3 kB gzipped. `docs.md` remains the full reference.
+- **README rewritten to convert visitors.** Restores what the 4.1.4 trim removed and more: npm version, weekly downloads, gzipped size, CI, coverage, TypeScript and license badges; a "Why Nanosplash" list; install (npm + CDN); quick start with the import line; usage sections for scoped splashes, labeled jobs, hide and anti-flicker timing; a theming table of every `--ns-*` property; accessibility notes; an API-at-a-glance table; module formats; contributing and license. Size claim is now a measured ~2.7 kB gzipped. `docs.md` remains the full reference.
 - **Animated demo hero.** New `assets/demo.svg` (hand-built, ~4 kB, no scripts or external references) mirrors the real spinner geometry and `nsDash`/`nsRotate` timing over a mock page, steps through four labels with the library's per-label `nsAscend` entrance, and has a `prefers-reduced-motion` fallback. Replaces the static feature grid in the README.
 - `docs/index.html` rebuilt with the fixes above.
 

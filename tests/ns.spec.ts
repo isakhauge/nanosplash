@@ -64,6 +64,92 @@ describe('useNs', () => {
       expect(secondChild?.textContent).toBe('Step 2')
     })
 
+    describe('label change on a live splash', () => {
+      type Animatable = { animate?: unknown }
+      const proto = Element.prototype as unknown as Animatable
+      const hadAnimate = 'animate' in proto
+      const originalAnimate = proto.animate
+      let animateSpy: ReturnType<typeof vi.fn>
+
+      beforeEach(() => {
+        animateSpy = vi.fn(() => ({ finished: Promise.resolve() }))
+        proto.animate = animateSpy
+      })
+
+      afterEach(() => {
+        if (hadAnimate) proto.animate = originalAnimate
+        else delete proto.animate
+        vi.unstubAllGlobals()
+      })
+
+      it('keeps the same text element and updates it in place', () => {
+        ns.show('A')
+        const textElement = get(Selectors.nsText)
+        ns.show('B')
+
+        expect(get(Selectors.nsText)).toBe(textElement)
+        expect(textElement?.textContent).toBe('B')
+        expect(
+          get(Selectors.ns)?.firstElementChild?.matches(Selectors.nsSpinner),
+        ).toBe(true)
+      })
+
+      it('does nothing when the label is unchanged', () => {
+        ns.show('A')
+        const textElement = get(Selectors.nsText)
+        ns.show('A')
+
+        expect(get(Selectors.nsText)).toBe(textElement)
+        expect(get(Selectors.nsExit)).toBeNull()
+        expect(animateSpy).not.toHaveBeenCalled()
+      })
+
+      it('crossfades via a ghost of the old label and slides the width', async () => {
+        ns.show('A')
+        ns.show('Much longer label')
+
+        const ghost = get(Selectors.nsExit)
+        expect(ghost?.textContent).toBe('A')
+        expect(get(Selectors.nsText)?.textContent).toBe('Much longer label')
+        expect(animateSpy).toHaveBeenCalledTimes(3)
+        const frames = animateSpy.mock.calls.map((call) => call[0])
+        expect(frames.some((f) => 'width' in (f as Keyframe[])[0]!)).toBe(true)
+
+        // Removal is chained after `finished`, a few microtasks deep
+        await new Promise((resolve) => setTimeout(resolve))
+        expect(get(Selectors.nsExit)).toBeNull()
+      })
+
+      it('skips animation where Element.animate is unavailable', async () => {
+        delete proto.animate
+        ns.show('A')
+        ns.show('B')
+
+        await Promise.resolve()
+        expect(get(Selectors.nsExit)).toBeNull()
+        expect(get(Selectors.nsText)?.textContent).toBe('B')
+      })
+
+      it('skips animation under prefers-reduced-motion', async () => {
+        vi.stubGlobal('matchMedia', () => ({ matches: true }))
+        ns.show('A')
+        ns.show('B')
+
+        expect(animateSpy).not.toHaveBeenCalled()
+        await Promise.resolve()
+        expect(get(Selectors.nsExit)).toBeNull()
+        expect(get(Selectors.nsText)?.textContent).toBe('B')
+      })
+
+      it('removes the label when the new label is empty', () => {
+        ns.show('A')
+        ns.show()
+
+        expect(get(Selectors.nsText)).toBeNull()
+        expect(get(Selectors.nsExit)).toBeNull()
+      })
+    })
+
     it('creates a new Nanosplash without text', () => {
       const id = ns.show()
       const nsElement = get(Selectors.ns)

@@ -26,7 +26,7 @@
 
 ## Why Nanosplash
 
-- **~2.3 kB gzipped.** Smaller than most icons. Nothing else to ship.
+- **~2.7 kB gzipped.** Smaller than most icons. Nothing else to ship.
 - **Zero dependencies.** Plain TypeScript, plain CSS, injected once on first use.
 - **Framework-agnostic.** Works in vanilla JS, React, Vue, Svelte, Angular, or any plain `<script>` tag.
 - **Three-call API.** `show()`, `hide()`, `version`. Nothing to learn, nothing to configure.
